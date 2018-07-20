@@ -35,13 +35,13 @@ namespace ContosoUniversity.WebApplication.Data
                 context.Student.Add(s);
             }
             context.SaveChanges();
-
+            
             var instructors = new Instructor[]
             {
                 new Instructor { FirstMidName = "Kim", LastName = "Abercrombie", HireDate = DateTime.Parse("11/03/1995") },
                 new Instructor { FirstMidName = "Fadi", LastName = "Fakhouri", HireDate = DateTime.Parse("06/07/2002") },
                 new Instructor { FirstMidName = "Roger", LastName = "Harui", HireDate = DateTime.Parse("01/07/1998") },
-                new Instructor { FirstMidName = "Candace", LastName = "Kapoor", HireDate = DateTime.Parse("15/01/2001") },
+                new Instructor { FirstMidName = "Candace", LastName = "Kapoor", HireDate = DateTime.Parse("01/07/1998") },
                 new Instructor { FirstMidName = "Roger", LastName = "Zheng", HireDate = DateTime.Parse("12/02/2004") }
             };
 
