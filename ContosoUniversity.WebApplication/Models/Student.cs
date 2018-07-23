@@ -32,7 +32,7 @@ namespace ContosoUniversity.WebApplication.Models
         {
             get
             {
-                return LastName + ", " + FirstMidName;
+                return FirstMidName + " " + LastName;
             }
         }
     }
