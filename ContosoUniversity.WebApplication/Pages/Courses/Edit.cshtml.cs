@@ -11,7 +11,7 @@ using ContosoUniversity.WebApplication.Models;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
-    public class EditModel : PageModel
+    public class EditModel : DepartmentNamePageModelModel
     {
         private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
 
@@ -38,36 +38,34 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return NotFound();
             }
 
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+            // Select current DepartmentID.
+            PopulateDepartmentsDropDownList(_context, Course.DepartmentID);
+
+            //ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Course).State = EntityState.Modified;
+            var courseToUpdate = await _context.Courses.FindAsync(id);
 
-            try
+            if (await TryUpdateModelAsync<Course>(
+                 courseToUpdate,
+                 "course",   // Prefix for form value.
+                   c => c.Credits, c => c.DepartmentID, c => c.Title))
             {
                 await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CourseExists(Course.CourseID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
+            // Select DepartmentID if TryUpdateModelAsync fails.
+            PopulateDepartmentsDropDownList(_context, courseToUpdate.DepartmentID);
+            return Page();
         }
 
         private bool CourseExists(int id)
