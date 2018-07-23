@@ -24,7 +24,9 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
         public async Task OnGetAsync()
         {
             Course = await _context.Courses
-                .Include(c => c.Department).ToListAsync();
+                .Include(c => c.Department)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }
