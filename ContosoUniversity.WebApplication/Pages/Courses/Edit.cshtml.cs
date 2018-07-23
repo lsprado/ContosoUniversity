@@ -37,7 +37,8 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
             {
                 return NotFound();
             }
-           ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+
+            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
             return Page();
         }
 
