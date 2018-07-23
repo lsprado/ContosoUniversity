@@ -13,6 +13,7 @@ namespace ContosoUniversity.WebApplication.Models
 
     public class Enrollment
     {
+        [Key]
         public int EnrollmentID { get; set; }
 
         public int CourseID { get; set; }

@@ -28,7 +28,7 @@ namespace ContosoUniversity.WebApplication.Models
         [Display(Name = "Full Name")]
         public string FullName
         {
-            get { return LastName + ", " + FirstMidName; }
+            get { return FirstMidName + " " + LastName; }
         }
 
         public ICollection<CourseAssignment> CourseAssignments { get; set; }

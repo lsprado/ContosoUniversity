@@ -9,7 +9,7 @@ namespace ContosoUniversity.WebApplication.Models
 {
     public class Course
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         [Display(Name = "Number")]
         public int CourseID { get; set; }
 

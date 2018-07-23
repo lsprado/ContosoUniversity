@@ -23,6 +23,7 @@ namespace ContosoUniversity.WebApplication.Models
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
 
+        [Display(Name = "Instructor")]
         public int? InstructorID { get; set; }
 
         public Instructor Administrator { get; set; }
