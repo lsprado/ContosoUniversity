@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.API.Data;
-using ContosoUniversity.API.Models;
-using ContosoUniversity.API.ViewModel;
 
 namespace ContosoUniversity.API.Controllers
 {
@@ -16,49 +12,6 @@ namespace ContosoUniversity.API.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly ContosoUniversityAPIContext _context;
-
-        private ViewModel.Student ExecuteTransform(Models.Student student)
-        {
-            ViewModel.Student s = new ViewModel.Student();
-            s.ID = student.ID;
-            s.LastName = student.LastName;
-            s.FirstName = student.FirstName;
-            s.EnrollmentDate = student.EnrollmentDate;
-
-            List<ViewModel.Course> lc = new List<ViewModel.Course>();
-            foreach (var course in student.StudentCourse)
-            {
-                ViewModel.Course c = new ViewModel.Course();
-                c.ID = course.Course.ID;
-                c.Title = course.Course.Title;
-                c.Credits = course.Course.Credits;
-                lc.Add(c);
-            }
-            s.Courses = lc;
-
-            return s;
-        }
-
-        private StudentCourseResult Transform(IQueryable<Models.Student> students)
-        {
-            StudentCourseResult result = new StudentCourseResult();
-            result.Count = students.Count();
-            List<ViewModel.Student> lst = new List<ViewModel.Student>();
-            
-            foreach (Models.Student student in students)
-            {
-                lst.Add(ExecuteTransform(student));
-            }
-            result.Students = lst;
-            return result;
-        }
-
-        private ViewModel.Student Transform(Models.Student student)
-        {
-            StudentCourseResult result = new StudentCourseResult();
-            result.Count = 1;
-            return ExecuteTransform(student);
-        }
         
         public StudentsController(ContosoUniversityAPIContext context)
         {
@@ -67,7 +20,7 @@ namespace ContosoUniversity.API.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public StudentCourseResult GetStudent()
+        public ViewModel.StudentCourseResult GetStudent()
         {
             var students = _context.Student
                 .Include(s => s.StudentCourse)
@@ -175,5 +128,49 @@ namespace ContosoUniversity.API.Controllers
         {
             return _context.Student.Any(e => e.ID == id);
         }
+
+        private ViewModel.Student ExecuteTransform(Models.Student student)
+        {
+            ViewModel.Student s = new ViewModel.Student();
+            s.ID = student.ID;
+            s.LastName = student.LastName;
+            s.FirstName = student.FirstName;
+            s.EnrollmentDate = student.EnrollmentDate;
+
+            List<ViewModel.Course> lc = new List<ViewModel.Course>();
+            foreach (var course in student.StudentCourse)
+            {
+                ViewModel.Course c = new ViewModel.Course();
+                c.ID = course.Course.ID;
+                c.Title = course.Course.Title;
+                c.Credits = course.Course.Credits;
+                lc.Add(c);
+            }
+            s.Courses = lc;
+
+            return s;
+        }
+
+        private ViewModel.StudentCourseResult Transform(IQueryable<Models.Student> students)
+        {
+            ViewModel.StudentCourseResult result = new ViewModel.StudentCourseResult();
+            result.Count = students.Count();
+            List<ViewModel.Student> lst = new List<ViewModel.Student>();
+
+            foreach (Models.Student student in students)
+            {
+                lst.Add(ExecuteTransform(student));
+            }
+            result.Students = lst;
+            return result;
+        }
+
+        private ViewModel.Student Transform(Models.Student student)
+        {
+            ViewModel.StudentCourseResult result = new ViewModel.StudentCourseResult();
+            result.Count = 1;
+            return ExecuteTransform(student);
+        }
+
     }
 }
