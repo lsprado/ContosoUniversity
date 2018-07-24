@@ -27,21 +27,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th>
-                    <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
-                       asp-route-currentFilter="@Model.CurrentFilter">
-                        @Html.DisplayNameFor(model => model.Student.students[0].lastName)
-                    </a>
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Student.students[0].firstName)
-                </th>
-                <th>
-                    <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort"
-                       asp-route-currentFilter="@Model.CurrentFilter">
-                        @Html.DisplayNameFor(model => model.Student.students[0].enrollmentDate)
-                    </a>
-                </th>
+                <th>@Html.DisplayNameFor(model => model.Student.students[0].lastName)</th>
+                <th>@Html.DisplayNameFor(model => model.Student.students[0].firstName)</th>
+                <th>@Html.DisplayNameFor(model => model.Student.students[0].enrollmentDate)</th>
                 <th></th>
             </tr>
         </thead>

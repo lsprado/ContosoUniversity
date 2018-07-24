@@ -11,11 +11,8 @@ namespace ContosoUniversity.WebApplication.Pages.Students
         private HttpClient client;
         private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
 
-        public string NameSort { get; set; }
-        public string DateSort { get; set; }
         public string CurrentFilter { get; set; }
-        public string CurrentSort { get; set; }
-
+        
         public IndexModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
         {
             _context = context;
