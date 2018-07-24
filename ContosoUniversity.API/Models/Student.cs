@@ -20,6 +20,6 @@ namespace ContosoUniversity.API.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EnrollmentDate { get; set; }
 
-        public ICollection<StudentCourse> StudentCourse { get; set; }
+        public IEnumerable<StudentCourse> StudentCourse { get; set; }
     }
 }

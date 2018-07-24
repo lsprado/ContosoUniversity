@@ -28,6 +28,16 @@ namespace ContosoUniversity.API.Data
             modelBuilder.Entity<StudentCourse>().ToTable("tbl_StudentCourse");
 
             modelBuilder.Entity<StudentCourse>().HasKey(c => new { c.CourseID, c.StudentID });
+
+            //modelBuilder.Entity<StudentCourse>()
+            //    .HasOne(bc => bc.Student)
+            //    .WithMany(b => b.StudentCourse)
+            //    .HasForeignKey(bc => bc.StudentID);
+
+            //modelBuilder.Entity<StudentCourse>()
+            //    .HasOne(bc => bc.Course)
+            //    .WithMany(c => c.StudentCourse)
+            //    .HasForeignKey(bc => bc.CourseID);
         }
     }
 }

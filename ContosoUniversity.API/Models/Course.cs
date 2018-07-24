@@ -20,6 +20,6 @@ namespace ContosoUniversity.API.Models
 
         public Department Department { get; set; }
 
-        public ICollection<StudentCourse> StudentCourse { get; set; }
+        public IList<StudentCourse> StudentCourse { get; set; }
     }
 }
