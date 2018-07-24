@@ -15,27 +15,27 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Student.LastName)
+            @Html.DisplayNameFor(model => model.Student.lastName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Student.LastName)
+            @Html.DisplayFor(model => model.Student.lastName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Student.FirstMidName)
+            @Html.DisplayNameFor(model => model.Student.firstName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Student.FirstMidName)
+            @Html.DisplayFor(model => model.Student.firstName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Student.EnrollmentDate)
+            @Html.DisplayNameFor(model => model.Student.enrollmentDate)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Student.EnrollmentDate)
+            @Html.DisplayFor(model => model.Student.enrollmentDate)
         </dd>
     </dl>
 
     <form method="post">
-        <input type="hidden" asp-for="Student.ID" />
+        <input type="hidden" asp-for="Student.id" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
         <a asp-page="./Index">Back to List</a>
     </form>

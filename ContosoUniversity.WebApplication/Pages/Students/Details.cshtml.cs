@@ -40,19 +40,6 @@ namespace ContosoUniversity.WebApplication.Pages.Students
             }
 
             return Page();
-
-
-            //Student = await _context.Student
-            //    .Include(s => s.Enrollments)
-            //        .ThenInclude(e => e.Course)
-            //    .AsNoTracking()
-            //    .FirstOrDefaultAsync(m => m.ID == id);
-
-            //if (Student == null)
-            //{
-            //    return NotFound();
-            //}
-            //return Page();
         }
     }
 }

@@ -13,9 +13,6 @@
 
 @if (Model.Student.count > 0)
 {
-    //var prevDisabled = !Model.Student.HasPreviousPage ? "disabled" : "";
-    //var nextDisabled = !Model.Student.HasNextPage ? "disabled" : "";
-
     <form asp-page="./Index" method="get">
         <div class="form-actions no-color">
             <p>
@@ -74,6 +71,5 @@
 }
 else
 {
-            <p>No data</p>
-
+    <p>No data</p>
 }
