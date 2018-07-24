@@ -23,6 +23,7 @@ namespace ContosoUniversity.API.Controllers
             s.ID = student.ID;
             s.LastName = student.LastName;
             s.FirstName = student.FirstName;
+            s.EnrollmentDate = student.EnrollmentDate;
 
             List<ViewModel.Course> lc = new List<ViewModel.Course>();
             foreach (var course in student.StudentCourse)
@@ -37,6 +38,7 @@ namespace ContosoUniversity.API.Controllers
 
             return s;
         }
+
         private StudentCourseResult Transform(IQueryable<Models.Student> students)
         {
             StudentCourseResult result = new StudentCourseResult();
