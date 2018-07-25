@@ -56,20 +56,14 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return NotFound();
             }
 
-            var student = await _context.Student
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
-
-            if (student == null)
-            {
-                return NotFound();
-            }
-
             try
             {
-                _context.Student.Remove(student);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                var response = await client.DeleteAsync("http://localhost:30097/api/Students/" + id);
+
+                if(response.IsSuccessStatusCode)
+                    return RedirectToPage("./Index");
+                else
+                    return RedirectToAction("./Delete", new { id, saveChangesError = true });
             }
             catch (DbUpdateException)
             {

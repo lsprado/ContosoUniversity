@@ -27,12 +27,10 @@ namespace ContosoUniversity.WebApplication
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
-
+            var section = Configuration.GetSection("Api");
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
-            services.AddDbContext<SchoolContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+            services.AddDbContext<SchoolContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+            services.AddHttpClient("client", client => { client.BaseAddress = new System.Uri(section["Address"]); });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -30,6 +30,8 @@ namespace ContosoUniversity.API
 
             services.AddDbContext<ContosoUniversityAPIContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ContosoUniversityAPIContext")));
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

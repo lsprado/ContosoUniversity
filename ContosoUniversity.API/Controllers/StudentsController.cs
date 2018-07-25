@@ -20,14 +20,31 @@ namespace ContosoUniversity.API.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public ViewModel.StudentCourseResult GetStudent()
+        public IActionResult GetStudent()
         {
             var students = _context.Student
                 .Include(s => s.StudentCourse)
                 .ThenInclude(s => s.Course)
                 .AsNoTracking();
 
-            return this.Transform(students);
+            //Transform to DTO
+            var result = new DTO.StudentCourseResult()
+            {
+                Students = students.Select(s => new DTO.Student()
+                {
+                    ID = s.ID,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    Courses = s.StudentCourse.Select(c => new DTO.Course()
+                    {
+                        ID = c.Course.ID,
+                        Title = c.Course.Title
+                    }).ToList()
+                }).ToList()
+            };
+
+            return Ok(result);
+            
         }
 
         // GET: api/Students/5
@@ -49,11 +66,24 @@ namespace ContosoUniversity.API.Controllers
             {
                 return NotFound();
             }
+            
+            //Transform to DTO
+            var result = new DTO.Student()
+            {
+                ID = student.ID,
+                FirstName = student.FirstName,
+                LastName = student.LastName,
+                Courses = student.StudentCourse.Select(c => new DTO.Course()
+                {
+                    ID = c.Course.ID,
+                    Title = c.Course.Title
+                }).ToList()
+            };
 
-            return Ok(this.Transform(student));
+            return Ok(result);
         }
 
-        // PUT: api/Students/5
+        // PUT: api/Students/5 - Alter
         [HttpPut("{id}")]
         public async Task<IActionResult> PutStudent([FromRoute] int id, [FromBody] Models.Student student)
         {
@@ -88,7 +118,7 @@ namespace ContosoUniversity.API.Controllers
             return NoContent();
         }
 
-        // POST: api/Students
+        // POST: api/Students - Create
         [HttpPost]
         public async Task<IActionResult> PostStudent([FromBody] Models.Student student)
         {
@@ -103,7 +133,7 @@ namespace ContosoUniversity.API.Controllers
             return CreatedAtAction("GetStudent", new { id = student.ID }, student);
         }
 
-        // DELETE: api/Students/5
+        // DELETE: api/Students/5 - Delete
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStudent([FromRoute] int id)
         {
@@ -128,49 +158,5 @@ namespace ContosoUniversity.API.Controllers
         {
             return _context.Student.Any(e => e.ID == id);
         }
-
-        private ViewModel.Student ExecuteTransform(Models.Student student)
-        {
-            ViewModel.Student s = new ViewModel.Student();
-            s.ID = student.ID;
-            s.LastName = student.LastName;
-            s.FirstName = student.FirstName;
-            s.EnrollmentDate = student.EnrollmentDate;
-
-            List<ViewModel.Course> lc = new List<ViewModel.Course>();
-            foreach (var course in student.StudentCourse)
-            {
-                ViewModel.Course c = new ViewModel.Course();
-                c.ID = course.Course.ID;
-                c.Title = course.Course.Title;
-                c.Credits = course.Course.Credits;
-                lc.Add(c);
-            }
-            s.Courses = lc;
-
-            return s;
-        }
-
-        private ViewModel.StudentCourseResult Transform(IQueryable<Models.Student> students)
-        {
-            ViewModel.StudentCourseResult result = new ViewModel.StudentCourseResult();
-            result.Count = students.Count();
-            List<ViewModel.Student> lst = new List<ViewModel.Student>();
-
-            foreach (Models.Student student in students)
-            {
-                lst.Add(ExecuteTransform(student));
-            }
-            result.Students = lst;
-            return result;
-        }
-
-        private ViewModel.Student Transform(Models.Student student)
-        {
-            ViewModel.StudentCourseResult result = new ViewModel.StudentCourseResult();
-            result.Count = 1;
-            return ExecuteTransform(student);
-        }
-
     }
 }
