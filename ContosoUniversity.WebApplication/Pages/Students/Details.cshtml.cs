@@ -4,22 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class DetailsModel : PageModel
     {
-        private HttpClient client;
         private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly ILogger<DetailsModel> logger;
+        private readonly IHttpClientFactory client;
 
-        public DetailsModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DetailsModel(ContosoUniversity.WebApplication.Data.SchoolContext context, ILogger<DetailsModel> logger, IHttpClientFactory client)
         {
             _context = context;
-            client = new HttpClient();
+            this.logger = logger;
+            this.client = client;
         }
 
         public Models.APIViewModels.Student Student { get; set; }
@@ -31,7 +32,7 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return NotFound();
             }
 
-            var response = await client.GetStringAsync("http://localhost:30097/api/Students/" + id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Students/" + id);
             Student = JsonConvert.DeserializeObject<Models.APIViewModels.Student>(response);
 
             if (Student == null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,16 +8,23 @@ namespace ContosoUniversity.WebApplication.Models.APIViewModels
 {
     public class Student
     {
-        public int id { get; set; }
-        public string lastName { get; set; }
-        public string firstName { get; set; }
-        public DateTime enrollmentDate { get; set; }
-        public List<CoursesResult> courses { get; set; }
+        public int Id { get; set; }
+
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Enrollment Date")]
+        public DateTime EnrollmentDate { get; set; }
+
+        public List<CoursesResult> Courses { get; set; }
     }
 
     public class StudentResult
     {
-        public int count { get; set; }
-        public List<Student> students { get; set; }
+        public int Count { get; set; }
+        public List<Student> Students { get; set; }
     }
 }

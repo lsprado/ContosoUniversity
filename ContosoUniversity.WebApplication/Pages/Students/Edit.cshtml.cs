@@ -55,14 +55,14 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 
             try
             {
-                HttpResponseMessage response = await client.CreateClient("client").PutAsJsonAsync("api/Students/" + Student.id, Student);
+                HttpResponseMessage response = await client.CreateClient("client").PutAsJsonAsync("api/Students/" + Student.Id, Student);
 
                 if (!response.IsSuccessStatusCode)
                     logger.LogDebug(response.ToString());
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(Student.id))
+                if (!StudentExists(Student.Id))
                 {
                     return NotFound();
                 }

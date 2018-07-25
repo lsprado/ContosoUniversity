@@ -8,18 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.WebApplication.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
+using Microsoft.Extensions.Logging;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class DeleteModel : PageModel
     {
-        private HttpClient client;
         private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly ILogger<DeleteModel> logger;
+        private readonly IHttpClientFactory client;
 
-        public DeleteModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DeleteModel(ContosoUniversity.WebApplication.Data.SchoolContext context, ILogger<DeleteModel> logger, IHttpClientFactory client)
         {
             _context = context;
-            client = new HttpClient();
+            this.logger = logger;
+            this.client = client;
         }
 
         [BindProperty]
@@ -33,7 +36,7 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return NotFound();
             }
 
-            var response = await client.GetStringAsync("http://localhost:30097/api/Students/" + id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Students/" + id);
             Student = JsonConvert.DeserializeObject<Models.APIViewModels.Student>(response);
 
             if (Student == null)
@@ -58,7 +61,7 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 
             try
             {
-                var response = await client.DeleteAsync("http://localhost:30097/api/Students/" + id);
+                var response = await client.CreateClient("client").DeleteAsync("api/Students/" + id);
 
                 if(response.IsSuccessStatusCode)
                     return RedirectToPage("./Index");
