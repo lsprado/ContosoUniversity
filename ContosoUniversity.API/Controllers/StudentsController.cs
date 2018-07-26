@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.API.Data;
+using ContosoUniversity.API.Models;
+using System;
 
 namespace ContosoUniversity.API.Controllers
 {
@@ -45,6 +47,46 @@ namespace ContosoUniversity.API.Controllers
 
             return Ok(result);
             
+        }
+
+        // GET: api/Students/Search?name=Ana
+        [HttpGet("Search")]
+        public async Task<IActionResult> Search(string name)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var students = await _context.Student
+                .Include(s => s.StudentCourse)
+                .ThenInclude(s => s.Course)
+                .AsNoTracking()
+                .Where(s => EF.Functions.Like(s.FirstName, name+"%") || EF.Functions.Like(s.LastName, name + "%"))
+                .ToListAsync();
+            
+            if (students == null)
+            {
+                return NotFound();
+            }
+
+            //Transform to DTO
+            var result = new DTO.StudentCourseResult()
+            {
+                Students = students.Select(s => new DTO.Student()
+                {
+                    ID = s.ID,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    Courses = s.StudentCourse.Select(c => new DTO.Course()
+                    {
+                        ID = c.Course.ID,
+                        Title = c.Course.Title
+                    }).ToList()
+                }).ToList()
+            };
+
+            return Ok(result);
         }
 
         // GET: api/Students/5
