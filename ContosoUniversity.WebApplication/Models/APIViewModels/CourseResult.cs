@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Models.APIViewModels
 {
-    public class StudentResult
+    public class CoursesResult
     {
         public int Count { get; set; }
-        public List<Student> Students { get; set; }
+        public List<Course> Courses { get; set; }
     }
 }

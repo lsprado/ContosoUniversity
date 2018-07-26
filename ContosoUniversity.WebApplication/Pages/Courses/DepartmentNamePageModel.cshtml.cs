@@ -20,8 +20,7 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                                    orderby d.Name // Sort by name.
                                    select d;
 
-            DepartmentNameSL = new SelectList(departmentsQuery.AsNoTracking(),
-                        "DepartmentID", "Name", selectedDepartment);
+            DepartmentNameSL = new SelectList(departmentsQuery.AsNoTracking(), "DepartmentID", "Name", selectedDepartment);
         }
     }
 }

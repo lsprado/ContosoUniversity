@@ -7,26 +7,28 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.WebApplication.Data;
 using ContosoUniversity.WebApplication.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
     public class IndexModel : PageModel
     {
         private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public IndexModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public IndexModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
         {
             _context = context;
+            this.client = client;
         }
 
-        public IList<Course> Course { get;set; }
+        public Models.APIViewModels.CoursesResult Course { get; set; }
 
         public async Task OnGetAsync()
         {
-            Course = await _context.Courses
-                .Include(c => c.Department)
-                .AsNoTracking()
-                .ToListAsync();
+            var response = await client.CreateClient("client").GetStringAsync("api/Courses");
+            Course = JsonConvert.DeserializeObject<Models.APIViewModels.CoursesResult>(response);
         }
     }
 }

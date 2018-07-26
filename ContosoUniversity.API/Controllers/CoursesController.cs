@@ -25,7 +25,8 @@ namespace ContosoUniversity.API.Controllers
         [HttpGet]
         public IActionResult GetCourses()
         {
-            var courses = _context.Courses;
+            var courses = _context.Courses
+                .Include(c => c.Department);
 
             //Transform to DTO
             var result = new DTO.CourseStudentResult()
@@ -34,7 +35,13 @@ namespace ContosoUniversity.API.Controllers
                 {
                     ID = c.ID,
                     Credits = c.Credits,
-                    Title = c.Title
+                    Title = c.Title,
+                    Department = new DTO.Department() {
+                        ID = c.Department.ID,
+                        Name = c.Department.Name,
+                        Budget = c.Department.Budget,
+                        StartDate = c.Department.StartDate
+                    }
                 }).ToList()
             };
 
@@ -50,7 +57,9 @@ namespace ContosoUniversity.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var course = await _context.Courses.FindAsync(id);
+            var course = await _context.Courses
+                .Include(c => c.Department)
+                .FirstOrDefaultAsync(c => c.ID == id);
 
             if (course == null)
             {
@@ -74,6 +83,7 @@ namespace ContosoUniversity.API.Controllers
                 return BadRequest();
             }
 
+            course.Department = _context.Departments.Find(course.Department.ID);
             _context.Entry(course).State = EntityState.Modified;
 
             try
@@ -104,6 +114,7 @@ namespace ContosoUniversity.API.Controllers
                 return BadRequest(ModelState);
             }
 
+            course.Department = _context.Departments.Find(course.Department.ID);
             _context.Courses.Add(course);
             await _context.SaveChangesAsync();
 

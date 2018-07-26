@@ -7,20 +7,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.WebApplication.Data;
 using ContosoUniversity.WebApplication.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
     public class DeleteModel : PageModel
     {
         private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public DeleteModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DeleteModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
         {
             _context = context;
+            this.client = client;
         }
 
         [BindProperty]
-        public Course Course { get; set; }
+        public Models.APIViewModels.Course Course { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,10 +33,8 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return NotFound();
             }
 
-            Course = await _context.Courses
-                .AsNoTracking()
-                .Include(c => c.Department)
-                .FirstOrDefaultAsync(m => m.CourseID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Courses/" + id);
+            Course = JsonConvert.DeserializeObject<Models.APIViewModels.Course>(response);
 
             if (Course == null)
             {
@@ -48,17 +50,13 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return NotFound();
             }
 
-            Course = await _context.Courses
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.CourseID == id);
+            var response = await client.CreateClient("client").DeleteAsync("api/Courses/" + id);
 
-            if (Course != null)
-            {
-                _context.Courses.Remove(Course);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
+            if (response.IsSuccessStatusCode)
+                return RedirectToPage("./Index");
+            else
+                return RedirectToAction("./Delete", new { id, saveChangesError = true });
+            
         }
     }
 }

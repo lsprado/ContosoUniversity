@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ContosoUniversity.WebApplication.Data;
 using ContosoUniversity.WebApplication.Models;
+using System.Net.Http;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
     public class CreateModel : DepartmentNamePageModelModel
     {
         private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public CreateModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public CreateModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
         {
             _context = context;
+            this.client = client;
         }
 
         public IActionResult OnGet()
@@ -27,7 +30,7 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
         }
 
         [BindProperty]
-        public Course Course { get; set; }
+        public Models.APIViewModels.Course Course { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -36,21 +39,8 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return Page();
             }
 
-            var emptyCourse = new Course();
-
-            if (await TryUpdateModelAsync<Course>(
-                 emptyCourse,
-                 "course",   // Prefix for form value.
-                 s => s.CourseID, s => s.DepartmentID, s => s.Title, s => s.Credits))
-            {
-                _context.Courses.Add(emptyCourse);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-
-            // Select DepartmentID if TryUpdateModelAsync fails.
-            PopulateDepartmentsDropDownList(_context, emptyCourse.DepartmentID);
-            return Page();
+            var response = await client.CreateClient("client").PostAsJsonAsync("api/Courses", Course);
+            return RedirectToPage("./Index");
         }
     }
 }
