@@ -24,8 +24,16 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 
         public async Task<IActionResult> OnGetAsync(int? id, string SearchString)
         {
-            var response = await client.CreateClient("client").GetStringAsync("api/Students");
-            Student = JsonConvert.DeserializeObject<Models.APIViewModels.StudentResult>(response);
+            if (string.IsNullOrEmpty(SearchString))
+            {
+                var response = await client.CreateClient("client").GetStringAsync("api/Students");
+                Student = JsonConvert.DeserializeObject<Models.APIViewModels.StudentResult>(response);
+            }
+            else
+            {
+                var response = await client.CreateClient("client").GetStringAsync("api/Students/Search?name=" + SearchString);
+                Student = JsonConvert.DeserializeObject<Models.APIViewModels.StudentResult>(response);
+            }
             return Page();
         }
     }

@@ -52,7 +52,6 @@ namespace ContosoUniversity.API.Data
             {
                 new Course {Title = "Chemistry",  Credits = 3, Department = departments.Single( s => s.Name == "Engineering") },
                 new Course {Title = "Microeconomics", Credits = 3, Department = departments.Single( s => s.Name == "Economics") },
-                new Course {Title = "Macroeconomics", Credits = 3, Department = departments.Single( s => s.Name == "Economics") },
                 new Course {Title = "Calculus", Credits = 4, Department = departments.Single( s => s.Name == "Mathematics") },
                 new Course {Title = "Trigonometry", Credits = 4, Department = departments.Single( s => s.Name == "Mathematics") },
                 new Course {Title = "Composition", Credits = 3, Department = departments.Single( s => s.Name == "English") },

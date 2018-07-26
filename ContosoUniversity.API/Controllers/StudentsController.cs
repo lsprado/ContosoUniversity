@@ -40,7 +40,8 @@ namespace ContosoUniversity.API.Controllers
                     Courses = s.StudentCourse.Select(c => new DTO.Course()
                     {
                         ID = c.Course.ID,
-                        Title = c.Course.Title
+                        Title = c.Course.Title,
+                        Credits = c.Course.Credits
                     }).ToList()
                 }).ToList()
             };
@@ -81,7 +82,8 @@ namespace ContosoUniversity.API.Controllers
                     Courses = s.StudentCourse.Select(c => new DTO.Course()
                     {
                         ID = c.Course.ID,
-                        Title = c.Course.Title
+                        Title = c.Course.Title,
+                        Credits = c.Course.Credits
                     }).ToList()
                 }).ToList()
             };
@@ -118,7 +120,8 @@ namespace ContosoUniversity.API.Controllers
                 Courses = student.StudentCourse.Select(c => new DTO.Course()
                 {
                     ID = c.Course.ID,
-                    Title = c.Course.Title
+                    Title = c.Course.Title,
+                    Credits = c.Course.Credits
                 }).ToList()
             };
 
