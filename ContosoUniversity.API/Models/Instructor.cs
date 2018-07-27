@@ -19,5 +19,7 @@ namespace ContosoUniversity.API.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime HireDate { get; set; }
+
+        public IList<Course> Courses { get; set; }
     }
 }
