@@ -8,24 +8,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ContosoUniversity.WebApplication.Data;
 using ContosoUniversity.WebApplication.Models;
 using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
-    public class CreateModel : DepartmentNamePageModelModel
+    public class CreateModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly IHttpClientFactory client;
 
-        public CreateModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
+        public CreateModel(IHttpClientFactory client)
         {
-            _context = context;
             this.client = client;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            PopulateDepartmentsDropDownList(_context);
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+            var response = await client.CreateClient("client").GetStringAsync("api/Departments");
+            var dep = JsonConvert.DeserializeObject<Models.APIViewModels.DepartmentResult>(response);
+            ViewData["DepartmentID"] = new SelectList(dep.Departments, "ID", "Name");
+
             return Page();
         }
 

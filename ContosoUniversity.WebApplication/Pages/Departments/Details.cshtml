@@ -30,14 +30,15 @@
             @Html.DisplayFor(model => model.Department.StartDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Department.Administrator)
+            @Html.DisplayNameFor(model => model.Department.Instructor)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Department.Administrator.FullName)
+            @Html.DisplayFor(model => model.Department.Instructor.FirstName)
+            @Html.DisplayFor(model => model.Department.Instructor.LastName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Department.DepartmentID">Edit</a> |
+    <a asp-page="./Edit" asp-route-id="@Model.Department.ID">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>

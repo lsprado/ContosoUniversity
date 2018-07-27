@@ -13,14 +13,12 @@ using Newtonsoft.Json;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
-    public class EditModel : DepartmentNamePageModelModel
+    public class EditModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly IHttpClientFactory client;
 
-        public EditModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
+        public EditModel(IHttpClientFactory client)
         {
-            _context = context;
             this.client = client;
         }
 
@@ -43,7 +41,9 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
             }
 
             // Select current DepartmentID.
-            PopulateDepartmentsDropDownList(_context, Course.Department.ID);
+            var response_dep = await client.CreateClient("client").GetStringAsync("api/Departments");
+            var dep = JsonConvert.DeserializeObject<Models.APIViewModels.DepartmentResult>(response_dep);
+            ViewData["DepartmentID"] = new SelectList(dep.Departments, "ID", "Name");
 
             return Page();
         }
@@ -57,19 +57,17 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
 
             var response = await client.CreateClient("client").PutAsJsonAsync("api/Courses/" + id, Course);
 
-            if(response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 return RedirectToPage("./Index");
             }
-            
-            // Select DepartmentID if TryUpdateModelAsync fails.
-            PopulateDepartmentsDropDownList(_context, Course.Department.ID);
-            return Page();
-        }
 
-        private bool CourseExists(int id)
-        {
-            return _context.Courses.Any(e => e.CourseID == id);
+            // Select DepartmentID if TryUpdateModelAsync fails.
+            var response_dep = await client.CreateClient("client").GetStringAsync("api/Departments");
+            var dep = JsonConvert.DeserializeObject<Models.APIViewModels.DepartmentResult>(response_dep);
+            ViewData["DepartmentID"] = new SelectList(dep.Departments, "ID", "Name");
+
+            return Page();
         }
     }
 }

@@ -15,6 +15,6 @@ namespace ContosoUniversity.API.DTO
 
         public DateTime StartDate { get; set; }
 
-        //public Instructor Instructor { get; set; }
+        public Instructor Instructor { get; set; }
     }
 }

@@ -31,15 +31,16 @@
             @Html.DisplayFor(model => model.Department.StartDate)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Department.Administrator)
+            @Html.DisplayNameFor(model => model.Department.Instructor)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Department.Administrator.FirstMidName)
+            @Html.DisplayFor(model => model.Department.Instructor.FirstName)
+            @Html.DisplayFor(model => model.Department.Instructor.LastName)
         </dd>
     </dl>
     
     <form method="post">
-        <input type="hidden" asp-for="Department.DepartmentID" />
+        <input type="hidden" asp-for="Department.ID" />
         <input type="submit" value="Delete" class="btn btn-default" /> |
         <a asp-page="./Index">Back to List</a>
     </form>

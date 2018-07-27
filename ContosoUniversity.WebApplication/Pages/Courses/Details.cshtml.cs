@@ -14,12 +14,10 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
 {
     public class DetailsModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly IHttpClientFactory client;
 
-        public DetailsModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
+        public DetailsModel(IHttpClientFactory client)
         {
-            _context = context;
             this.client = client;
         }
 

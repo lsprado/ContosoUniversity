@@ -44,9 +44,6 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 "student",   // Prefix for form value.
                 s => s.FirstName, s => s.LastName, s => s.EnrollmentDate))
             {
-                //_context.Student.Add(emptyStudent);
-                //await _context.SaveChangesAsync();
-
                 var response = await client.CreateClient("client").PostAsJsonAsync("api/Students", emptyStudent);
                 return RedirectToPage("./Index");
             }

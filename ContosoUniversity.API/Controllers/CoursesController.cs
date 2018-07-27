@@ -66,7 +66,22 @@ namespace ContosoUniversity.API.Controllers
                 return NotFound();
             }
 
-            return Ok(course);
+            //Transform to DTO
+            var result = new DTO.Course()
+            {
+                ID = course.ID,
+                Credits = course.Credits,
+                Title = course.Title,
+                Department = new DTO.Department()
+                {
+                    ID = course.Department.ID,
+                    Name = course.Department.Name,
+                    Budget = course.Department.Budget,
+                    StartDate = course.Department.StartDate
+                }
+            };
+
+            return Ok(result);
         }
 
         // PUT: api/Courses/5

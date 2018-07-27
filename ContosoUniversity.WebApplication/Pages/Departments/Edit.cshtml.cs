@@ -8,20 +8,22 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.WebApplication.Data;
 using ContosoUniversity.WebApplication.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ContosoUniversity.WebApplication.Pages.Departments
 {
     public class EditModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public EditModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public EditModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
         [BindProperty]
-        public Department Department { get; set; }
+        public Models.APIViewModels.Department Department { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,48 +32,36 @@ namespace ContosoUniversity.WebApplication.Pages.Departments
                 return NotFound();
             }
 
-            Department = await _context.Departments
-                .Include(d => d.Administrator).FirstOrDefaultAsync(m => m.DepartmentID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Departments/" + id);
+            Department = JsonConvert.DeserializeObject<Models.APIViewModels.Department>(response);
 
             if (Department == null)
             {
                 return NotFound();
             }
-           ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FirstMidName");
+
+            var responseI = await client.CreateClient("client").GetStringAsync("api/Instructors");
+            var i = JsonConvert.DeserializeObject<Models.APIViewModels.InstructorResult>(responseI);
+            ViewData["InstructorID"] = new SelectList(i.Instructors, "ID", "FullName");
+
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Department).State = EntityState.Modified;
+            var response = await client.CreateClient("client").PutAsJsonAsync("api/Departments/" + id, Department);
 
-            try
+            if (response.IsSuccessStatusCode)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DepartmentExists(Department.DepartmentID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return RedirectToPage("./Index");
             }
 
-            return RedirectToPage("./Index");
-        }
-
-        private bool DepartmentExists(int id)
-        {
-            return _context.Departments.Any(e => e.DepartmentID == id);
+            return Page();
         }
     }
 }

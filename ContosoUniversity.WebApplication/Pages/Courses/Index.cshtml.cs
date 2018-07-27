@@ -14,12 +14,10 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
 {
     public class IndexModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly IHttpClientFactory client;
 
-        public IndexModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
-        {
-            _context = context;
+        public IndexModel(IHttpClientFactory client)
+        { 
             this.client = client;
         }
 

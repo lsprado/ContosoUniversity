@@ -14,5 +14,7 @@ namespace ContosoUniversity.WebApplication.Models.APIViewModels
         public decimal Budget { get; set; }
 
         public DateTime StartDate { get; set; }
+
+        public Instructor Instructor { get; set; }
     }
 }
