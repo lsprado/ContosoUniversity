@@ -10,14 +10,12 @@ using System.Net.Http;
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class CreateModel : PageModel
-    {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+    { 
         private readonly ILogger<CreateModel> logger;
         private readonly IHttpClientFactory client;
 
-        public CreateModel(ContosoUniversity.WebApplication.Data.SchoolContext context, ILogger<CreateModel> logger, IHttpClientFactory client)
+        public CreateModel(ILogger<CreateModel> logger, IHttpClientFactory client)
         {
-            _context = context;
             this.logger = logger;
             this.client = client;
         }

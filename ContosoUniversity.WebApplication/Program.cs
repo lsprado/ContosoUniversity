@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using ContosoUniversity.WebApplication.Data;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace ContosoUniversity.WebApplication
 {
@@ -24,11 +18,11 @@ namespace ContosoUniversity.WebApplication
 
                 try
                 {
-                    var context = services.GetRequiredService<SchoolContext>();
+                    //var context = services.GetRequiredService<SchoolContext>();
                     //context.Database.EnsureCreated();
 
                     // using ContosoUniversity.Data; 
-                    DbInitializer.Initialize(context);
+                    //DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {

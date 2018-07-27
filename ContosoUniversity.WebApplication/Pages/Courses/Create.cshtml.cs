@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
-using System.Net.Http;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {

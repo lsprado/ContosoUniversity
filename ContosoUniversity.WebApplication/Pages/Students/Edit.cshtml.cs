@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Models;
-using System.Net.Http;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class EditModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly ILogger<EditModel> logger;
         private readonly IHttpClientFactory client;
 
-        public EditModel(ContosoUniversity.WebApplication.Data.SchoolContext context, ILogger<EditModel> logger, IHttpClientFactory client)
+        public EditModel(ILogger<EditModel> logger, IHttpClientFactory client)
         {
-            _context = context;
             this.logger = logger;
             this.client = client;
         }
@@ -62,22 +56,11 @@ namespace ContosoUniversity.WebApplication.Pages.Students
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(Student.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return RedirectToPage("./Index");
         }
 
-        private bool StudentExists(int id)
-        {
-            return _context.Student.Any(e => e.ID == id);
-        }
     }
 }

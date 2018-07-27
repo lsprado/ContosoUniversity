@@ -12,13 +12,11 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class DetailsModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly ILogger<DetailsModel> logger;
         private readonly IHttpClientFactory client;
 
-        public DetailsModel(ContosoUniversity.WebApplication.Data.SchoolContext context, ILogger<DetailsModel> logger, IHttpClientFactory client)
+        public DetailsModel(ILogger<DetailsModel> logger, IHttpClientFactory client)
         {
-            _context = context;
             this.logger = logger;
             this.client = client;
         }

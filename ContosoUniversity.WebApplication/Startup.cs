@@ -1,5 +1,4 @@
-﻿using ContosoUniversity.WebApplication.Data;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +28,7 @@ namespace ContosoUniversity.WebApplication
             });
             var section = Configuration.GetSection("Api");
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContext<SchoolContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
+            //services.AddDbContext<SchoolContext>(options => options.UseSqlServer(Configuration.GetConnectionString("SchoolContext")));
             services.AddHttpClient("client", client => { client.BaseAddress = new System.Uri(section["Address"]); });
         }
 

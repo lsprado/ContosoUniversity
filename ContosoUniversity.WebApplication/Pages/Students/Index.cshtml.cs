@@ -8,15 +8,12 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class IndexModel : PageModel
     {
-        
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly IHttpClientFactory client;
 
         public string CurrentFilter { get; set; }
         
-        public IndexModel(ContosoUniversity.WebApplication.Data.SchoolContext context, IHttpClientFactory client)
+        public IndexModel(IHttpClientFactory client)
         {
-            _context = context;
             this.client = client;
         }
 

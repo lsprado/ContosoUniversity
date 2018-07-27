@@ -1,38 +1,34 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Instructors
 {
-    public class CreateModel : InstructorCoursesPageModelModel
+    public class CreateModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public CreateModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public CreateModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
         public IActionResult OnGet()
         {
-            var instructor = new Instructor();
-            instructor.CourseAssignments = new List<CourseAssignment>();
+            //var instructor = new Instructor();
+            //instructor.CourseAssignments = new List<CourseAssignment>();
 
             // Provides an empty collection for the foreach loop
             // foreach (var course in Model.AssignedCourseDataList)
             // in the Create Razor page.
-            PopulateAssignedCourseData(_context, instructor);
+            //PopulateAssignedCourseData(_context, instructor);
             return Page();
         }
 
         [BindProperty]
-        public Instructor Instructor { get; set; }
+        public Models.APIViewModels.Instructor Instructor { get; set; }
 
         public async Task<IActionResult> OnPostAsync(string[] selectedCourses)
         {
@@ -41,32 +37,8 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
                 return Page();
             }
 
-            var newInstructor = new Instructor();
-            if (selectedCourses != null)
-            {
-                newInstructor.CourseAssignments = new List<CourseAssignment>();
-                foreach (var course in selectedCourses)
-                {
-                    var courseToAdd = new CourseAssignment
-                    {
-                        CourseID = int.Parse(course)
-                    };
-                    newInstructor.CourseAssignments.Add(courseToAdd);
-                }
-            }
-
-            if (await TryUpdateModelAsync<Instructor>(
-                newInstructor,
-                "Instructor",
-                i => i.FirstMidName, i => i.LastName,
-                i => i.HireDate, i => i.OfficeAssignment))
-            {
-                _context.Instructors.Add(newInstructor);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-            PopulateAssignedCourseData(_context, newInstructor);
-            return Page();
+            var response = await client.CreateClient("client").PostAsJsonAsync("api/Instructors", Instructor);
+            return RedirectToPage("./Index");
         }
     }
 

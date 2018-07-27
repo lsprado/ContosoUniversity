@@ -14,13 +14,11 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class DeleteModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
         private readonly ILogger<DeleteModel> logger;
         private readonly IHttpClientFactory client;
 
-        public DeleteModel(ContosoUniversity.WebApplication.Data.SchoolContext context, ILogger<DeleteModel> logger, IHttpClientFactory client)
+        public DeleteModel(ILogger<DeleteModel> logger, IHttpClientFactory client)
         {
-            _context = context;
             this.logger = logger;
             this.client = client;
         }

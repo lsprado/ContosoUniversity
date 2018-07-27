@@ -1,27 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Instructors
 {
-    public class EditModel : InstructorCoursesPageModelModel
+    public class EditModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public EditModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public EditModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
         [BindProperty]
-        public Instructor Instructor { get; set; }
+        public Models.APIViewModels.Instructor Instructor { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,17 +28,15 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
                 return NotFound();
             }
 
-            Instructor = await _context.Instructors
-                .Include(i => i.OfficeAssignment)
-                .Include(i => i.CourseAssignments).ThenInclude(i => i.Course)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Instructors/" + id);
+            Instructor = JsonConvert.DeserializeObject<Models.APIViewModels.Instructor>(response);
 
             if (Instructor == null)
             {
                 return NotFound();
             }
-            PopulateAssignedCourseData(_context, Instructor);
+
+            //PopulateAssignedCourseData(_context, Instructor);
             return Page();
         }
 
@@ -51,36 +47,17 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
                 return Page();
             }
 
-            var instructorToUpdate = await _context.Instructors
-            .Include(i => i.OfficeAssignment)
-            .Include(i => i.CourseAssignments)
-                .ThenInclude(i => i.Course)
-            .FirstOrDefaultAsync(s => s.ID == id);
+            var response = await client.CreateClient("client").PutAsJsonAsync("api/Instructors/" + id, Instructor);
 
-            if (await TryUpdateModelAsync<Instructor>(
-                instructorToUpdate,
-                "Instructor",
-                i => i.FirstMidName, i => i.LastName,
-                i => i.HireDate, i => i.OfficeAssignment))
+            if (response.IsSuccessStatusCode)
             {
-                if (String.IsNullOrWhiteSpace(
-                    instructorToUpdate.OfficeAssignment?.Location))
-                {
-                    instructorToUpdate.OfficeAssignment = null;
-                }
-                UpdateInstructorCourses(_context, selectedCourses, instructorToUpdate);
-                await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
-            UpdateInstructorCourses(_context, selectedCourses, instructorToUpdate);
-            PopulateAssignedCourseData(_context, instructorToUpdate);
+
+            //UpdateInstructorCourses(_context, selectedCourses, instructorToUpdate);
+            //PopulateAssignedCourseData(_context, instructorToUpdate);
             return Page();
 
-        }
-
-        private bool InstructorExists(int id)
-        {
-            return _context.Instructors.Any(e => e.ID == id);
         }
     }
 }

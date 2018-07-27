@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ContosoUniversity.WebApplication.Data;
 using ContosoUniversity.WebApplication.Models.SchoolViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

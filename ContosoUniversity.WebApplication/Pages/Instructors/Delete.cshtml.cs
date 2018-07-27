@@ -1,26 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Instructors
 {
     public class DeleteModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public DeleteModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DeleteModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
         [BindProperty]
-        public Instructor Instructor { get; set; }
+        public Models.APIViewModels.Instructor Instructor { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,11 +28,8 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
                 return NotFound();
             }
 
-            Instructor = await _context.Instructors
-                .Include(i => i.OfficeAssignment)
-                .Include(i => i.CourseAssignments).ThenInclude(i => i.Course)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Instructors/" + id);
+            Instructor = JsonConvert.DeserializeObject<Models.APIViewModels.Instructor>(response);
 
             if (Instructor == null)
             {
@@ -45,19 +41,17 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
 
         public async Task<IActionResult> OnPostAsync(int? id)
         {
-            Instructor instructor = await _context.Instructors
-                .Include(i => i.CourseAssignments)
-                .SingleAsync(i => i.ID == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            var departments = await _context.Departments
-                .Where(d => d.InstructorID == id)
-                .ToListAsync();
-            departments.ForEach(d => d.InstructorID = null);
+            var response = await client.CreateClient("client").DeleteAsync("api/Instructors/" + id);
 
-            _context.Instructors.Remove(instructor);
-
-            await _context.SaveChangesAsync();
-            return RedirectToPage("./Index");
+            if (response.IsSuccessStatusCode)
+                return RedirectToPage("./Index");
+            else
+                return RedirectToAction("./Delete", new { id, saveChangesError = true });
         }
     }
 }

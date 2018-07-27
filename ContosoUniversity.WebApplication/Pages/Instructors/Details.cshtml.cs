@@ -1,25 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Instructors
 {
     public class DetailsModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public DetailsModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DetailsModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
-        public Instructor Instructor { get; set; }
+        public Models.APIViewModels.Instructor Instructor { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,11 +25,8 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
                 return NotFound();
             }
 
-            Instructor = await _context.Instructors
-                .Include(i => i.OfficeAssignment)
-                .Include(i => i.CourseAssignments).ThenInclude(i => i.Course)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Instructors/" + id);
+            Instructor = JsonConvert.DeserializeObject<Models.APIViewModels.Instructor>(response);
 
             if (Instructor == null)
             {
