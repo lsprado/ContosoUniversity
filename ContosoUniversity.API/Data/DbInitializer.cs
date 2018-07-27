@@ -94,10 +94,6 @@ namespace ContosoUniversity.API.Data
                     CourseID = courses.Single(c => c.Title == "Microeconomics" ).ID
                 },
                 new StudentCourse {
-                    StudentID = students.Single(s => s.LastName == "Alexander").ID,
-                    CourseID = courses.Single(c => c.Title == "Macroeconomics" ).ID
-                },
-                new StudentCourse {
                     StudentID = students.Single(s => s.LastName == "Alonso").ID,
                     CourseID = courses.Single(c => c.Title == "Calculus" ).ID
                 },
