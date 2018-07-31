@@ -18,10 +18,10 @@
             @Html.DisplayFor(model => model.Instructor.LastName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Instructor.FirstMidName)
+            @Html.DisplayNameFor(model => model.Instructor.FirstName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Instructor.FirstMidName)
+            @Html.DisplayFor(model => model.Instructor.FirstName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Instructor.HireDate)
@@ -29,30 +29,6 @@
         <dd>
             @Html.DisplayFor(model => model.Instructor.HireDate)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Instructor.CourseAssignments)
-        </dt>
-        <dd>
-            <table class="table">
-                <tr>
-                    <th>CourseID</th>
-                    <th>Course Title</th>
-                </tr>
-                @foreach (var item in Model.Instructor.CourseAssignments)
-                {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Course.CourseID)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Course.Title)
-                    </td>
-                </tr>
-                }
-            </table>
-        </dd>
-
     </dl>
 </div>
 <div>

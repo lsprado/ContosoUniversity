@@ -1,71 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class IndexModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
-        public string NameSort { get; set; }
-        public string DateSort { get; set; }
-        public string CurrentFilter { get; set; }
-        public string CurrentSort { get; set; }
+        private readonly IHttpClientFactory client;
 
-        public IndexModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public string CurrentFilter { get; set; }
+        
+        public IndexModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
-        public PaginatedList<Student> Student { get;set; }
+        public Models.APIViewModels.StudentResult Student { get;set; }
 
-        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
+        public async Task<IActionResult> OnGetAsync(int? id, string SearchString)
         {
-            NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            DateSort = sortOrder == "Date" ? "date_desc" : "Date";
-            CurrentSort = sortOrder;
-
-            if (searchString != null)
+            if (string.IsNullOrEmpty(SearchString))
             {
-                pageIndex = 1;
+                var response = await client.CreateClient("client").GetStringAsync("api/Students");
+                Student = JsonConvert.DeserializeObject<Models.APIViewModels.StudentResult>(response);
             }
             else
             {
-                searchString = currentFilter;
+                var response = await client.CreateClient("client").GetStringAsync("api/Students/Search?name=" + SearchString);
+                Student = JsonConvert.DeserializeObject<Models.APIViewModels.StudentResult>(response);
             }
-
-            IQueryable<Student> studentIQ = from s in _context.Student
-                                            select s;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                studentIQ = studentIQ.Where(s => s.LastName.Contains(searchString)
-                                       || s.FirstMidName.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "name_desc":
-                    studentIQ = studentIQ.OrderByDescending(s => s.LastName);
-                    break;
-                case "Date":
-                    studentIQ = studentIQ.OrderBy(s => s.EnrollmentDate);
-                    break;
-                case "date_desc":
-                    studentIQ = studentIQ.OrderByDescending(s => s.EnrollmentDate);
-                    break;
-                default:
-                    studentIQ = studentIQ.OrderBy(s => s.LastName);
-                    break;
-            }
-
-            int pageSize = 5;
-            Student = await PaginatedList<Student>.CreateAsync(studentIQ.AsNoTracking(), pageIndex ?? 1, pageSize);
+            return Page();
         }
     }
 }

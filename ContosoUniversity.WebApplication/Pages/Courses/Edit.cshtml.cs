@@ -1,27 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
-    public class EditModel : DepartmentNamePageModelModel
+    public class EditModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public EditModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public EditModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
         [BindProperty]
-        public Course Course { get; set; }
+        public Models.APIViewModels.Course Course { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,8 +26,8 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return NotFound();
             }
 
-            Course = await _context.Courses
-                .Include(c => c.Department).FirstOrDefaultAsync(m => m.CourseID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Courses/" + id);
+            Course = JsonConvert.DeserializeObject<Models.APIViewModels.Course>(response);
 
             if (Course == null)
             {
@@ -39,9 +35,10 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
             }
 
             // Select current DepartmentID.
-            PopulateDepartmentsDropDownList(_context, Course.DepartmentID);
+            var response_dep = await client.CreateClient("client").GetStringAsync("api/Departments");
+            var dep = JsonConvert.DeserializeObject<Models.APIViewModels.DepartmentResult>(response_dep);
+            ViewData["DepartmentID"] = new SelectList(dep.Departments, "ID", "Name");
 
-            //ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
             return Page();
         }
 
@@ -52,25 +49,19 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return Page();
             }
 
-            var courseToUpdate = await _context.Courses.FindAsync(id);
+            var response = await client.CreateClient("client").PutAsJsonAsync("api/Courses/" + id, Course);
 
-            if (await TryUpdateModelAsync<Course>(
-                 courseToUpdate,
-                 "course",   // Prefix for form value.
-                   c => c.Credits, c => c.DepartmentID, c => c.Title))
+            if (response.IsSuccessStatusCode)
             {
-                await _context.SaveChangesAsync();
                 return RedirectToPage("./Index");
             }
 
             // Select DepartmentID if TryUpdateModelAsync fails.
-            PopulateDepartmentsDropDownList(_context, courseToUpdate.DepartmentID);
-            return Page();
-        }
+            var response_dep = await client.CreateClient("client").GetStringAsync("api/Departments");
+            var dep = JsonConvert.DeserializeObject<Models.APIViewModels.DepartmentResult>(response_dep);
+            ViewData["DepartmentID"] = new SelectList(dep.Departments, "ID", "Name");
 
-        private bool CourseExists(int id)
-        {
-            return _context.Courses.Any(e => e.CourseID == id);
+            return Page();
         }
     }
 }

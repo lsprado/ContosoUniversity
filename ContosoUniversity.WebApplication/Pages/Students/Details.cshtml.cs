@@ -4,21 +4,24 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class DetailsModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly ILogger<DetailsModel> logger;
+        private readonly IHttpClientFactory client;
 
-        public DetailsModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DetailsModel(ILogger<DetailsModel> logger, IHttpClientFactory client)
         {
-            _context = context;
+            this.logger = logger;
+            this.client = client;
         }
 
-        public Student Student { get; set; }
+        public Models.APIViewModels.Student Student { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -27,16 +30,14 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Student
-                .Include(s => s.Enrollments)
-                    .ThenInclude(e => e.Course)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Students/" + id);
+            Student = JsonConvert.DeserializeObject<Models.APIViewModels.Student>(response);
 
             if (Student == null)
             {
                 return NotFound();
             }
+
             return Page();
         }
     }

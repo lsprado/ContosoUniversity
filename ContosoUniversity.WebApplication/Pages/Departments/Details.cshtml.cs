@@ -1,25 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Departments
 {
     public class DetailsModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public DetailsModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DetailsModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
-        public Department Department { get; set; }
+        public Models.APIViewModels.Department Department { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,8 +24,8 @@ namespace ContosoUniversity.WebApplication.Pages.Departments
                 return NotFound();
             }
 
-            Department = await _context.Departments
-                .Include(d => d.Administrator).FirstOrDefaultAsync(m => m.DepartmentID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Departments/" + id);
+            Department = JsonConvert.DeserializeObject<Models.APIViewModels.Department>(response);
 
             if (Department == null)
             {

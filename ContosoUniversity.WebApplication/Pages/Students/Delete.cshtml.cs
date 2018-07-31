@@ -6,20 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using Microsoft.Extensions.Logging;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class DeleteModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly ILogger<DeleteModel> logger;
+        private readonly IHttpClientFactory client;
 
-        public DeleteModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public DeleteModel(ILogger<DeleteModel> logger, IHttpClientFactory client)
         {
-            _context = context;
+            this.logger = logger;
+            this.client = client;
         }
 
         [BindProperty]
-        public Student Student { get; set; }
+        public Models.APIViewModels.Student Student { get; set; }
         public string ErrorMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id, bool? saveChangesError = false)
@@ -29,9 +34,8 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Student
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Students/" + id);
+            Student = JsonConvert.DeserializeObject<Models.APIViewModels.Student>(response);
 
             if (Student == null)
             {
@@ -53,20 +57,14 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return NotFound();
             }
 
-            var student = await _context.Student
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.ID == id);
-
-            if (student == null)
-            {
-                return NotFound();
-            }
-
             try
             {
-                _context.Student.Remove(student);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                var response = await client.CreateClient("client").DeleteAsync("api/Students/" + id);
+
+                if(response.IsSuccessStatusCode)
+                    return RedirectToPage("./Index");
+                else
+                    return RedirectToAction("./Delete", new { id, saveChangesError = true });
             }
             catch (DbUpdateException)
             {

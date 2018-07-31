@@ -18,35 +18,45 @@
             @Html.DisplayFor(model => model.Student.LastName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Student.FirstMidName)
+            @Html.DisplayNameFor(model => model.Student.FirstName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Student.FirstMidName)
+            @Html.DisplayFor(model => model.Student.FirstName)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Student.EnrollmentDate)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Student.EnrollmentDate)
-        </dd>
+        </dd>  
         <dt>
-            @Html.DisplayNameFor(model => model.Student.Enrollments)
+            @Html.DisplayNameFor(model => model.Student.Courses)
         </dt>
         <dd>
             <table class="table">
                 <tr>
                     <th>Course Title</th>
-                    <th>Grade</th>
+                    <th>Credits</th>
                 </tr>
-                @foreach (var item in Model.Student.Enrollments)
+
+                @if (Model.Student.Courses.Count > 0)
+                {
+                    @foreach (var item in Model.Student.Courses)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Credits)
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Course.Title)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Grade)
-                        </td>
+                        <td colspan="2">Not data</td>
                     </tr>
                 }
             </table>
@@ -54,6 +64,6 @@
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Student.ID">Edit</a> |
+    <a asp-page="./Edit" asp-route-id="@Model.Student.Id ">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>

@@ -1,33 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
 {
-    public class CreateModel : DepartmentNamePageModelModel
+    public class CreateModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public CreateModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public CreateModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            PopulateDepartmentsDropDownList(_context);
-            ViewData["DepartmentID"] = new SelectList(_context.Departments, "DepartmentID", "DepartmentID");
+            var response = await client.CreateClient("client").GetStringAsync("api/Departments");
+            var dep = JsonConvert.DeserializeObject<Models.APIViewModels.DepartmentResult>(response);
+            ViewData["DepartmentID"] = new SelectList(dep.Departments, "ID", "Name");
+
             return Page();
         }
 
         [BindProperty]
-        public Course Course { get; set; }
+        public Models.APIViewModels.Course Course { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -36,21 +35,8 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return Page();
             }
 
-            var emptyCourse = new Course();
-
-            if (await TryUpdateModelAsync<Course>(
-                 emptyCourse,
-                 "course",   // Prefix for form value.
-                 s => s.CourseID, s => s.DepartmentID, s => s.Title, s => s.Credits))
-            {
-                _context.Courses.Add(emptyCourse);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-
-            // Select DepartmentID if TryUpdateModelAsync fails.
-            PopulateDepartmentsDropDownList(_context, emptyCourse.DepartmentID);
-            return Page();
+            var response = await client.CreateClient("client").PostAsJsonAsync("api/Courses", Course);
+            return RedirectToPage("./Index");
         }
     }
 }

@@ -1,32 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using ContosoUniversity.WebApplication.Data;
-using ContosoUniversity.WebApplication.Models;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Departments
 {
     public class CreateModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly IHttpClientFactory client;
 
-        public CreateModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public CreateModel(IHttpClientFactory client)
         {
-            _context = context;
+            this.client = client;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
-        ViewData["InstructorID"] = new SelectList(_context.Instructors, "ID", "FullName");
+            var response = await client.CreateClient("client").GetStringAsync("api/Instructors");
+            var i = JsonConvert.DeserializeObject<Models.APIViewModels.InstructorResult>(response);
+            ViewData["InstructorID"] = new SelectList(i.Instructors, "ID", "FullName");
             return Page();
         }
 
         [BindProperty]
-        public Department Department { get; set; }
+        public Models.APIViewModels.Department Department { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -35,8 +34,7 @@ namespace ContosoUniversity.WebApplication.Pages.Departments
                 return Page();
             }
 
-            _context.Departments.Add(Department);
-            await _context.SaveChangesAsync();
+            var response = await client.CreateClient("client").PostAsJsonAsync("api/Departments", Department);
 
             return RedirectToPage("./Index");
         }

@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using ContosoUniversity.WebApplication.Models;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
     public class EditModel : PageModel
     {
-        private readonly ContosoUniversity.WebApplication.Data.SchoolContext _context;
+        private readonly ILogger<EditModel> logger;
+        private readonly IHttpClientFactory client;
 
-        public EditModel(ContosoUniversity.WebApplication.Data.SchoolContext context)
+        public EditModel(ILogger<EditModel> logger, IHttpClientFactory client)
         {
-            _context = context;
+            this.logger = logger;
+            this.client = client;
         }
 
         [BindProperty]
-        public Student Student { get; set; }
+        public Models.APIViewModels.Student Student { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,7 +30,8 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return NotFound();
             }
 
-            Student = await _context.Student.FirstOrDefaultAsync(m => m.ID == id);
+            var response = await client.CreateClient("client").GetStringAsync("api/Students/" + id);
+            Student = JsonConvert.DeserializeObject<Models.APIViewModels.Student>(response);
 
             if (Student == null)
             {
@@ -45,30 +47,20 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return Page();
             }
 
-            _context.Attach(Student).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                HttpResponseMessage response = await client.CreateClient("client").PutAsJsonAsync("api/Students/" + Student.Id, Student);
+
+                if (!response.IsSuccessStatusCode)
+                    logger.LogDebug(response.ToString());
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(Student.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return RedirectToPage("./Index");
         }
 
-        private bool StudentExists(int id)
-        {
-            return _context.Student.Any(e => e.ID == id);
-        }
     }
 }
