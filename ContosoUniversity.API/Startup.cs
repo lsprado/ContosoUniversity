@@ -11,6 +11,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.API.Data;
+using NJsonSchema;
+using NSwag.AspNetCore;
+using System.Reflection;
 
 namespace ContosoUniversity.API
 {
@@ -42,6 +45,30 @@ namespace ContosoUniversity.API
                 app.UseDeveloperExceptionPage();
             }
 
+            // Enable the Swagger UI middleware and the Swagger generator
+            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
+            {
+                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
+                settings.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "Contoso University API";
+                    document.Info.Description = "ASP.NET Core web API for Contoso University Web Application";
+                    document.Info.TermsOfService = "None";
+                    document.Info.Contact = new NSwag.SwaggerContact
+                    {
+                        Name = "Leandro Prado",
+                        Email = "Leandro.Prado@microsoft.com",
+                        Url = "https://twitter.com/blog_prado"
+                    };
+                    document.Info.License = new NSwag.SwaggerLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = "https://example.com/license"
+                    };
+                };
+            });
+            
             app.UseMvc();
         }
     }
