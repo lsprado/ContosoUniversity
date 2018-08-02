@@ -20,5 +20,13 @@ namespace ContosoUniversity.XUnitTest
             string content = await response.Content.ReadAsStringAsync();
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.OK);
         }
+
+        [Fact]
+        public async Task GetDepartmentById()
+        {
+            var response = await _client.GetAsync("api/Departments/1");
+            string content = await response.Content.ReadAsStringAsync();
+            Assert.True(response.StatusCode == System.Net.HttpStatusCode.OK);
+        }
     }
 }
