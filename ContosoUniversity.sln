@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversity.WebApplic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversity.API", "ContosoUniversity.API\ContosoUniversity.API.csproj", "{DF42193F-5EFE-4FD1-9E14-3A4D4F7BB4AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversity.XUnitTest", "ContosoUniversity.XUnitTest\ContosoUniversity.XUnitTest.csproj", "{647F18F9-2AE5-4668-A9B8-BBFADBD330CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{DF42193F-5EFE-4FD1-9E14-3A4D4F7BB4AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF42193F-5EFE-4FD1-9E14-3A4D4F7BB4AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF42193F-5EFE-4FD1-9E14-3A4D4F7BB4AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{647F18F9-2AE5-4668-A9B8-BBFADBD330CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{647F18F9-2AE5-4668-A9B8-BBFADBD330CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{647F18F9-2AE5-4668-A9B8-BBFADBD330CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{647F18F9-2AE5-4668-A9B8-BBFADBD330CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
