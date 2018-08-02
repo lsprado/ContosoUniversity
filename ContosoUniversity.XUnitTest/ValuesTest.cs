@@ -11,15 +11,6 @@ namespace ContosoUniversity.XUnitTest
 {
     public class ValuesTest : TestFixture
     {
-        //private readonly TestServer _server;
-        //private readonly HttpClient _client;
-
-        //public ValuesTest()
-        //{
-        //    _server = new TestServer(WebHost.CreateDefaultBuilder().UseStartup<ContosoUniversity.API.Startup>());
-        //    _client = _server.CreateClient();
-        //}
-
         [Fact]
         public async Task GetValues()
         {

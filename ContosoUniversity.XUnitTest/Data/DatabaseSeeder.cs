@@ -20,8 +20,8 @@ namespace ContosoUniversity.XUnitTest.Data
         {
             context.Database.EnsureCreated();
 
-            // Look for any students.
-            if (context.Student.Any())
+            // Look for valeus.
+            if (context.Instructors.Any())
             {
                 return;   // DB has been seeded
             }
@@ -51,101 +51,64 @@ namespace ContosoUniversity.XUnitTest.Data
             context.SaveChanges();
 
 
-            //var courses = new Course[]
-            //{
-            //    new Course {Title = "Chemistry",  Credits = 3, Department = departments.Single( s => s.Name == "Engineering") },
-            //    new Course {Title = "Microeconomics", Credits = 3, Department = departments.Single( s => s.Name == "Economics") },
-            //    new Course {Title = "Calculus", Credits = 4, Department = departments.Single( s => s.Name == "Mathematics") },
-            //    new Course {Title = "Trigonometry", Credits = 4, Department = departments.Single( s => s.Name == "Mathematics") },
-            //    new Course {Title = "Composition", Credits = 3, Department = departments.Single( s => s.Name == "English") },
-            //    new Course {Title = "Literature", Credits = 4, Department = departments.Single( s => s.Name == "English") },
-            //};
+            var courses = new Course[]
+            {
+                new Course {Title = "Course 01",  Credits = 3, Department = departments.Single( s => s.Name == "Department 1") },
+                new Course {Title = "Course 02", Credits = 3, Department = departments.Single( s => s.Name == "Department 2") }
+            };
 
-            //foreach (Course c in courses)
-            //{
-            //    context.Courses.Add(c);
-            //}
-            //context.SaveChanges();
+            foreach (Course c in courses)
+            {
+                context.Courses.Add(c);
+            }
+            context.SaveChanges();
 
+            var students = new Student[]
+            {
+                new Student { FirstName = "Student 01", LastName = "LastName 01", EnrollmentDate = DateTime.Parse("01/09/2010")},
+                new Student { FirstName = "Student 02", LastName = "LastName 02", EnrollmentDate = DateTime.Parse("01/09/2012") }
+            };
 
-            //var students = new Student[]
-            //{
-            //    new Student { FirstName = "Carson", LastName = "Alexander", EnrollmentDate = DateTime.Parse("01/09/2010")},
-            //    new Student { FirstName = "Meredith", LastName = "Alonso", EnrollmentDate = DateTime.Parse("01/09/2012") },
-            //    new Student { FirstName = "Arturo", LastName = "Anand", EnrollmentDate = DateTime.Parse("01/09/2013") },
-            //    new Student { FirstName = "Gytis", LastName = "Barzdukas", EnrollmentDate = DateTime.Parse("01/09/2012") },
-            //    new Student { FirstName = "Yan", LastName = "Li", EnrollmentDate = DateTime.Parse("01/09/2012") },
-            //    new Student { FirstName = "Peggy", LastName = "Justice", EnrollmentDate = DateTime.Parse("01/09/2011") },
-            //    new Student { FirstName = "Laura", LastName = "Norman", EnrollmentDate = DateTime.Parse("01/09/2013") },
-            //    new Student { FirstName = "Nino", LastName = "Olivetto", EnrollmentDate = DateTime.Parse("01/09/2005") }
-            //};
+            foreach (Student s in students)
+            {
+                context.Student.Add(s);
+            }
+            context.SaveChanges();
 
-            //foreach (Student s in students)
-            //{
-            //    context.Student.Add(s);
-            //}
-            //context.SaveChanges();
+            var studentCourse = new StudentCourse[]
+            {
+                new StudentCourse {
+                    StudentID = students.Single(s => s.FirstName == "Student 01").ID,
+                    CourseID = courses.Single(c => c.Title == "Course 01" ).ID
+                },
+                new StudentCourse {
+                    StudentID = students.Single(s => s.FirstName  == "Student 01").ID,
+                    CourseID = courses.Single(c => c.Title == "Course 02" ).ID
+                },
+                new StudentCourse {
+                    StudentID = students.Single(s => s.FirstName == "Student 02").ID,
+                    CourseID = courses.Single(c => c.Title == "Course 01" ).ID
+                },
+                new StudentCourse {
+                    StudentID = students.Single(s => s.FirstName == "Student 02").ID,
+                    CourseID = courses.Single(c => c.Title == "Course 02" ).ID
+                }
+            };
 
-            //var studentCourse = new StudentCourse[]
-            //{
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Alexander").ID,
-            //        CourseID = courses.Single(c => c.Title == "Chemistry" ).ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Alexander").ID,
-            //        CourseID = courses.Single(c => c.Title == "Microeconomics" ).ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Alonso").ID,
-            //        CourseID = courses.Single(c => c.Title == "Calculus" ).ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Alonso").ID,
-            //        CourseID = courses.Single(c => c.Title == "Trigonometry" ).ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Alonso").ID,
-            //        CourseID = courses.Single(c => c.Title == "Composition" ).ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Anand").ID,
-            //        CourseID = courses.Single(c => c.Title == "Chemistry" ).ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Anand").ID,
-            //        CourseID = courses.Single(c => c.Title == "Microeconomics").ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Barzdukas").ID,
-            //        CourseID = courses.Single(c => c.Title == "Chemistry").ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Li").ID,
-            //        CourseID = courses.Single(c => c.Title == "Composition").ID
-            //    },
-            //    new StudentCourse {
-            //        StudentID = students.Single(s => s.LastName == "Justice").ID,
-            //        CourseID = courses.Single(c => c.Title == "Literature").ID
-            //    }
-            //};
+            foreach (StudentCourse e in studentCourse)
+            {
+                var enrollmentInDataBase = context.StudentCourse.Where(
+                    s =>
+                            s.Student.ID == e.StudentID &&
+                            s.Course.ID == e.CourseID).SingleOrDefault();
 
+                if (enrollmentInDataBase == null)
+                {
+                    context.StudentCourse.Add(e);
+                }
+            }
 
-            //foreach (StudentCourse e in studentCourse)
-            //{
-            //    var enrollmentInDataBase = context.StudentCourse.Where(
-            //        s =>
-            //                s.Student.ID == e.StudentID &&
-            //                s.Course.ID == e.CourseID).SingleOrDefault();
-
-            //    if (enrollmentInDataBase == null)
-            //    {
-            //        context.StudentCourse.Add(e);
-            //    }
-            //}
-
-            //context.SaveChanges();
+            context.SaveChanges();
         }
-
     }
 }
