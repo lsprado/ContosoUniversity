@@ -77,7 +77,7 @@ namespace ContosoUniversity.CodedUITest
                     driver = new ChromeDriver(@"C:\Selenium\chromedriver_win32");
                     break;
                 case "ie":
-                    driver = new InternetExplorerDriver();
+                    driver = new InternetExplorerDriver(@"C:\Selenium\IEDriverServer_Win32_3.13.0");
                     break;
                 default:
                     driver = new ChromeDriver();
