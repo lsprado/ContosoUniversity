@@ -91,6 +91,38 @@ namespace ContosoUniversity.CodedUITest
         }
 
 
+        [TestMethod]
+        [TestCategory("Selenium")]
+        [Priority(1)]
+        public void DepartamentCreate()
+        {
+            try
+            {
+                driver.FindElementById("link-departments").Click();
+                string resDep = driver.FindElementById("title").Text;
+                Assert.AreEqual("Departments", resDep);
+
+                // clica no link create new
+                driver.FindElementById("link-create").Click();
+
+                // input das informações
+                driver.FindElement(By.Name("Department.Name")).SendKeys("name");
+                driver.FindElement(By.Name("Department.Budget")).SendKeys("5000");
+                driver.FindElement(By.Name("Department.StartDate")).SendKeys("03/08/2018 03:20 AM");
+
+                // seleciona o item zero da combo
+                driver.FindElement(By.Name("Department.Instructor.ID")).FindElements(By.XPath("//option"))[1].Click();
+
+                // clica no botão create
+                driver.FindElement(By.Id("btn-create")).Click();
+               
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail(ex.ToString());
+            }
+        }
+
         [TestInitialize()]
         public void MyTestInitialize()
         {
