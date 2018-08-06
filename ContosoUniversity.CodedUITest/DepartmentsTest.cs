@@ -18,7 +18,7 @@ namespace ContosoUniversity.CodedUITest
         public TestContext TestContext { get; set; }
 
         [TestMethod]
-        [TestCategory("Selenium")]
+        [TestCategory("CodedUI")]
         [Priority(1)]
         public void DepartamentIndex()
         {
@@ -35,7 +35,7 @@ namespace ContosoUniversity.CodedUITest
         }
 
         [TestMethod]
-        [TestCategory("Selenium")]
+        [TestCategory("CodedUI")]
         [Priority(1)]
         public void DepartamentEdit()
         {
@@ -63,7 +63,7 @@ namespace ContosoUniversity.CodedUITest
         }
 
         [TestMethod]
-        [TestCategory("Selenium")]
+        [TestCategory("CodedUI")]
         [Priority(1)]
         public void DepartamentDetails()
         {
@@ -92,7 +92,7 @@ namespace ContosoUniversity.CodedUITest
 
 
         [TestMethod]
-        [TestCategory("Selenium")]
+        [TestCategory("CodedUI")]
         [Priority(1)]
         public void DepartamentCreate()
         {

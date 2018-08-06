@@ -18,7 +18,7 @@ namespace ContosoUniversity.CodedUITest
         public TestContext TestContext { get; set; }
 
         [TestMethod]
-        [TestCategory("Selenium")]
+        [TestCategory("CodedUI")]
         [Priority(1)]
         public void MenuNavigate()
         {
