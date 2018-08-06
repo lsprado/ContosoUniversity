@@ -12,6 +12,7 @@ namespace ContosoUniversity.XUnitTest
     public class ValuesTest : TestFixture
     {
         [Fact]
+        [Trait("Category", "Integration")]
         public async Task GetValues()
         {
             var response = await _client.GetAsync("api/values");

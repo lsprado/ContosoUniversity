@@ -14,6 +14,7 @@ namespace ContosoUniversity.XUnitTest
     public class DepartamentsTest : TestFixture
     {
         [Fact]
+        [Trait("Category", "Integration")]
         public async Task GetDepartments()
         {
             var response = await _client.GetAsync("api/Departments");
@@ -22,6 +23,7 @@ namespace ContosoUniversity.XUnitTest
         }
 
         [Fact]
+        [Trait("Category", "Integration")]
         public async Task GetDepartmentById()
         {
             var response = await _client.GetAsync("api/Departments/1");
