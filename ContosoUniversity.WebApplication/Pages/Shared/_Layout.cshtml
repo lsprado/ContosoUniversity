@@ -30,20 +30,20 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-page="/Index">Home</a></li>
-                    <li><a asp-page="/About">About</a></li>
-                    <li><a asp-page="/Departments/Index">Departments</a></li>
-                    <li><a asp-page="/Courses/Index">Courses</a></li>
-                    <li><a asp-page="/Instructors/Index">Instructors</a></li>
-                    <li><a asp-page="/Students/Index">Students</a></li>
-                    <li><a asp-page="/Contact">Contact</a></li>
+                    <li><a id="link-home" asp-page="/Index">Home</a></li>
+                    <li><a id="link-about" asp-page="/About">About</a></li>
+                    <li><a id="link-departments" asp-page="/Departments/Index">Departments</a></li>
+                    <li><a id="link-courses" asp-page="/Courses/Index">Courses</a></li>
+                    <li><a id="link-instructors" asp-page="/Instructors/Index">Instructors</a></li>
+                    <li><a id="link-students" asp-page="/Students/Index">Students</a></li>
+                    <li><a id="link-contact" asp-page="/Contact">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
     <partial name="_CookieConsentPartial" />
-
+    
     <div class="container body-content">
         @RenderBody()
         <hr />
