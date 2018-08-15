@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ContosoUniversityApp
+spec:
+  selector:
+    app: ContosoUniversityApp
+    tier: frontend
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ContosoUniversityApp
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ContosoUniversityApp
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+        - name: ContosoUniversityApp
+          image: "leadroregistry.azurecr.io/contosouniversity.webapplication:BuildNumber"
+          ports:
+            - name: http
+              containerPort: 80
+      imagePullSecrets:
+        - name: acr
