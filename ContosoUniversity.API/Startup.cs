@@ -38,8 +38,22 @@ namespace ContosoUniversity.API
 
         public virtual void ConfigureDatabase(IServiceCollection services)
         {
-            services.AddDbContext<ContosoUniversityAPIContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("ContosoUniversityAPIContext")));
+            if (Configuration["DBHOST"] != null)
+            {
+                //https://hk.saowen.com/a/c28ce380a9ef33bdacd04a1a6c1f8ca396b7caa5c5bd7ee1445bce0d609b64d5
+                var host = Configuration["DBHOST"];
+                var db = Configuration["DBNAME"];
+                var port = Configuration["DBPORT"];
+                var username = Configuration["DBUSERNAME"];
+                var password = Configuration["DBPASSWORD"];
+
+                string connStr = String.Format("Data Source={0},{1};Integrated Security=False; User ID={2};Password={3};Database={4}; Connect Timeout=30; Encrypt=False; TrustServerCertificate=True; ApplicationIntent=ReadWrite; MultiSubnetFailover=False", host, port, username, password, db );
+                services.AddDbContext<ContosoUniversityAPIContext>(options => options.UseSqlServer(connStr));
+            }
+            else
+            {
+                services.AddDbContext<ContosoUniversityAPIContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ContosoUniversityAPIContext")));
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

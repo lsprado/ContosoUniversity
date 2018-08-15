@@ -9,7 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversity.API", "Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversity.XUnitTest", "ContosoUniversity.XUnitTest\ContosoUniversity.XUnitTest.csproj", "{647F18F9-2AE5-4668-A9B8-BBFADBD330CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversity.CodedUITest", "ContosoUniversity.CodedUITest\ContosoUniversity.CodedUITest.csproj", "{0FC969C1-3DC0-4A33-BF27-7196E51BFD03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversity.CodedUITest", "ContosoUniversity.CodedUITest\ContosoUniversity.CodedUITest.csproj", "{0FC969C1-3DC0-4A33-BF27-7196E51BFD03}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{569130D4-9E75-4429-B710-DD15CBA6330A}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		docker-compose.override.yml = docker-compose.override.yml
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

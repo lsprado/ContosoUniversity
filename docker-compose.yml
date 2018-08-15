@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+  
+  db:
+    image: "microsoft/mssql-server-linux"
+    container_name: contosouniversitydb
+    environment:
+      SA_PASSWORD: "P@ssw0rd"
+      ACCEPT_EULA: "Y"
+
+  contosouniversity.webapplication:
+    image: ${DOCKER_REGISTRY}contosouniversitywebapplication
+    container_name: contosouniversitywebapp
+    build:
+      context: .
+      dockerfile: ContosoUniversity.WebApplication/Dockerfile
+    ports:
+      - "9090:80"
+    environment:
+      URLAPI: http://contosouniversitywebapi:80/
+
+  contosouniversity.api:
+    image: ${DOCKER_REGISTRY}contosouniversityapi
+    container_name: contosouniversitywebapi
+    build:
+      context: .
+      dockerfile: ContosoUniversity.API/Dockerfile
+    depends_on:
+      - db
+    environment:
+      DBHOST: db
+      DBNAME: ContosoSchoolContext
+      DBPORT: 1433
+      DBUSERNAME: sa
+      DBPASSWORD: P@ssw0rd
