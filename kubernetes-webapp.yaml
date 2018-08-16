@@ -33,6 +33,6 @@ spec:
               containerPort: 80
           env:
             - name: URLAPI
-              value: "http://contosouniversityapi:80/"
+              value: "http://contosouniversityapi:9000/"
       imagePullSecrets:
         - name: acr

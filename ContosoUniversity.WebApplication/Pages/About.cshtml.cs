@@ -38,6 +38,7 @@ namespace ContosoUniversity.WebApplication.Pages
             }
             catch (Exception ex)
             {
+                Msg = ex.ToString();
                 logger.LogError("ERROR = " + ex.ToString());
             }
 
