@@ -25,9 +25,12 @@ namespace ContosoUniversity.WebApplication.Pages
 
         public async Task<IActionResult> OnGet()
         {
+            HttpClient cli = client.CreateClient("client");
+            Msg = "BaseAddress = " + cli.BaseAddress + "<br><br>";
+
             try
             {
-                HttpClient cli = client.CreateClient("client");
+                
                 logger.LogInformation("Base Address = " + cli.BaseAddress.ToString());
 
                 var response = await cli.GetStringAsync("api/Values");
@@ -38,7 +41,7 @@ namespace ContosoUniversity.WebApplication.Pages
             }
             catch (Exception ex)
             {
-                Msg = ex.ToString();
+                Msg += ex.ToString();
                 logger.LogError("ERROR = " + ex.ToString());
             }
 
