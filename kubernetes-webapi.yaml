@@ -1,10 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: contoso-university-api
+  name: contosouniversityapi
 spec:
   selector:
-    app: contoso-university-api
+    app: contosouniversityapi
     tier: backend
   ports:
     - protocol: TCP
@@ -14,18 +14,18 @@ spec:
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: contoso-university-api
+  name: contosouniversityapi
 spec:
   replicas: 2
   template:
     metadata:
       labels:
-        app: contoso-university-api
+        app: contosouniversityapi
         tier: backend
         track: stable
     spec:
       containers:
-        - name: contoso-university-api
+        - name: contosouniversityapi
           image: "leadroregistry.azurecr.io/contosouniversity.api:BuildNumber"
           ports:
             - name: http
