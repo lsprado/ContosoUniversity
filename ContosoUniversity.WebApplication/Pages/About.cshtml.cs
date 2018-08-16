@@ -26,7 +26,7 @@ namespace ContosoUniversity.WebApplication.Pages
         public async Task<IActionResult> OnGet()
         {
             HttpClient cli = client.CreateClient("client");
-            Msg = "BaseAddress = " + cli.BaseAddress + "<br><br>";
+            Msg = "BaseAddress = " + cli.BaseAddress + " ---- ";
 
             try
             {
