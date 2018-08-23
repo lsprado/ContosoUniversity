@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <ApplicationInsightsResourceId>/subscriptions/3323e547-1651-47e7-a768-6931436e3314/resourcegroups/RG_ContosoUniversity/providers/microsoft.insights/components/ContosoUniversityExample</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/3323e547-1651-47e7-a768-6931436e3314/resourcegroups/RG_ContosoUniversity/providers/microsoft.insights/components/ContosoUniversityExample</ApplicationInsightsAnnotationResourceId>
+    <UserSecretsId>ded16f26-e5dc-408d-bc44-fb4141d1ddb6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
