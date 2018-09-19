@@ -1,0 +1,25 @@
+﻿@page
+@model ContosoUniversity.WebApplication.Pages.Noticias.IndexModel
+
+@{
+    ViewData["Title"] = "Noticias";
+}
+
+<h2>Noticias</h2>
+
+
+@if (Model.Noticia.Noticias.Count() > 0)
+{
+    @foreach (var item in Model.Noticia.Noticias)
+    {
+<div>
+    <h2>@item.Title</h2>
+    <p>@Html.Raw(item.Texto.ToString().Substring(0, 200)) </p>
+    <p><a asp-page="./Details" asp-route-id="@item.ID">Leia mais</a></p>
+</div>
+    }
+}
+else
+{
+    <p>No data</p>
+}
