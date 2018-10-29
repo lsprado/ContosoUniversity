@@ -1,0 +1,7 @@
+Connect-AzureRmAccount
+
+Select-AzureRmSubscription -SubscriptionName "Microsoft Azure Internal Consumption"
+
+New-AzureRmResourceGroup -Name DevOpsDemoApp-rg -Location "South Central US"
+
+New-AzureRmResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName DevOpsDemoApp-rg -TemplateFile "C:\Repos\DevOpsDemo\ArmTemplates\windows-webapp-slots-template.json" -storageAccountType Standard_GRS -webAppName DevOpsDemoApp -hostingPlanName DevOpsDemoApp-plan -appInsightsLocation "South Central US" -sku "S2 Standard"
