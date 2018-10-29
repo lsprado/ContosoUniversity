@@ -74,9 +74,6 @@
         "[resourceId('microsoft.insights/components/', parameters('webAppName'))]"
       ]
     },
-
-
-
     {
       "type": "Microsoft.Web/sites",
       "name": "[parameters('webApiName')]",
@@ -186,6 +183,19 @@
       "location": "[parameters('appInsightsLocation')]",
       "tags": {
         "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('webAppName'))]": "Resource"
+      },
+      "properties": {
+        "applicationId": "[parameters('webAppName')]",
+        "Request_Source": "AzureTfsExtensionAzureProject"
+      }
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "name": "[parameters('webApiName')]",
+      "apiVersion": "2014-04-01",
+      "location": "[parameters('appInsightsLocation')]",
+      "tags": {
+        "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('webApiName'))]": "Resource"
       },
       "properties": {
         "applicationId": "[parameters('webAppName')]",
