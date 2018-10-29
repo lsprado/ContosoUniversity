@@ -4,4 +4,4 @@ Select-AzureRmSubscription -SubscriptionName "Microsoft Azure Internal Consumpti
 
 New-AzureRmResourceGroup -Name DevOpsDemoApp-rg -Location "South Central US"
 
-New-AzureRmResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName DevOpsDemoApp-rg -TemplateFile "C:\Repos\DevOpsDemo\ArmTemplates\windows-webapp-slots-template.json" -storageAccountType Standard_GRS -webAppName DevOpsDemoApp -hostingPlanName DevOpsDemoApp-plan -appInsightsLocation "South Central US" -sku "S2 Standard"
+New-AzureRmResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName RG_ContosoUniversityArm -TemplateFile "C:\Repos\ContosoUniversity\ArmTemplates\windows-webapp-slots-template.json" -webAppName ContosoUniversityArm -webApiName ContosoUniversityApiArm -hostingPlanName PlanContosoUniversityArm  -appInsightsLocation "South Central US" -sku "S2 Standard"
