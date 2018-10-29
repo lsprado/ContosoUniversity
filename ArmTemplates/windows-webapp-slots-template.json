@@ -1,126 +1,196 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "webAppName": {
-            "type": "string"
-        },
-        "hostingPlanName": {
-            "type": "string"
-        },
-        "appInsightsLocation": {
-            "type": "string"
-        },
-        "sku": {
-            "type": "string",
-            "defaultValue": "Standard S1"
-        },
-        "environments": {
-            "defaultValue": [
-              "Dev",
-              "QA"
-            ],
-            "type": "array",
-            "metadata": {
-              "description": "Array with the names for the environment slots"
-            },
-            "maxLength": 19
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "webAppName": {
+      "type": "string"
     },
-    "resources": [
+    "webApiName": {
+      "type": "string"
+    },
+    "hostingPlanName": {
+      "type": "string"
+    },
+    "appInsightsLocation": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "Standard S1"
+    },
+    "environments": {
+      "defaultValue": [
+        "Dev",
+        "QA"
+      ],
+      "type": "array",
+      "metadata": {
+        "description": "Array with the names for the environment slots"
+      },
+      "maxLength": 19
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/sites",
+      "name": "[parameters('webAppName')]",
+      "apiVersion": "2016-08-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "[concat('hidden-related:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "empty"
+      },
+      "resources": [
         {
-            "type": "Microsoft.Web/sites",
-            "name": "[parameters('webAppName')]",
-            "apiVersion": "2016-08-01",
-            "location": "[resourceGroup().location]",
-            "tags": {
-                "[concat('hidden-related:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "empty"
-            },
-            "resources": [
-                {
-                    "type": "siteextensions",
-                    "name": "Microsoft.ApplicationInsights.AzureWebSites",
-                    "apiVersion": "2015-08-01",
-                    "dependsOn": [
-                        "[resourceId('Microsoft.Web/Sites', parameters('webAppName'))]"
-                    ],
-                    "properties": {
-                    }
-                }
-            ],
-            "properties": {
-                "siteConfig": {
-                    "appSettings": [
-                        {
-                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                            "value": "[reference(resourceId('microsoft.insights/components/', parameters('webAppName')), '2015-05-01').InstrumentationKey]"
-                        },
-                        {
-                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
-                            "value": "6.9.1"
-                        }
-                    ],
-                    "phpVersion": "7.1"
-                },
-                "name": "[parameters('webAppName')]",
-                "serverFarmId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-                "hostingEnvironment": ""
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-                "[resourceId('microsoft.insights/components/', parameters('webAppName'))]"
-            ]
-        },
-        {
-            "apiVersion": "2016-08-01",
-            "type": "Microsoft.Web/sites/slots",
-            "name": "[concat(parameters('webAppName'), '/', parameters('environments')[copyIndex()])]",
-            "kind": "app",
-            "location": "[resourceGroup().location]",
-            "comments": "This specifies the web app slots.",
-            "tags": {
-              "displayName": "WebAppSlots"
-            },
-            "properties": {
-              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName') )]"
-            },
-            "dependsOn": [
-              "[resourceId('Microsoft.Web/Sites', parameters('webAppName') )]"
-            ],
-            "copy": {
-              "name": "webPortalSlot",
-              "count": "[length(parameters('environments'))]"
-            }
-        },
-        {
-            "type": "Microsoft.Web/serverfarms",
-            "sku": {
-                "Tier": "[first(skip(split(parameters('sku'), ' '), 1))]",
-                "Name": "[first(split(parameters('sku'), ' '))]"
-            },
-            "name": "[parameters('hostingPlanName')]",
-            "apiVersion": "2015-08-01",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "name": "[parameters('hostingPlanName')]",
-                "workerSizeId": "0",
-                "reserved": false,
-                "numberOfWorkers": "1",
-                "hostingEnvironment": ""
-            }
-        },
-        {
-            "type": "Microsoft.Insights/components",
-            "name": "[parameters('webAppName')]",
-            "apiVersion": "2014-04-01",
-            "location": "[parameters('appInsightsLocation')]",
-            "tags": {
-                "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('webAppName'))]": "Resource"
-            },
-            "properties": {
-                "applicationId": "[parameters('webAppName')]",
-                "Request_Source": "AzureTfsExtensionAzureProject"
-            }
+          "type": "siteextensions",
+          "name": "Microsoft.ApplicationInsights.AzureWebSites",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', parameters('webAppName'))]"
+          ],
+          "properties": {
+          }
         }
-    ]
+      ],
+      "properties": {
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('microsoft.insights/components/', parameters('webAppName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "6.9.1"
+            }
+          ],
+          "phpVersion": "7.1"
+        },
+        "name": "[parameters('webAppName')]",
+        "serverFarmId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+        "hostingEnvironment": ""
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+        "[resourceId('microsoft.insights/components/', parameters('webAppName'))]"
+      ]
+    },
+
+
+
+    {
+      "type": "Microsoft.Web/sites",
+      "name": "[parameters('webApiName')]",
+      "apiVersion": "2016-08-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "[concat('hidden-related:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "empty"
+      },
+      "resources": [
+        {
+          "type": "siteextensions",
+          "name": "Microsoft.ApplicationInsights.AzureWebSites",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/Sites', parameters('webApiName'))]"
+          ],
+          "properties": {
+          }
+        }
+      ],
+      "properties": {
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('microsoft.insights/components/', parameters('webApiName')), '2015-05-01').InstrumentationKey]"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "6.9.1"
+            }
+          ],
+          "phpVersion": "7.1"
+        },
+        "name": "[parameters('webApiName')]",
+        "serverFarmId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+        "hostingEnvironment": ""
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+        "[resourceId('microsoft.insights/components/', parameters('webApiName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2016-08-01",
+      "type": "Microsoft.Web/sites/slots",
+      "name": "[concat(parameters('webAppName'), '/', parameters('environments')[copyIndex()])]",
+      "kind": "app",
+      "location": "[resourceGroup().location]",
+      "comments": "This specifies the web app slots.",
+      "tags": {
+        "displayName": "WebAppSlots"
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName') )]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', parameters('webAppName') )]"
+      ],
+      "copy": {
+        "name": "webPortalSlot",
+        "count": "[length(parameters('environments'))]"
+      }
+    },
+    {
+      "apiVersion": "2016-08-01",
+      "type": "Microsoft.Web/sites/slots",
+      "name": "[concat(parameters('webApiName'), '/', parameters('environments')[copyIndex()])]",
+      "kind": "app",
+      "location": "[resourceGroup().location]",
+      "comments": "This specifies the web api slots.",
+      "tags": {
+        "displayName": "WebApiSlots"
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName') )]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', parameters('webApiName') )]"
+      ],
+      "copy": {
+        "name": "webPortalSlot",
+        "count": "[length(parameters('environments'))]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "sku": {
+        "Tier": "[first(skip(split(parameters('sku'), ' '), 1))]",
+        "Name": "[first(split(parameters('sku'), ' '))]"
+      },
+      "name": "[parameters('hostingPlanName')]",
+      "apiVersion": "2015-08-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[parameters('hostingPlanName')]",
+        "workerSizeId": "0",
+        "reserved": false,
+        "numberOfWorkers": "1",
+        "hostingEnvironment": ""
+      }
+    },
+    {
+      "type": "Microsoft.Insights/components",
+      "name": "[parameters('webAppName')]",
+      "apiVersion": "2014-04-01",
+      "location": "[parameters('appInsightsLocation')]",
+      "tags": {
+        "[concat('hidden-link:', resourceGroup().id, '/providers/Microsoft.Web/sites/', parameters('webAppName'))]": "Resource"
+      },
+      "properties": {
+        "applicationId": "[parameters('webAppName')]",
+        "Request_Source": "AzureTfsExtensionAzureProject"
+      }
+    }
+  ]
 }
