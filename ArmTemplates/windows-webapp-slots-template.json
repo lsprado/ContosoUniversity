@@ -39,26 +39,13 @@
       "tags": {
         "[concat('hidden-related:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "empty"
       },
-      "resources": [
-        {
-          "type": "siteextensions",
-          "name": "Microsoft.ApplicationInsights.AzureWebSites",
-          "apiVersion": "2015-08-01",
-          "dependsOn": [
-            "[resourceId('Microsoft.Web/Sites', parameters('webAppName'))]"
-          ],
-          "properties": {
-          }
-        }
-      ],
       "properties": {
         "name": "[parameters('webAppName')]",
         "serverFarmId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
         "hostingEnvironment": ""
       },
       "dependsOn": [
-        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-        "[resourceId('microsoft.insights/components/', parameters('webAppName'))]"
+        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       ]
     },
     {
@@ -69,26 +56,13 @@
       "tags": {
         "[concat('hidden-related:', '/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]": "empty"
       },
-      "resources": [
-        {
-          "type": "siteextensions",
-          "name": "Microsoft.ApplicationInsights.AzureWebSites",
-          "apiVersion": "2015-08-01",
-          "dependsOn": [
-            "[resourceId('Microsoft.Web/Sites', parameters('webApiName'))]"
-          ],
-          "properties": {
-          }
-        }
-      ],
       "properties": {
         "name": "[parameters('webApiName')]",
         "serverFarmId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourcegroups/', resourceGroup().name, '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
         "hostingEnvironment": ""
       },
       "dependsOn": [
-        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
-        "[resourceId('microsoft.insights/components/', parameters('webApiName'))]"
+        "[concat('Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]"
       ]
     },
     {
