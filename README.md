@@ -1,9 +1,6 @@
 # Introduction 
 
-SQL DataBase: leadro.database.windows.net
+Projeto de exemplo utilizando .NET Core
 
-user: leadro
-
-pass: P@ssw0rd
-
-ConnString: Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+# Atenção
+Esse projeto foi criado como exemplo e não segue as melhores práticas de desenvolvimento. Esse projeto deve ser utilizado apenas para fins didáticos.
