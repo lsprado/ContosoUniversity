@@ -7,3 +7,5 @@ $pathSwagger = $agentDirectory + "\swagger.json"
 Write-Host "Path Swagger = " $pathSwagger
 
 Invoke-WebRequest -Uri "https://contosouniversityexampleapi-dev.azurewebsites.net/swagger/v1/swagger.json" | Set-Content -Path $pathSwagger
+
+Write-Host "Swagger.json files generated"
