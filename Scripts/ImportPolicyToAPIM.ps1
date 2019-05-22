@@ -6,7 +6,7 @@ Write-Host "Agent directory = " $agentDirectory
 $pathXml = $agentDirectory + "\PoliciesAPIM.xml"
 Write-Host "Path Swagger = " $pathSwagger
 
-$apimContext = New-AzApiManagementContext -ResourceGroupName "RG_ContosoUniversity" -ServiceName "ContosoUniversity"
-Set-AzApiManagementPolicy -Context $apimContext -ApiId "ContosoUniversityAPI" -PolicyFilePath $pathXml
+$ApiMgmtContext = New-AzApiManagementContext -ResourceGroupName "RG_ContosoUniversity" -ServiceName "ContosoUniversity"
+Set-AzApiManagementPolicy -Context $ApiMgmtContext -ApiId "ContosoUniversityAPI" -PolicyFilePath $pathXml
 
-Write-Host "Import successful"
+Write-Host "Import XML successful"
