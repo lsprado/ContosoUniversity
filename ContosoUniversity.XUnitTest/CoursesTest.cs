@@ -23,6 +23,7 @@ namespace ContosoUniversity.XUnitTest
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.OK);
         }
 
+        
         [Fact]
         [Trait("Category", "Integration")]
         public async Task GetCourseById()
