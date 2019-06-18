@@ -21,6 +21,7 @@ namespace ContosoUniversity.XUnitTest
             var response = await _client.GetAsync("api/Courses");
             string content = await response.Content.ReadAsStringAsync();
             Assert.True(response.StatusCode == System.Net.HttpStatusCode.OK);
+            // comentário
         }
 
         
