@@ -13,8 +13,6 @@ namespace ContosoUniversity.WebApplication.Pages
         public void OnGet()
         {
             Message = "Your contact page.";
-
-            throw new Exception();
         }
     }
 }
