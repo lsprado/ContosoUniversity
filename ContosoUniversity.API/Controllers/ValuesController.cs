@@ -14,7 +14,18 @@ namespace ContosoUniversity.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "value1", "value2" };
+            string regionName = string.Empty;
+
+            try
+            {
+                regionName = System.Environment.GetEnvironmentVariable("REGION_NAME").ToString();
+            }
+            catch
+            {
+                regionName = "VARIABLE NOT FOUND";
+            }
+            
+            return new string[] { "value1", "value2", regionName };
         }
 
         //// GET api/values/5
