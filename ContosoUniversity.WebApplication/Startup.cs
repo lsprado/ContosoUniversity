@@ -55,7 +55,7 @@ namespace ContosoUniversity.WebApplication
             }
 
             app.UseStaticFiles();
-            app.UseCookiePolicy();
+            //app.UseCookiePolicy();
 
             app.UseMvc();
         }
