@@ -165,17 +165,38 @@ namespace ContosoUniversity.API.Controllers
 
         // POST: api/Students - Create
         [HttpPost]
-        public async Task<IActionResult> PostStudent([FromBody] Models.Student student)
+        public async Task<IActionResult> PostStudent([FromBody] ViewModels.StudentViewModel student)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                // salva a imagem no Blob Azure
+                string imageName = Guid.NewGuid().ToString() + ".jpg";
+                string imgURL = await AzureBlobStorage.UploadFileAsBlob(student.Photo, imageName, "student-images");
+                string token = AzureBlobStorage.GetContainerSasUri("student-images");
+                string publicUrl = imgURL + token;
+
+                //criar o novo student
+                Models.Student newStudente = new Student() {
+                    FirstName = student.FirstName,
+                    LastName = student.LastName,
+                    EnrollmentDate = student.EnrollmentDate,
+                    PhotoName = imgURL
+                };
+                
+                _context.Student.Add(newStudente);
+                await _context.SaveChangesAsync();
+
+                return CreatedAtAction("GetStudent", new { id = student.ID }, student);
             }
-
-            _context.Student.Add(student);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStudent", new { id = student.ID }, student);
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // DELETE: api/Students/5 - Delete

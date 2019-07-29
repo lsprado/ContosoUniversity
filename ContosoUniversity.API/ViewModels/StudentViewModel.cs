@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ContosoUniversity.API.Models
+namespace ContosoUniversity.API.ViewModels
 {
-    public class Student
+    public class StudentViewModel
     {
+
         public int ID { get; set; }
 
         [Required]
@@ -20,8 +21,6 @@ namespace ContosoUniversity.API.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EnrollmentDate { get; set; }
 
-        public IEnumerable<StudentCourse> StudentCourse { get; set; }
-
-        public string PhotoName { get; set; }
+        public byte[] Photo { get; set; }
     }
 }
