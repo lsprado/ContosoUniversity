@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ContosoUniversity.API.Models
 {
+    /// <summary>
+    /// Instructor
+    /// </summary>
     public class Instructor
     {
         public int ID { get; set; }

@@ -55,13 +55,10 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
             {
                 return RedirectToPage("./Index");
             }
-
-            // Select DepartmentID if TryUpdateModelAsync fails.
-            var response_dep = await client.CreateClient("client").GetStringAsync("api/Departments");
-            var dep = JsonConvert.DeserializeObject<Models.APIViewModels.DepartmentResult>(response_dep);
-            ViewData["DepartmentID"] = new SelectList(dep.Departments, "ID", "Name");
-
-            return Page();
+            else
+            {
+                return RedirectToPage("/Error");
+            }
         }
     }
 }

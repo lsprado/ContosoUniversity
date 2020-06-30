@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ContosoUniversity.API.Models
 {
+    /// <summary>
+    /// Course
+    /// </summary>
     public class Course
     {
         [Key]

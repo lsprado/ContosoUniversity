@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace ContosoUniversity.API.Models
 {
+    /// <summary>
+    /// Department
+    /// </summary>
     public class Department
     {
         public int ID { get; set; }
