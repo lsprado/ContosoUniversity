@@ -18,6 +18,8 @@ namespace ContosoUniversity.API.Controllers
 
         public CoursesController(ContosoUniversityAPIContext context)
         {
+            //teste 01
+            // Teste 02
             _context = context;
         }
 
