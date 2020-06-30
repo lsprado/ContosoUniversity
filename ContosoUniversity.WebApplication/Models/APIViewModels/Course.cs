@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Models.APIViewModels
 {
+    /// <summary>
+    /// Course Class
+    /// </summary>
     public class Course
     {
         public int ID { get; set; }
