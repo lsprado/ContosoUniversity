@@ -1,5 +1,4 @@
-ARG  PASTA
 FROM microsoft/dotnet:2.1-aspnetcore-runtime
 WORKDIR /app
-COPY ${PASTA}/bin/PublishOutput/ContosoUniversity.API .
+COPY bin\PublishOutput\ContosoUniversity.API .
 ENTRYPOINT ["dotnet", "ContosoUniversity.API.dll"]
