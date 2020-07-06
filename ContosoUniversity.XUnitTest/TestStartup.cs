@@ -37,7 +37,7 @@ namespace ContosoUniversity.XUnitTest
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var seeder = serviceScope.ServiceProvider.GetService<DatabaseSeeder>();
-                seeder.Seed().Wait();
+                seeder.Seed();
             }
         }
     }

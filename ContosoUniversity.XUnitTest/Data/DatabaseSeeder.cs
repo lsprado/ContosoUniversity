@@ -16,7 +16,7 @@ namespace ContosoUniversity.XUnitTest.Data
 
         public ContosoUniversityAPIContext context { get; }
 
-        public async Task Seed()
+        public void Seed()
         {
             context.Database.EnsureCreated();
 
