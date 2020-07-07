@@ -13,20 +13,17 @@ steps:
   displayName: Restore
   inputs:
     command: restore
-    projects: '**/*.csproj'
+    projects: |
+     **/ContosoUniversity.API.csproj
+     **/ContosoUniversity.WebApplication.csproj
 
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
-    projects: '**/*.csproj'
+    projects: |
+     **/ContosoUniversity.API.csproj
+     **/ContosoUniversity.WebApplication.csproj
     arguments: '--configuration $(BuildConfiguration)'
-
-- task: VSBuild@1
-  displayName: 'Build solution ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj'
-  inputs:
-    solution: ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: Test
@@ -36,52 +33,77 @@ steps:
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: Publish
+  displayName: 'Publish - ContosoUniversity.API'
   inputs:
     command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/WebApp'
-    zipAfterPublish: True
+    publishWebProjects: false
+    projects: '**/ContosoUniversity.API.csproj'
+    arguments: '--configuration $(BuildConfiguration) --output ContosoUniversity.API/bin/PublishOutput'
+    zipAfterPublish: false
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: ArmTemplates'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish - ContosoUniversity.WebApplication'
   inputs:
-    SourceFolder: ArmTemplates
-    TargetFolder: '$(build.artifactstagingdirectory)/ArmTemplates'
+    command: publish
+    publishWebProjects: false
+    projects: '**/ContosoUniversity.WebApplication.csproj'
+    arguments: '--configuration $(BuildConfiguration) --output ContosoUniversity.WebApplication/bin/PublishOutput'
+    zipAfterPublish: false
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: Scripts'
+- task: Docker@1
+  displayName: 'Build an image - ContosoUniversity.API'
   inputs:
-    SourceFolder: Scripts
-    TargetFolder: '$(build.artifactstagingdirectory)/Scripts'
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    dockerFile: ContosoUniversity.API/DockerfileBuild
+    imageName: 'ContosoUniversity.API:$(Build.BuildId)'
+    includeLatestTag: true
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: CodedUITest'
+- task: Docker@1
+  displayName: 'Push an image - ContosoUniversity.API'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\ContosoUniversity.CodedUITest\bin\$(BuildConfiguration)\netcoreapp2.1'
-    Contents: '**\*'
-    TargetFolder: '$(build.artifactstagingdirectory)/CodedUITest'
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    command: 'Push an image'
+    imageName: 'ContosoUniversity.API:$(Build.BuildId)'
+
+- task: Docker@1
+  displayName: 'Build an image - ContosoUniversity.WebApplication'
+  inputs:
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    dockerFile: ContosoUniversity.WebApplication/DockerfileBuild
+    imageName: 'ContosoUniversity.WebApplication:$(Build.BuildId)'
+    includeLatestTag: true
+
+- task: Docker@1
+  displayName: 'Push an image - ContosoUniversity.WebApplication'
+  inputs:
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    command: 'Push an image'
+    imageName: 'ContosoUniversity.WebApplication:$(Build.BuildId)'
+
+- task: CmdLine@1
+  displayName: 'Replace Build Number - kubernetes-webapi.yaml'
+  inputs:
+    filename: bash
+    arguments: '-c "sed -i ''s/BuildNumber/$(Build.BuildId)/g''  kubernetes-webapi.yaml'
+
+- task: CmdLine@1
+  displayName: 'Replace Build Number - kubernetes-webapp'
+  inputs:
+    filename: bash
+    arguments: '-c "sed -i ''s/BuildNumber/$(Build.BuildId)/g''  kubernetes-webapp.yaml'
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact WebApp'
+  displayName: 'Publish Artifact - webapi'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WebApp'
-    ArtifactName: WebApp
+    PathtoPublish: 'kubernetes-webapi.yaml'
+    ArtifactName: Api
 
 - task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact ArmTemplates'
+  displayName: 'Publish Artifact - webapp'
   inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/ArmTemplates'
-    ArtifactName: ArmTemplates
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact Scripts'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/Scripts'
-    ArtifactName: Scripts
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact CodedUITest'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/CodedUITest'
-    ArtifactName: CodedUITest
+    PathtoPublish: 'kubernetes-webapp.yaml'
+    ArtifactName: App
