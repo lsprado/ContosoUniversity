@@ -46,7 +46,8 @@ steps:
 - task: CopyFiles@2
   displayName: 'Copy Files to: ArmTemplates'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\ContosoUniversity.AzureResourceGroup\bin\Debug\staging\ContosoUniversity.AzureResourceGroup'
+    SourceFolder: 'ContosoUniversity.AzureResourceGroup'
+    Contents: '**\*.json'
     TargetFolder: '$(build.artifactstagingdirectory)/ArmTemplates'
 
 - task: CopyFiles@2
