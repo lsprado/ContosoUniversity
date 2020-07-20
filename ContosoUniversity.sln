@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27428.2037
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContosoUniversity.WebApplication", "ContosoUniversity.WebApplication\ContosoUniversity.WebApplication.csproj", "{76DDF82E-58A3-4122-844D-151CA2C81F9E}"
 EndProject
@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContosoUniversity.WebAndLoadTest", "ContosoUniversity.WebAndLoadTest\ContosoUniversity.WebAndLoadTest.csproj", "{03F149A4-D2DD-4168-855F-80785AF18340}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "ContosoUniversity.AzureResourceGroup", "ContosoUniversity.AzureResourceGroup\ContosoUniversity.AzureResourceGroup.deployproj", "{E56A1BCA-90F3-4D03-9DD1-3361B04F4840}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{03F149A4-D2DD-4168-855F-80785AF18340}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03F149A4-D2DD-4168-855F-80785AF18340}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03F149A4-D2DD-4168-855F-80785AF18340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E56A1BCA-90F3-4D03-9DD1-3361B04F4840}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E56A1BCA-90F3-4D03-9DD1-3361B04F4840}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E56A1BCA-90F3-4D03-9DD1-3361B04F4840}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E56A1BCA-90F3-4D03-9DD1-3361B04F4840}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

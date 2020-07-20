@@ -1,7 +1,0 @@
-Connect-AzureRmAccount
-
-Select-AzureRmSubscription -SubscriptionName "Microsoft Azure Internal Consumption"
-
-New-AzureRmResourceGroup -Name DevOpsDemoApp-rg -Location "South Central US"
-
-New-AzureRmResourceGroupDeployment -Name ExampleDeployment -ResourceGroupName RG_ContosoUniversityArm -TemplateFile "C:\Repos\ContosoUniversity\ArmTemplates\windows-webapp-slots-template.json" -webAppName ContosoUniversityArm -webApiName ContosoUniversityApiArm -hostingPlanName PlanContosoUniversityArm  -appInsightsLocation "South Central US" -sku "S2 Standard"
