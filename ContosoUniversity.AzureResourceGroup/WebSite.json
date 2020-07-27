@@ -50,7 +50,7 @@
     "appInsightsName": {
       "type": "string",
       "metadata": {
-        "description":  "Application Insights Name"
+        "description": "Application Insights Name"
       }
     }
   },
@@ -211,5 +211,11 @@
       },
       "type": "Microsoft.Insights/components"
     }
-  ]
+  ],
+  "outputs": {
+    "AppInsightsInstrumentationKey": {
+      "value": "[reference(resourceId('Microsoft.Insights/components', parameters('appInsightsName')), '2014-04-01').InstrumentationKey]",
+      "type": "string"
+    }
+  }
 }
