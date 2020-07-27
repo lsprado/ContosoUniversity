@@ -3,7 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "apiManagementServiceName": {
-      "value": "ApiManagementContosoUniversity"
+      "value": "ContosoUniversity"
+    },
+    "apiswaggerUrl": {
+      "value": "https://contosouniversityexampleapi.azurewebsites.net/swagger/v1/swagger.json"
     },
     "publisherEmail": {
       "value": "leadro@microsoft.com"
