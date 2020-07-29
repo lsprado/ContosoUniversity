@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "apiManagementServiceName": {
-      "value": "ContosoUniversity"
+      "value": "ContosoUniversityArmTemplateApim"
     },
     "apiswaggerUrl": {
       "value": "https://contosouniversityexampleapi.azurewebsites.net/swagger/v1/swagger.json"
