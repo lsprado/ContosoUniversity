@@ -11,6 +11,9 @@ namespace ContosoUniversity.WebApplication.Models.APIViewModels
     /// </summary>
     public class Course
     {
+        /// <summary>
+        /// ID
+        /// </summary>
         public int ID { get; set; }
 
         [StringLength(50, MinimumLength = 3)]
