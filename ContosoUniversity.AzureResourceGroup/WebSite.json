@@ -52,6 +52,16 @@
       "metadata": {
         "description": "Application Insights Name"
       }
+    },
+    "environments": {
+      "defaultValue": [
+        "Dev"
+      ],
+      "type": "array",
+      "metadata": {
+        "description": "Array with the names for the environment slots"
+      },
+      "maxLength": 19
     }
   },
   "resources": [
@@ -135,6 +145,27 @@
       }
     },
     {
+      "apiVersion": "2018-11-01",
+      "type": "Microsoft.Web/sites/slots",
+      "name": "[concat(parameters('webSiteName'), '/', parameters('environments')[copyIndex()])]",
+      "kind": "app",
+      "location": "[resourceGroup().location]",
+      "comments": "This specifies the web app slots.",
+      "tags": {
+        "displayName": "WebAppSlots"
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', parameters('webSiteName'))]"
+      ],
+      "copy": {
+        "name": "webPortalSlot",
+        "count": "[length(parameters('environments'))]"
+      }
+    },
+    {
       "apiVersion": "2015-08-01",
       "name": "[parameters('webApiName')]",
       "type": "Microsoft.Web/sites",
@@ -195,6 +226,27 @@
             }
           ]
         }
+      }
+    },
+    {
+      "apiVersion": "2018-11-01",
+      "type": "Microsoft.Web/sites/slots",
+      "name": "[concat(parameters('webApiName'), '/', parameters('environments')[copyIndex()])]",
+      "kind": "app",
+      "location": "[resourceGroup().location]",
+      "comments": "This specifies the web app slots.",
+      "tags": {
+        "displayName": "WebAppSlots"
+      },
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/Sites', parameters('webApiName'))]"
+      ],
+      "copy": {
+        "name": "webPortalSlot",
+        "count": "[length(parameters('environments'))]"
       }
     },
     {

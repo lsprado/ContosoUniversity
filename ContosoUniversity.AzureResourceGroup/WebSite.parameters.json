@@ -13,6 +13,16 @@
     },
     "appInsightsName": {
       "value": "appInsightsContosoUniversity"
+    },
+    "skuName": {
+      "value": "S1"
+    },
+    "environments": {
+      "value": [
+        "Dev",
+        "QA",
+        "UAT"
+      ]
     }
   }
 }

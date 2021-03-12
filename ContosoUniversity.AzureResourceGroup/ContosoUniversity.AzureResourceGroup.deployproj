@@ -31,6 +31,7 @@
     <Content Include="Deploy-AzureResourceGroup.ps1" />
     <Content Include="WebSite.json" />
     <Content Include="WebSite.parameters.json" />
+    <None Include="README.md" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
