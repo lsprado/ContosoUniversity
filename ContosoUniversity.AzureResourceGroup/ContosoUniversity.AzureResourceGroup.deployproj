@@ -37,8 +37,8 @@
     <Content Include="ARMTemplates\WebSite.json" />
     <Content Include="ARMTemplates\WebSite.parameters.json" />
     <None Include="ARMTemplates\README.md" />
-    <None Include="Terraform Templates\README.md" />
-    <None Include="Terraform Templates\WebSite.tf" />
+    <None Include="TerraformTemplates\README.md" />
+    <None Include="TerraformTemplates\WebSite.tf" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>
