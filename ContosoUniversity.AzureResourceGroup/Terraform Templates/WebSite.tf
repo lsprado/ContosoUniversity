@@ -54,3 +54,11 @@ resource "azurerm_app_service_slot" "WebAppDemoTesting" {
     app_service_plan_id = azurerm_app_service_plan.WebAppDemo.id
     app_service_name    = azurerm_app_service.WebAppDemo.name
 }
+
+resource "azurerm_app_service_slot" "WebAppDemoHml" {
+    name                = "Hml"
+    location            = azurerm_resource_group.WebAppDemo.location
+    resource_group_name = azurerm_resource_group.WebAppDemo.name
+    app_service_plan_id = azurerm_app_service_plan.WebAppDemo.id
+    app_service_name    = azurerm_app_service.WebAppDemo.name
+}
