@@ -25,6 +25,11 @@
   <ItemGroup>
     <Content Include="ARM Templates\APIManagement.json" />
     <Content Include="ARM Templates\APIManagement.parameters.json" />
+    <None Include="Ansible Templates\CreateAnsibleMachine.parameters.json" />
+    <None Include="Ansible Templates\CreateAnsibleMachine.json" />
+    <None Include="Ansible Templates\README.md" />
+    <None Include="Ansible Templates\install_ansible.sh" />
+    <None Include="Ansible Templates\WebSite.yml" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
@@ -32,6 +37,7 @@
     <Content Include="ARM Templates\WebSite.json" />
     <Content Include="ARM Templates\WebSite.parameters.json" />
     <None Include="ARM Templates\README.md" />
+    <None Include="Terraform Templates\README.md" />
     <None Include="Terraform Templates\WebSite.tf" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
