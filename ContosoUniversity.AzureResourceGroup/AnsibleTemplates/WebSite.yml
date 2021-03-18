@@ -21,3 +21,11 @@
           is_linux: false
           sku: S1
           number_of_workers: 1
+
+    - name: Create a stage deployment slot
+      azure_rm_webapp:
+        resource_group: "{{ resource_group }}"
+        name: "{{ webapp_name }}/slots/stage"
+        plan:
+          resource_group: "{{ resource_group }}"
+          name: myappplan

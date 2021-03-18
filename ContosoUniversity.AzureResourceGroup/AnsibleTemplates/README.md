@@ -95,4 +95,5 @@ RE7OsVZKY8kdsg7WEOHXCQ6JMj/Y4JIq0guKP0m8/8oiN7lr13u4pQ==
 # 10 - Instalar o pacote - fatal: [localhost]: FAILED! => {"changed": false, "msg": "Failed to import the required Python library (msrestazure) on ansible-vm-***'
 sudo pip install msrestazure
 
-sudo pip install "azure==2.0.0rc5"
+wget -nv -q https://raw.githubusercontent.com/ansible-collections/azure/dev/requirements-azure.txt
+pip install -r requirements-azure.txt
