@@ -30,7 +30,7 @@ az group create -l brazilsouth -n $rgName
 
 az deployment group create --resource-group $rgName --template-file CreateAnsibleMachine.json --parameters CreateAnsibleMachine.parameters.json --debug
 
-# 3 - Conectar na maquina linux via SSH
+# 3 - Conectar na maquina linux via SSH (#P@ssw0rd123456#)
 ssh leandro@191.235.92.105
 
 # 4 - Criar uma pasta .azure

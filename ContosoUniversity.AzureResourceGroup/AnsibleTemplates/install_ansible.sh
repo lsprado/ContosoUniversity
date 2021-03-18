@@ -8,6 +8,8 @@ sudo apt install -y libssl-dev libffi-dev python-dev python-pip
 
 ## Install Ansible and Azure SDK via pip
 sudo pip install ansible[azure]
+sudo pip install msrestazure
+sudo pip install msrest
 
 ## Create a credentials file to store azure credentials
 ## sudo mkdir ~/.azure

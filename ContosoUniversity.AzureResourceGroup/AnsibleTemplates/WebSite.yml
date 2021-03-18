@@ -21,6 +21,3 @@
           is_linux: false
           sku: S1
           number_of_workers: 1
-        frameworks:
-          - name: "dotnetcore"
-            version: "2.1"
