@@ -23,20 +23,20 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
-    <Content Include="ARM Templates\APIManagement.json" />
-    <Content Include="ARM Templates\APIManagement.parameters.json" />
-    <None Include="Ansible Templates\CreateAnsibleMachine.parameters.json" />
-    <None Include="Ansible Templates\CreateAnsibleMachine.json" />
-    <None Include="Ansible Templates\README.md" />
-    <None Include="Ansible Templates\install_ansible.sh" />
-    <None Include="Ansible Templates\WebSite.yml" />
+    <Content Include="ARMTemplates\APIManagement.json" />
+    <Content Include="ARMTemplates\APIManagement.parameters.json" />
+    <None Include="AnsibleTemplates\CreateAnsibleMachine.parameters.json" />
+    <None Include="AnsibleTemplates\CreateAnsibleMachine.json" />
+    <None Include="AnsibleTemplates\README.md" />
+    <None Include="AnsibleTemplates\install_ansible.sh" />
+    <None Include="AnsibleTemplates\WebSite.yml" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
-    <Content Include="ARM Templates\Deploy-AzureResourceGroup.ps1" />
-    <Content Include="ARM Templates\WebSite.json" />
-    <Content Include="ARM Templates\WebSite.parameters.json" />
-    <None Include="ARM Templates\README.md" />
+    <Content Include="ARMTemplates\Deploy-AzureResourceGroup.ps1" />
+    <Content Include="ARMTemplates\WebSite.json" />
+    <Content Include="ARMTemplates\WebSite.parameters.json" />
+    <None Include="ARMTemplates\README.md" />
     <None Include="Terraform Templates\README.md" />
     <None Include="Terraform Templates\WebSite.tf" />
   </ItemGroup>
