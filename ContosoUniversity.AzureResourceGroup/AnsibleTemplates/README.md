@@ -31,7 +31,7 @@ az group create -l brazilsouth -n $rgName
 az deployment group create --resource-group $rgName --template-file CreateAnsibleMachine.json --parameters CreateAnsibleMachine.parameters.json --debug
 
 # 3 - Conectar na maquina linux via SSH (#P@ssw0rd123456#)
-ssh leandro@191.235.92.105
+ssh leandro@191.232.245.195
 
 # 4 - Criar uma pasta .azure
 mkdir ~/.azure
@@ -60,36 +60,39 @@ ssh-copy-id leandro@127.0.0.1
 # 7 - Private Key
 cat ~/.ssh/id_rsa
 
-leandro@ansible-vm-leandro:~$ cat ~/.ssh/id_rsa
 -----BEGIN RSA PRIVATE KEY-----
-MIIEogIBAAKCAQEAzuoYbSjTTNTEgBOYkH4hq3pYweVBKYffrHVBT1UrsYa2jq23
-Bd2U99shOLt55VCO0uoG7KRUXTQnYkPiEA4Oeak5UbH+BrLN0Qez2iYIBJDLm9k6
-874PI1dV5TOqBYYA0NWekAOiFvZ+8l82xaHScG0PNShBLNGGTf5+Y8dIIWSjkRPk
-xwpsrkgOIXZJYtpb6zYJckQsHpIW/BSK6o4UVejl/vH0IRO5bYGYvRPNXsdC2cGm
-DnTG6E8CgxPiDrVP12BvvrVn3xbqEU5u8Wo9HGUve5ucHG+RkSET2uMcQbtIVlxa
-YwvTMBTG8tSZCWa+pyUjoecnejUNIgfPUZABOQIDAQABAoIBAByVD8y8b/vUBFTg
-4BlNox8J5oraPVccUtSC2gO4czGxtzQcYQTpZ/OZDIzGsP7xUtllxJEZ3iGF287i
-K68mEe/SZX2YhcutFWtDkh+XU1I2IjokFtWmsnaiUNY5fcoHicNPTvj7138ui7i1
-WF6SjPxExG4GYoJraw8JEbJ8y8T43wym1Ce3gnL60/4F9yiUNndMIQ9drBniMkd/
-NZFRlOcuhK82eKG0BJryyYdFIcvgkONYo0we3zW6sq95xRTB3gEh8DjpfxW7HtRf
-+UaScc9cyIAA3/J1mvHwGwDnkTZTQmzEj+TLRJUzJNp7jiy7or5CBnHzEuoiXzee
-cayBF4ECgYEA/kM+l2iAKFADnxSfmbTQa2R2grnkkWmVdIQnninxgCv+OKuBC3pE
-AeoTzrqD9s/Xx6N45ozcdDFl03DTMS44O7eVNC6cmCdI/Qrq3MVzsVx4u+Y7USWA
-+D+RR5dpG4UPjZCxGkfpS5KAPeAERrN4JennNMdJXu07qGzhi+84XAkCgYEA0FQH
-jrt/xXFukZTpxMm9nb4SOqN7z/7BaoPfjCsaIF9SYD948bITbwm85bFFv4L2suTM
-9RmHCTQD1pW0MMNV5GQdbTHiAkXA9XARsCGCFizyTxUuhmxwfwh2PH+UTExzYPXw
-kbS8aFOynyQNPfBrbiCd+SXZZagrYPml7gO7J7ECgYApXnmFmvwXEwWz0WAyWwf6
-IStjE6nLuvkVLxdfFYX0i7PeNpFVc7wy74nvfctQ0fpSwhc+s7Z+tTbTEy1ZeCKw
-HKuLBPZ3jxTCDw+tgfbT6a6/K7OE/Wwhd/5EPq9cSecA6oTWONMNd7Wj25n2gubO
-jGMQ5EfcyQ6G1chQw0hROQKBgCBy9jplOiGm6XIDn+XnBoHreStpC3/6TmYo5EkQ
-7aDdOBeFy3DaK+y/t4yPcC3EWGjE+qeysjXcxDxIVSjDRD2u2maHvoxcERIpwpeM
-oJaTqapnwjdt7Jfc2Y3S0WaRAee4ZyBK5o3Ze5kOJIHhUNp2eiS0oIgVCayxNgc8
-zYoBAoGAB8VfsABcpQXdrITOg667jDc3QH29xmM/B4KHzKkuAPbOh/fGsL4e/bu9
-2Pw3VA/ZaDobif7lwzGH5vgbkQiIy8C9fcDrHalBgvCFhTLLMxN0fR138CjCkTZi
-WoS5/AfvJc+AUgbWQzPGIZKcPLnb7LOr+aK4a439aBCtSPyQm/Q=
+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
 -----END RSA PRIVATE KEY-----
 
 # 8 - Criar a Service Connection no AzDevOps - SSH
 
+# 9 - Adicionar a task do Ansible
 
+# 10 - Instalar o pacote - fatal: [localhost]: FAILED! => {"changed": false, "msg": "Failed to import the required Python library (msrestazure) on ansible-vm-***'
+sudo pip install msrestazure
 
+sudo pip install "azure==2.0.0rc5"
