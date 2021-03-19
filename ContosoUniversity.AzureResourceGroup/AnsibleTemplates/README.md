@@ -31,7 +31,7 @@ az group create -l brazilsouth -n $rgName
 az deployment group create --resource-group $rgName --template-file CreateAnsibleMachine.json --parameters CreateAnsibleMachine.parameters.json --debug
 
 # 3 - Conectar na maquina linux via SSH (#P@ssw0rd123456#)
-ssh leandro@191.232.245.195
+ssh leandro@20.195.196.117
 
 # 4 - Criar uma pasta .azure
 mkdir ~/.azure
@@ -96,4 +96,4 @@ RE7OsVZKY8kdsg7WEOHXCQ6JMj/Y4JIq0guKP0m8/8oiN7lr13u4pQ==
 sudo pip install msrestazure
 
 wget -nv -q https://raw.githubusercontent.com/ansible-collections/azure/dev/requirements-azure.txt
-pip install -r requirements-azure.txt
+sudo pip install -r requirements-azure.txt

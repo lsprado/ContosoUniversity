@@ -9,11 +9,6 @@
 	}
 }
 
-variable "ResourceName" {
-  type = string
-  default = "RG_WebAppDemo"
-}
-
 # Configure the Azure provider
 provider "azurerm" { 
     # The "feature" block is required for AzureRM provider 2.x. 
@@ -23,7 +18,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "WebAppDemo" {
-    name = var.ResourceName
+    name = "RG_WebAppDemo"
     location = "brazilsouth"
 }
 
