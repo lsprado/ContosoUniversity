@@ -1,1 +1,0 @@
-﻿dotnet ContosoUniversity.ConsoleWebJob.dll
