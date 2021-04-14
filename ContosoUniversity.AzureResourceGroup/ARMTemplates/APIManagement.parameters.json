@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "apiManagementServiceName": {
-      "value": "ContosoUniversityArmTemplateApim"
+      "value": "apim-ContosoUniversity"
     },
     "publisherEmail": {
       "value": "leadro@microsoft.com"
