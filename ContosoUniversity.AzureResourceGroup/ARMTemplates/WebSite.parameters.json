@@ -3,22 +3,22 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "hostingPlanName": {
-      "value": "planContosoUniversity"
+      "value": "plan-ContosoUniversity"
     },
     "webSiteName": {
-      "value": "websiteContosoUniversity"
+      "value": "ase-ContosoUniversityAPP"
     },
     "webApiName": {
-      "value": "webapiContosoUniversity"
+      "value": "ase-ContosoUniversityAPI"
     },
     "functionName": {
-      "value": "functionContosoUniversity"
+      "value": "func-ContosoUniversity"
     },
     "storageAccountName": {
-      "value": "storagecontosouniversity"
+      "value": "stvm-contosouniversity"
     },
     "appInsightsName": {
-      "value": "appInsightsContosoUniversity"
+      "value": "appi-ContosoUniversity"
     },
     "skuName": {
       "value": "S1"
