@@ -15,7 +15,7 @@
       "value": "func-ContosoUniversity"
     },
     "storageAccountName": {
-      "value": "stvm-contosouniversity"
+      "value": "stvmcontosouniversity"
     },
     "appInsightsName": {
       "value": "appi-ContosoUniversity"
