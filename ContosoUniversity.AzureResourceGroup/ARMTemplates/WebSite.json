@@ -326,6 +326,14 @@
     "AppInsightsInstrumentationKey": {
       "value": "[reference(resourceId('Microsoft.Insights/components', parameters('appInsightsName')), '2014-04-01').InstrumentationKey]",
       "type": "string"
+    },
+    "WebAppUrl": {
+      "value": "[reference(resourceId('Microsoft.Web/sites', parameters('webSiteName')), '2018-02-01').defaultHostName]",
+      "type": "string"
+    },
+    "WebApiUrl": {
+      "value": "[reference(resourceId('Microsoft.Web/sites', parameters('webApiName')), '2018-02-01').defaultHostName]",
+      "type": "string"
     }
   }
 }
