@@ -5,9 +5,6 @@
     "apiManagementServiceName": {
       "value": "ContosoUniversityArmTemplateApim"
     },
-    "apiswaggerUrl": {
-      "value": "https://contosouniversityexampleapi.azurewebsites.net/swagger/v1/swagger.json"
-    },
     "publisherEmail": {
       "value": "leadro@microsoft.com"
     },
