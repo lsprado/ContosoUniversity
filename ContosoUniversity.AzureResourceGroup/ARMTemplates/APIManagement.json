@@ -8,12 +8,6 @@
         "description": "The name of the API Management"
       }
     },
-    "apiswaggerUrl": {
-      "type": "string",
-      "metadata": {
-        "description": "The URL of the swagger json"
-      }
-    },
     "publisherEmail": {
       "type": "string",
       "minLength": 1,
@@ -68,51 +62,7 @@
       "properties": {
         "publisherEmail": "[parameters('publisherEmail')]",
         "publisherName": "[parameters('publisherName')]"
-      },
-      "resources": [
-        {
-          "apiVersion": "2017-03-01",
-          "type": "apis",
-          "name": "ContosoUniversityApi",
-          "dependsOn": [
-            "[concat('Microsoft.ApiManagement/service/', parameters('apiManagementServiceName'))]"
-          ],
-          "properties": {
-            "contentFormat": "swagger-link-json",
-            "contentValue": "[parameters('apiswaggerUrl')]",
-            "path": "contosouniversity"
-          }
-        },
-        {
-          "apiVersion": "2017-03-01",
-          "type": "products",
-          "name": "exampleProduct",
-          "dependsOn": [
-            "[concat('Microsoft.ApiManagement/service/', parameters('apiManagementServiceName'))]"
-          ],
-          "properties": {
-            "displayName": "Example Product Name",
-            "description": "Description for example product",
-            "terms": "Terms for example product",
-            "subscriptionRequired": true,
-            "approvalRequired": false,
-            "subscriptionsLimit": 1,
-            "state": "published"
-          },
-          "resources": [
-            {
-              "apiVersion": "2017-03-01",
-              "type": "apis",
-              "name": "ContosoUniversityApi",
-              "dependsOn": [
-                "[concat('Microsoft.ApiManagement/service/', parameters('apiManagementServiceName'))]",
-                "[concat('Microsoft.ApiManagement/service/', parameters('apiManagementServiceName'), '/apis/ContosoUniversityApi')]",
-                "[concat('Microsoft.ApiManagement/service/', parameters('apiManagementServiceName'), '/products/exampleProduct')]"
-              ]
-            }
-          ]
-        }
-      ]
+      }
     }
   ]
 }
