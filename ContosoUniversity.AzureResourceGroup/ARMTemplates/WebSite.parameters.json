@@ -11,6 +11,12 @@
     "webApiName": {
       "value": "webapiContosoUniversity"
     },
+    "functionName": {
+      "value": "functionContosoUniversity"
+    },
+    "storageAccountName": {
+      "value": "storagecontosouniversity"
+    },
     "appInsightsName": {
       "value": "appInsightsContosoUniversity"
     },
