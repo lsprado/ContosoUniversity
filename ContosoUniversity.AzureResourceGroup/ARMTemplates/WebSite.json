@@ -328,7 +328,7 @@
       "type": "string"
     },
     "WebAppUrl": {
-      "value": "[reference(resourceId('Microsoft.Web/sites', parameters('webSiteName')), '2018-02-01').defaultHostName]",
+      "value": "[concat('http://', reference(resourceId('Microsoft.Web/sites', parameters('webSiteName'))).hostNames[0])]",
       "type": "string"
     },
     "WebApiUrl": {
