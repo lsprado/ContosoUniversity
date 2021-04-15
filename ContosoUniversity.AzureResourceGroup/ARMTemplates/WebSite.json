@@ -328,11 +328,11 @@
       "type": "string"
     },
     "WebAppUrl": {
-      "value": "[concat('http://', reference(resourceId('Microsoft.Web/sites', parameters('webSiteName'))).hostNames[0])]",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Web/sites', parameters('webSiteName'))).hostNames[0])]",
       "type": "string"
     },
     "WebApiUrl": {
-      "value": "[reference(resourceId('Microsoft.Web/sites', parameters('webApiName')), '2018-02-01').defaultHostName]",
+      "value": "[concat('https://', reference(resourceId('Microsoft.Web/sites', parameters('webApiName'))).hostNames[0])]",
       "type": "string"
     }
   }
