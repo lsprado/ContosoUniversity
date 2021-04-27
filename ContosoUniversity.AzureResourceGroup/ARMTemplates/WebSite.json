@@ -334,6 +334,10 @@
     "WebApiUrl": {
       "value": "[concat('https://', reference(resourceId('Microsoft.Web/sites', parameters('webApiName'))).hostNames[0])]",
       "type": "string"
+    },
+    "SubscriptionId": {
+      "value": "[concat('Subscription = ', subscription().subscriptionId)]",
+      "type": "string"
     }
   }
 }
