@@ -359,22 +359,6 @@
       "sku": {
         "name": "standard"
       }
-    },
-    {
-      "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
-      "apiVersion": "2020-07-01-preview",
-      "name": "[concat(parameters('appConfigurationName'), '/', parameters('configKeyValueNames')[copyIndex()])]",
-      "copy": {
-        "name": "keyValueCopy",
-        "count": "[length(parameters('configKeyValueNames'))]"
-      },
-      "dependsOn": [
-        "[parameters('appConfigurationName')]"
-      ],
-      "properties": {
-        "value": "[parameters('configKeyValueValues')[copyIndex()]]",
-        "contentType": "[parameters('contentType')]"
-      }
     }
   ],
   "outputs": {

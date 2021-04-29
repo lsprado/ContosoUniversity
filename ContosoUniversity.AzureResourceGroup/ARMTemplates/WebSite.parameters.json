@@ -32,18 +32,6 @@
     },
     "appConfigurationName": {
       "value": "config-ContosoUniversity"
-    },
-    "configKeyValueNames": {
-      "value": [
-        "feature01",
-        "feature02"
-      ]
-    },
-    "configKeyValueValues": {
-      "value": [
-        "feature 01 value",
-        "feature 02 value"
-      ]
     }
   }
 }
