@@ -29,6 +29,9 @@
         "QA",
         "UAT"
       ]
+    },
+    "appConfigurationName": {
+      "value": "config-ContosoUniversity"
     }
   }
 }

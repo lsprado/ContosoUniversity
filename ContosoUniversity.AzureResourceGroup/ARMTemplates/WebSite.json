@@ -71,6 +71,9 @@
     },
     "storageAccountName": {
       "type": "String"
+    },
+    "appConfigurationName": {
+      "type": "String"
     }
   },
   "variables": {
@@ -308,6 +311,7 @@
       }
     },
     {
+      "type": "Microsoft.Insights/components",
       "apiVersion": "2015-05-01",
       "location": "[resourceGroup().location]",
       "name": "[parameters('appInsightsName')]",
@@ -318,8 +322,16 @@
       },
       "tags": {
         "displayName": "AppInsights Component"
-      },
-      "type": "Microsoft.Insights/components"
+      }
+    },
+    {
+      "type": "Microsoft.AppConfiguration/configurationStores",
+      "apiVersion": "2020-07-01-preview",
+      "name": "[parameters('appConfigurationName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "standard"
+      }
     }
   ],
   "outputs": {
