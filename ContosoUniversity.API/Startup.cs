@@ -41,14 +41,14 @@ namespace ContosoUniversity.API
                 config.PostProcess = document =>
                 {
                     document.Info.Version = "v1";
-                    document.Info.Title = "ToDo API";
-                    document.Info.Description = "A simple ASP.NET Core web API";
+                    document.Info.Title = "Contoso University API";
+                    document.Info.Description = "A ASP.NET Core web API for Contoso University";
                     document.Info.TermsOfService = "None";
                     document.Info.Contact = new NSwag.OpenApiContact
                     {
-                        Name = "Shayne Boyer",
-                        Email = string.Empty,
-                        Url = "https://twitter.com/spboyer"
+                        Name = "Leandro Prado",
+                        Email = "leandro.prado@microsoft.com",
+                        Url = "https://twitter.com/azure"
                     };
                     document.Info.License = new NSwag.OpenApiLicense
                     {
