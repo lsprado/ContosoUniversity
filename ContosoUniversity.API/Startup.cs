@@ -14,6 +14,7 @@ using ContosoUniversity.API.Data;
 using NJsonSchema;
 using NSwag.AspNetCore;
 using System.Reflection;
+using Microsoft.Extensions.Hosting;
 
 namespace ContosoUniversity.API
 {
@@ -32,8 +33,30 @@ namespace ContosoUniversity.API
             // Add framework services.
             ConfigureDatabase(services);
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            
+            services.AddControllers();
+
+            // Register the Swagger services
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "ToDo API";
+                    document.Info.Description = "A simple ASP.NET Core web API";
+                    document.Info.TermsOfService = "None";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Shayne Boyer",
+                        Email = string.Empty,
+                        Url = "https://twitter.com/spboyer"
+                    };
+                    document.Info.License = new NSwag.OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = "https://example.com/license"
+                    };
+                };
+            });
         }
 
         public virtual void ConfigureDatabase(IServiceCollection services)
@@ -57,38 +80,51 @@ namespace ContosoUniversity.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public virtual void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            // Enable the Swagger UI middleware and the Swagger generator
-            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
-                settings.PostProcess = document =>
-                {
-                    document.Info.Version = "v1";
-                    document.Info.Title = "Contoso University API";
-                    document.Info.Description = "ASP.NET Core web API for Contoso University Web Application";
-                    document.Info.TermsOfService = "None";
-                    document.Info.Contact = new NSwag.SwaggerContact
-                    {
-                        Name = "Leandro Prado",
-                        Email = "Leandro.Prado@microsoft.com",
-                        Url = "https://twitter.com/blog_prado"
-                    };
-                    document.Info.License = new NSwag.SwaggerLicense
-                    {
-                        Name = "Use under LICX",
-                        Url = "https://example.com/license"
-                    };
-                };
+                endpoints.MapControllers();
             });
-            
-            app.UseMvc();
+
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
+            // Enable the Swagger UI middleware and the Swagger generator
+            //app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly, settings =>
+            //{
+            //    settings.GeneratorSettings.DefaultPropertyNameHandling = PropertyNameHandling.CamelCase;
+            //    settings.PostProcess = document =>
+            //    {
+            //        document.Info.Version = "v1";
+            //        document.Info.Title = "Contoso University API";
+            //        document.Info.Description = "ASP.NET Core web API for Contoso University Web Application";
+            //        document.Info.TermsOfService = "None";
+            //        document.Info.Contact = new NSwag.SwaggerContact
+            //        {
+            //            Name = "Leandro Prado",
+            //            Email = "Leandro.Prado@microsoft.com",
+            //            Url = "https://twitter.com/blog_prado"
+            //        };
+            //        document.Info.License = new NSwag.SwaggerLicense
+            //        {
+            //            Name = "Use under LICX",
+            //            Url = "https://example.com/license"
+            //        };
+            //    };
+            //});
         }
     }
 }

@@ -49,16 +49,12 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PutAsJsonAsync("api/Courses/" + id, Course);
+            var response = await client.CreateClient("client").PostAsync("api/Courses/" + id, new StringContent(JsonConvert.SerializeObject(Course)));
 
             if (response.IsSuccessStatusCode)
-            {
                 return RedirectToPage("./Index");
-            }
             else
-            {
                 return RedirectToPage("/Error");
-            }
         }
     }
 }

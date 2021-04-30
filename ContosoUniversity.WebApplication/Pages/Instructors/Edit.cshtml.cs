@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
@@ -47,7 +46,7 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PutAsJsonAsync("api/Instructors/" + id, Instructor);
+            var response = await client.CreateClient("client").PostAsync("api/Instructors/" + id, new StringContent(JsonConvert.SerializeObject(Instructor)));
 
             if (response.IsSuccessStatusCode)
             {

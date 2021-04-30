@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Departments
@@ -34,9 +35,12 @@ namespace ContosoUniversity.WebApplication.Pages.Departments
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PostAsJsonAsync("api/Departments", Department);
+            var response = await client.CreateClient("client").PostAsync("api/Departments", new StringContent(JsonConvert.SerializeObject(Department)));
 
-            return RedirectToPage("./Index");
+            if (response.IsSuccessStatusCode)
+                return RedirectToPage("./Index");
+            else
+                return Redirect("/Home/Error");
         }
     }
 }

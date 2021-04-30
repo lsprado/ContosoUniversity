@@ -28,17 +28,17 @@ namespace ContosoUniversity.XUnitTest
             services.AddTransient<DatabaseSeeder>();
         }
 
-        public override void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            // Perform all the configuration in the base class
-            base.Configure(app, env);
+        //public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //{
+        //    // Perform all the configuration in the base class
+        //    base.Configure(app, env);
 
-            // Now seed the database
-            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
-            {
-                var seeder = serviceScope.ServiceProvider.GetService<DatabaseSeeder>();
-                seeder.Seed();
-            }
-        }
+        //    // Now seed the database
+        //    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+        //    {
+        //        var seeder = serviceScope.ServiceProvider.GetService<DatabaseSeeder>();
+        //        seeder.Seed();
+        //    }
+        //}
     }
 }

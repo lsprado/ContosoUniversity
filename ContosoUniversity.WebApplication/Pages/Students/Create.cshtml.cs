@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using System.Net.Http;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace ContosoUniversity.WebApplication.Pages.Students
 {
@@ -36,30 +37,12 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return Page();
             }
 
-            var emptyStudent = new Models.APIViewModels.Student();
+            var response = await client.CreateClient("client").PostAsync("api/Students", new StringContent(JsonConvert.SerializeObject(Student)));
 
-            if (await TryUpdateModelAsync<Models.APIViewModels.Student>(
-                emptyStudent,
-                "student",   // Prefix for form value.
-                s => s.FirstName, s => s.LastName, s => s.EnrollmentDate, s => s.Photo))
-            {
-
-                //Converte a imagem para Array de Bytes
-                Byte[] arquivo = null;
-                using (var ms = new MemoryStream())
-                {
-                    emptyStudent.Photo.CopyTo(ms);
-                    arquivo = ms.ToArray();
-                }
-
-                //var response = await client.CreateClient("client").PostAsJsonAsync("api/Students", emptyStudent);
-
-                var response = await client.CreateClient("client").PostAsJsonAsync("api/Students", new { Id = emptyStudent.Id, LastName = emptyStudent.LastName, FirstName = emptyStudent.FirstName, EnrollmentDate = emptyStudent.EnrollmentDate, Photo = arquivo });
-
+            if (response.IsSuccessStatusCode)
                 return RedirectToPage("./Index");
-            }
-
-            return null;
+            else
+                return Redirect("/Home/Error");
         }
     }
 }

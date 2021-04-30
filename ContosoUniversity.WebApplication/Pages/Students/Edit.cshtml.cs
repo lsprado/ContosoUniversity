@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Linq;
@@ -46,20 +45,13 @@ namespace ContosoUniversity.WebApplication.Pages.Students
             {
                 return Page();
             }
+    
+            var response = await client.CreateClient("client").PostAsync("api/Students/" + Student.Id, new StringContent(JsonConvert.SerializeObject(Student)));
 
-            try
-            {
-                HttpResponseMessage response = await client.CreateClient("client").PutAsJsonAsync("api/Students/" + Student.Id, Student);
+            if (response.IsSuccessStatusCode)
+                return RedirectToPage("./Index");
 
-                if (!response.IsSuccessStatusCode)
-                    logger.LogDebug(response.ToString());
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                throw;
-            }
-
-            return RedirectToPage("./Index");
+            return Page();
         }
 
     }

@@ -48,12 +48,10 @@ namespace ContosoUniversity.WebApplication.Pages.Departments
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PutAsJsonAsync("api/Departments/" + id, Department);
+            var response = await client.CreateClient("client").PostAsync("api/Departments/" + id, new StringContent(JsonConvert.SerializeObject(Department)));
 
             if (response.IsSuccessStatusCode)
-            {
                 return RedirectToPage("./Index");
-            }
 
             return Page();
         }

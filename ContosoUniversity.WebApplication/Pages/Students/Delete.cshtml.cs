@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using ContosoUniversity.WebApplication.Models;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -56,20 +55,13 @@ namespace ContosoUniversity.WebApplication.Pages.Students
             {
                 return NotFound();
             }
+            
+            var response = await client.CreateClient("client").DeleteAsync("api/Students/" + id);
 
-            try
-            {
-                var response = await client.CreateClient("client").DeleteAsync("api/Students/" + id);
-
-                if(response.IsSuccessStatusCode)
-                    return RedirectToPage("./Index");
-                else
-                    return RedirectToAction("./Delete", new { id, saveChangesError = true });
-            }
-            catch (DbUpdateException)
-            {
+            if(response.IsSuccessStatusCode)
+                return RedirectToPage("./Index");
+            else
                 return RedirectToAction("./Delete", new { id, saveChangesError = true });
-            }
         }
     }
 }
