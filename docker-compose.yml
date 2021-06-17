@@ -3,7 +3,7 @@ version: '3.4'
 services:
   
   db:
-    image: "microsoft/mssql-server-linux"
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
     container_name: contosouniversitydb
     environment:
       SA_PASSWORD: "P@ssw0rd"
@@ -15,8 +15,10 @@ services:
     build:
       context: .
       dockerfile: ContosoUniversity.WebApplication/Dockerfile
+    depends_on:
+      - contosouniversity.api
     ports:
-      - "9090:80"
+      - "7171:80"
     environment:
       URLAPI: http://contosouniversitywebapi:80/
 
@@ -28,6 +30,8 @@ services:
       dockerfile: ContosoUniversity.API/Dockerfile
     depends_on:
       - db
+    ports:
+      - "7272:80"
     environment:
       DBHOST: db
       DBNAME: ContosoSchoolContext
