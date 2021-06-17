@@ -32,7 +32,7 @@ steps:
   displayName: Test
   inputs:
     command: test
-    projects: '**/*XUnitTest/*.csproj'
+    projects: '**/*ContosoUniversity.Test/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
 
 - task: DotNetCoreCLI@2
