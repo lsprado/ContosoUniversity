@@ -10,11 +10,12 @@ namespace ContosoUniversity.API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
             string regionName = string.Empty;
+            string dbHost = string.Empty;
+            string dbName = string.Empty;
 
             try
             {
@@ -22,35 +23,28 @@ namespace ContosoUniversity.API.Controllers
             }
             catch
             {
-                regionName = "VARIABLE NOT FOUND";
+                regionName = "VARIABLE [REGION_NAME] NOT FOUND";
             }
-            
-            return new string[] { "value1", "value2", regionName };
+
+            try
+            {
+                dbHost = System.Environment.GetEnvironmentVariable("DBHOST").ToString();
+            }
+            catch
+            {
+                dbHost = "VARIABLE [DBHOST] NOT FOUND";
+            }
+
+            try
+            {
+                dbName = System.Environment.GetEnvironmentVariable("DBNAME").ToString();
+            }
+            catch
+            {
+                dbName = "VARIABLE [DBNAME] NOT FOUND";
+            }
+
+            return new string[] { "value1", "value2", regionName, dbHost, dbName };
         }
-
-        //// GET api/values/5
-        //[HttpGet("{id}")]
-        //public ActionResult<string> Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }
