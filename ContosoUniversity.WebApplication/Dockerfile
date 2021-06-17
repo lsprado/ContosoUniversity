@@ -1,8 +1,9 @@
-FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/aspnet:3.1 as base
+
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM mcr.microsoft.com/dotnet/sdk:3.1 as build
 WORKDIR /src
 COPY ContosoUniversity.WebApplication/ContosoUniversity.WebApplication.csproj ContosoUniversity.WebApplication/
 RUN dotnet restore ContosoUniversity.WebApplication/ContosoUniversity.WebApplication.csproj
