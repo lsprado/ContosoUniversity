@@ -25,6 +25,8 @@ namespace ContosoUniversity.API.Controllers
         [HttpGet]
         public IActionResult GetCourses()
         {
+            //teste 01
+
             var courses = _context.Courses
                 .Include(c => c.Department);
 

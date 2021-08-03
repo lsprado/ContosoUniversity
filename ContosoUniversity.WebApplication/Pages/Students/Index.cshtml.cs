@@ -25,6 +25,8 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 
         public async Task<IActionResult> OnGetAsync(int? id, string SearchString)
         {
+            //teste 02
+
             if (string.IsNullOrEmpty(SearchString))
             {
                 var response = await client.CreateClient("client").GetStringAsync("api/Students");
