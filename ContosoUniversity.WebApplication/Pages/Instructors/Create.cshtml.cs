@@ -33,6 +33,8 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
 
         public async Task<IActionResult> OnPostAsync(string[] selectedCourses)
         {
+            //teste
+
             if (!ModelState.IsValid)
             {
                 return Page();
