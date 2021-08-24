@@ -86,6 +86,12 @@ namespace ContosoUniversity.API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> CancelarMatricula([FromRoute] int id)
+        {
+            return Ok();
+        }
+
         // PUT: api/Courses/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCourse([FromRoute] int id, [FromBody] Course course)
