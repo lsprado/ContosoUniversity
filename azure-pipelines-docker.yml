@@ -16,7 +16,6 @@ steps:
     projects: |
      **/ContosoUniversity.API.csproj
      **/ContosoUniversity.WebApplication.csproj
-
 - task: DotNetCoreCLI@2
   displayName: Build
   inputs:
@@ -24,14 +23,12 @@ steps:
      **/ContosoUniversity.API.csproj
      **/ContosoUniversity.WebApplication.csproj
     arguments: '--configuration $(BuildConfiguration)'
-
 - task: DotNetCoreCLI@2
   displayName: Test
   inputs:
     command: test
     projects: '**/*ContosoUniversity.Test/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
-
 - task: DotNetCoreCLI@2
   displayName: 'Publish - ContosoUniversity.API'
   inputs:
@@ -40,7 +37,6 @@ steps:
     projects: '**/ContosoUniversity.API.csproj'
     arguments: '--configuration $(BuildConfiguration) --output ContosoUniversity.API/bin/PublishOutput'
     zipAfterPublish: false
-
 - task: DotNetCoreCLI@2
   displayName: 'Publish - ContosoUniversity.WebApplication'
   inputs:
@@ -49,7 +45,6 @@ steps:
     projects: '**/ContosoUniversity.WebApplication.csproj'
     arguments: '--configuration $(BuildConfiguration) --output ContosoUniversity.WebApplication/bin/PublishOutput'
     zipAfterPublish: false
-
 - task: Docker@1
   displayName: 'Build an image - ContosoUniversity.API'
   inputs:
@@ -58,7 +53,6 @@ steps:
     dockerFile: ContosoUniversity.API/DockerfileBuild
     imageName: 'ContosoUniversity.API:$(Build.BuildId)'
     includeLatestTag: true
-
 - task: Docker@1
   displayName: 'Push an image - ContosoUniversity.API'
   inputs:
@@ -66,7 +60,6 @@ steps:
     azureContainerRegistry: leadroregistry.azurecr.io
     command: 'Push an image'
     imageName: 'ContosoUniversity.API:$(Build.BuildId)'
-
 - task: Docker@1
   displayName: 'Build an image - ContosoUniversity.WebApplication'
   inputs:
@@ -75,7 +68,6 @@ steps:
     dockerFile: ContosoUniversity.WebApplication/DockerfileBuild
     imageName: 'ContosoUniversity.WebApplication:$(Build.BuildId)'
     includeLatestTag: true
-
 - task: Docker@1
   displayName: 'Push an image - ContosoUniversity.WebApplication'
   inputs:
@@ -83,25 +75,21 @@ steps:
     azureContainerRegistry: leadroregistry.azurecr.io
     command: 'Push an image'
     imageName: 'ContosoUniversity.WebApplication:$(Build.BuildId)'
-
 - task: CmdLine@1
   displayName: 'Replace Build Number - kubernetes-webapi.yaml'
   inputs:
     filename: bash
     arguments: '-c "sed -i ''s/BuildNumber/$(Build.BuildId)/g''  kubernetes-webapi.yaml'
-
 - task: CmdLine@1
   displayName: 'Replace Build Number - kubernetes-webapp'
   inputs:
     filename: bash
     arguments: '-c "sed -i ''s/BuildNumber/$(Build.BuildId)/g''  kubernetes-webapp.yaml'
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact - webapi'
   inputs:
     PathtoPublish: 'kubernetes-webapi.yaml'
     ArtifactName: Api
-
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact - webapp'
   inputs:
