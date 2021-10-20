@@ -6,6 +6,7 @@ namespace ContosoUniversity.Framework
     {
         public static bool ValidarCpf(string cpf)
         {
+            //teste
             if (String.IsNullOrEmpty(cpf))
                 return false;
             else
