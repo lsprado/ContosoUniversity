@@ -26,7 +26,6 @@ namespace ContosoUniversity.WebApplication.Pages
         {
             HttpClient cli = client.CreateClient("client");
             Msg = "BaseAddress = " + cli.BaseAddress + " ---- ";
-
             try
             {
                 
@@ -43,7 +42,6 @@ namespace ContosoUniversity.WebApplication.Pages
                 Msg += ex.ToString();
                 logger.LogError("ERROR = " + ex.ToString());
             }
-
             return Page();
         }
     }
