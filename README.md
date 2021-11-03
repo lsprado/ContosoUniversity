@@ -1,8 +1,11 @@
 # Introduction 
+Aplicação de teste usando Docker e Kubernetes
 
-SQL DataBase: leadro.database.windows.net
+# Docker Help
 
-user: leadro
-pass: P@ssw0rd
+Criar a imagem docker, executar o processo de build para gerar uma imagem
 
-ConnString: Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+```
+docker build -f .\ContosoUniversity.WebApplication\Dockerfile -t contosouniversity-app .
+docker build -f .\ContosoUniversity.API\Dockerfile -t contosouniversity-app .
+```
