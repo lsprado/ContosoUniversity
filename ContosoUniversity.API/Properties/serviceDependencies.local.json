@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "appInsights1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/microsoft.insights/components/ContosoUniversityExample",
+      "type": "appInsights.azure",
+      "connectionId": "APPINSIGHTS_CONNECTIONSTRING",
+      "secretStore": null
+    },
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/leadro/databases/ContosoUniversity",
+      "type": "mssql.azure",
+      "connectionId": "ContosoUniversityAPIContext",
+      "secretStore": null
+    },
+    "storage1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/contosouniversitystorage",
+      "type": "storage.azure",
+      "connectionId": "ContosoUniversityBlobStorage",
+      "secretStore": null
+    }
+  }
+}
