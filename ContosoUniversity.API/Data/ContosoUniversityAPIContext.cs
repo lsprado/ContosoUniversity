@@ -18,7 +18,7 @@ namespace ContosoUniversity.API.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<StudentCourse> StudentCourse { get; set; }
-        public DbSet<ContosoUniversity.API.Models.Noticia> Noticia { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +28,6 @@ namespace ContosoUniversity.API.Data
             modelBuilder.Entity<Instructor>().ToTable("tbl_Instructor");
             modelBuilder.Entity<StudentCourse>().ToTable("tbl_StudentCourse");
             modelBuilder.Entity<StudentCourse>().HasKey(c => new { c.CourseID, c.StudentID });
-            modelBuilder.Entity<Noticia>().ToTable("tbl_Noticia");
 
             //modelBuilder.Entity<StudentCourse>()
             //    .HasOne(bc => bc.Student)
