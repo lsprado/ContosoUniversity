@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "storage1": {
+      "type": "storage",
+      "connectionId": "ContosoUniversityBlobStorage"
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
     "appInsights1": {
       "type": "appInsights",
       "connectionId": "APPINSIGHTS_CONNECTIONSTRING"
@@ -8,9 +15,9 @@
       "type": "mssql",
       "connectionId": "ContosoUniversityAPIContext"
     },
-    "storage1": {
-      "type": "storage",
-      "connectionId": "ContosoUniversityBlobStorage"
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:ContosoUniversityAPIContext"
     }
   }
 }
