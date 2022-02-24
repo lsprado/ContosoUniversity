@@ -1,5 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+    <!-- propriedades -->
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationInsightsResourceId>/subscriptions/3323e547-1651-47e7-a768-6931436e3314/resourceGroups/RG_ContosoUniversity/providers/microsoft.insights/components/ContosoUniversityExample</ApplicationInsightsResourceId>
