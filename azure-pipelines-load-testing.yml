@@ -32,7 +32,16 @@ stages:
         command: test
         projects: '**/*ContosoUniversity.Test/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
-
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'publish'
+        publishWebProjects: true
+        arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 - stage: Deploy
   displayName: Deploy 
   dependsOn: Build
