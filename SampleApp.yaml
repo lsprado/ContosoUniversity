@@ -1,5 +1,5 @@
 version: v0.1
-testName: ContosoUniversity
+testName: ContosoUniversity_ADO
 testPlan: SampleTest.jmx
 description: 'Contoso University Test Run'
 engineInstances: 1
