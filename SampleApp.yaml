@@ -1,5 +1,5 @@
 version: v0.1
-testName: SampleAppTest
+testName: ContosoUniversity
 testPlan: SampleTest.jmx
-description: 'SampleApp Test Run'
+description: 'Contoso University Test Run'
 engineInstances: 1
