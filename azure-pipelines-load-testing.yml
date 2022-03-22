@@ -69,17 +69,10 @@ stages:
     
     - task: AzureLoadTest@1
       inputs:
-        azureSubscription: $(serviceConnection)
+        azureSubscription: 'MS Internal'
         loadTestConfigFile: 'SampleApp.yaml'
-        resourceGroup: $(loadTestResourceGroup)
-        loadTestResource: $(loadTestResource)
-        env: |
-          [
-            {
-            "name": "webapp",
-            "value": "$(webAppName).azurewebsites.net"
-            }
-          ]
+        resourceGroup: 'RG_ContosoUniversity'
+        loadTestResource: 'contosoloadtest'
           
     - publish: $(System.DefaultWorkingDirectory)/loadTest
       artifact: results
