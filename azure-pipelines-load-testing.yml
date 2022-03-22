@@ -33,11 +33,13 @@ stages:
         projects: '**/*ContosoUniversity.Test/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
     - task: DotNetCoreCLI@2
+      displayName: Publish
       inputs:
         command: 'publish'
         publishWebProjects: true
         arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     - task: PublishBuildArtifacts@1
+      displayName: Artifact
       inputs:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
@@ -54,6 +56,7 @@ stages:
     
     steps:
     - task: DownloadPipelineArtifact@2
+      displayName: Download Artifact
       inputs:
         artifact: drop
 
@@ -77,6 +80,7 @@ stages:
     steps:
     
     - task: AzureLoadTest@1
+      displayName: Run Azure Load Test
       inputs:
         azureSubscription: 'MS Internal'
         loadTestConfigFile: 'SampleApp.yaml'
