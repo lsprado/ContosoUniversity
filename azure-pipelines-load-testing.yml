@@ -34,3 +34,9 @@ steps:
     command: test
     projects: '**/*ContosoUniversity.Test/*.csproj'
     arguments: '--configuration $(BuildConfiguration)'
+- task: AzureLoadTest@1
+  inputs:
+    azureSubscription: 'MS Internal'
+    loadTestConfigFile: 'file'
+    resourceGroup: 'RG_ContosoUniversity'
+    loadTestResource: 'contosoloadtest'
