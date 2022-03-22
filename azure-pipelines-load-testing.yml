@@ -7,36 +7,81 @@ pool:
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- task: Cache@2
-  inputs:
-    key: 'nuget | "$(Agent.OS)" | $(Build.SourcesDirectory)/packages.lock.json'
-    restoreKeys: |
-       nuget | "$(Agent.OS)"
-    path: $(NUGET_PACKAGES)
-  displayName: Cache NuGet packages
+stages:
+- stage: Build
+  displayName: Build 
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: windows-latest
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: '**/*ContosoUniversity.Test/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
+- stage: Deploy
+  displayName: Deploy 
+  dependsOn: Build
+  condition: succeeded()
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: windows-latest
+    
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifact: drop
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: $(serviceConnection)
+        appType: 'webApp'
+        WebAppName: $(webAppName)
+        packageForLinux: '$(Pipeline.Workspace)/$(Build.BuildId).zip'
+        ScriptType: 'Inline Script'
+        InlineScript: 'npm install'
 
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: test
-    projects: '**/*ContosoUniversity.Test/*.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
-- task: AzureLoadTest@1
-  inputs:
-    azureSubscription: 'MS Internal'
-    loadTestConfigFile: 'file'
-    resourceGroup: 'RG_ContosoUniversity'
-    loadTestResource: 'contosoloadtest'
+- stage: LoadTest
+  displayName: Load Test
+  dependsOn: Deploy
+  condition: succeeded()
+  jobs:
+  - job: LoadTest
+    displayName: Load Test
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    
+    - task: AzureLoadTest@1
+      inputs:
+        azureSubscription: $(serviceConnection)
+        loadTestConfigFile: 'SampleApp.yaml'
+        resourceGroup: $(loadTestResourceGroup)
+        loadTestResource: $(loadTestResource)
+        env: |
+          [
+            {
+            "name": "webapp",
+            "value": "$(webAppName).azurewebsites.net"
+            }
+          ]
+          
+    - publish: $(System.DefaultWorkingDirectory)/loadTest
+      artifact: results
