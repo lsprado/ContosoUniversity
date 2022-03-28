@@ -96,6 +96,9 @@ stages:
   jobs:
   - deployment: DeployDev
     displayName: deploy to dev
+    variables:
+      Infos.Ambiente: 'DEV'
+      Infos.Versao: $(RELEASE.RELEASENAME)
     environment: 'contosouniversity-dev'
     strategy:
       runOnce:
