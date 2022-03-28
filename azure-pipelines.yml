@@ -101,6 +101,16 @@ stages:
         deploy:
           steps:
           - script: echo Hello world Dev
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Azure App Service - API'
+            inputs:
+              azureSubscription: 'MS Internal'
+              WebAppName: ContosoUniversityExampleApi
+              deployToSlotOrASE: true
+              ResourceGroupName: 'RG_ContosoUniversity'
+              SlotName: dev
+              packageForLinux: '$(System.DefaultWorkingDirectory)/ContosoUniversity-PR/WebApp/ContosoUniversity.API.zip'
+              JSONFiles: '**/appsettings.json'
 
 - stage: deploy-qa
   jobs:
