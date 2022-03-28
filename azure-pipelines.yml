@@ -130,3 +130,79 @@ stages:
               SlotName: dev
               packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.WebApplication.zip'
               JSONFiles: '**/appsettings.json'
+
+- stage: deploy_hml
+  jobs:
+  - deployment: DeployDev
+    displayName: deploy to hml
+    variables:
+      Infos.Ambiente: 'HML'
+      Api.Address: 'https://contosouniversityexampleapi-qa.azurewebsites.net'
+      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      Infos.Versao: $(Build.BuildNumber)
+    environment: 'contosouniversity-qa'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: WebApp
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'ContosoUniversityExample Api'
+            inputs:
+              azureSubscription: 'MS Internal'
+              WebAppName: ContosoUniversityExampleApi
+              deployToSlotOrASE: true
+              ResourceGroupName: 'RG_ContosoUniversity'
+              SlotName: qa
+              packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.API.zip'
+              JSONFiles: '**/appsettings.json'
+          
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'ContosoUniversityExample WebApp'
+            inputs:
+              azureSubscription: 'MS Internal'
+              WebAppName: ContosoUniversityExample
+              deployToSlotOrASE: true
+              ResourceGroupName: 'RG_ContosoUniversity'
+              SlotName: qa
+              packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.WebApplication.zip'
+              JSONFiles: '**/appsettings.json'
+
+- stage: deploy_prd
+  jobs:
+  - deployment: DeployPrd
+    displayName: deploy to prd
+    variables:
+      Infos.Ambiente: 'PRD'
+      Api.Address: 'https://contosouniversityexampleapi.azurewebsites.net'
+      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      Infos.Versao: $(Build.BuildNumber)
+    environment: 'contosouniversity-prd'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: WebApp
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'ContosoUniversityExample Api'
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'MS Internal'
+              appType: 'webApp'
+              WebAppName: 'ContosoUniversityExampleApi'
+              packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.API.zip'
+              JSONFiles: '**/appsettings.json'
+          
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'ContosoUniversityExample WebApp'
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'MS Internal'
+              appType: 'webApp'
+              WebAppName: 'ContosoUniversityExample'
+              packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.WebApplication.zip'
+              JSONFiles: '**/appsettings.json'
