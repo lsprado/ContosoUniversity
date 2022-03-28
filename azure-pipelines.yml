@@ -91,7 +91,7 @@ stages:
         PathtoPublish: '$(build.artifactstagingdirectory)/CodedUITest'
         ArtifactName: CodedUITest
 
-- stage: deploy-dev
+- stage: deploy_dev
   jobs:
   - deployment: DeployDev
     displayName: deploy to dev
@@ -111,25 +111,3 @@ stages:
               SlotName: dev
               packageForLinux: '$(System.DefaultWorkingDirectory)/ContosoUniversity-PR/WebApp/ContosoUniversity.API.zip'
               JSONFiles: '**/appsettings.json'
-
-- stage: deploy-qa
-  jobs:
-  - deployment: DeployQa
-    displayName: deploy to qa
-    environment: 'contosouniversity-qa'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - script: echo Hello world QA
-
-- stage: deploy-ped
-  jobs:
-  - deployment: DeployPrd
-    displayName: deploy to prd
-    environment: 'contosouniversity-prd'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - script: echo Hello world Prd
