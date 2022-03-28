@@ -112,7 +112,7 @@ stages:
                 Get-ChildItem -Path $(System.DefaultWorkingDirectory) -recurse
 
           - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service - API'
+            displayName: 'ContosoUniversityExample Api'
             inputs:
               azureSubscription: 'MS Internal'
               WebAppName: ContosoUniversityExampleApi
@@ -122,7 +122,7 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.API.zip'
               JSONFiles: '**/appsettings.json'
           - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service - APP'
+            displayName: 'ContosoUniversityExample WebApp'
             inputs:
               azureSubscription: 'MS Internal'
               WebAppName: ContosoUniversityExample
