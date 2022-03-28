@@ -63,7 +63,7 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy Files to: CodedUITest'
       inputs:
-        SourceFolder: '$(Build.SourcesDirectory)\ContosoUniversity.CodedUITest\bin\$(BuildConfiguration)\netcoreapp2.1'
+        SourceFolder: '$(Build.SourcesDirectory)\ContosoUniversity.CodedUITest\bin\$(BuildConfiguration)\netcoreapp3.1'
         Contents: '**\*'
         TargetFolder: '$(build.artifactstagingdirectory)/CodedUITest'
 
