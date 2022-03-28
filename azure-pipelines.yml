@@ -117,5 +117,5 @@ stages:
               deployToSlotOrASE: true
               ResourceGroupName: 'RG_ContosoUniversity'
               SlotName: dev
-              packageForLinux: '$(System.DefaultWorkingDirectory)/ContosoUniversity-PR/WebApp/ContosoUniversity.API.zip'
+              packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.API.zip'
               JSONFiles: '**/appsettings.json'
