@@ -98,7 +98,9 @@ stages:
     displayName: deploy to dev
     variables:
       Infos.Ambiente: 'DEV'
-      Infos.Versao: $(RELEASE.RELEASENAME)
+      Api.Address: 'https://contosouniversityexampleapi-dev.azurewebsites.net'
+      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      Infos.Versao: $(Build.BuildNumber)
     environment: 'contosouniversity-dev'
     strategy:
       runOnce:
