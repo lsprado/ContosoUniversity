@@ -8,81 +8,99 @@ variables:
   BuildConfiguration: 'Release'
   BuildPlatform: 'any cpu'
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
+stages:
+- stage: build
+  jobs:
+  - job: run_build
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-- task: VSBuild@1
-  displayName: 'Build solution ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj'
-  inputs:
-    solution: ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj
-    platform: '$(BuildPlatform)'
-    configuration: '$(BuildConfiguration)'
+    - task: VSBuild@1
+      displayName: 'Build solution ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj'
+      inputs:
+        solution: ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj
+        platform: '$(BuildPlatform)'
+        configuration: '$(BuildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: test
-    projects: '**/*ContosoUniversity.Test/*.csproj'
-    arguments: '--configuration $(BuildConfiguration)'
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: '**/*ContosoUniversity.Test/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/WebApp'
-    zipAfterPublish: True
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: publish
+        publishWebProjects: True
+        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)/WebApp'
+        zipAfterPublish: True
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: ArmTemplates'
-  inputs:
-    SourceFolder: 'ContosoUniversity.AzureResourceGroup'
-    Contents: '**\*.json'
-    TargetFolder: '$(build.artifactstagingdirectory)/ArmTemplates'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: ArmTemplates'
+      inputs:
+        SourceFolder: 'ContosoUniversity.AzureResourceGroup'
+        Contents: '**\*.json'
+        TargetFolder: '$(build.artifactstagingdirectory)/ArmTemplates'
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: Scripts'
-  inputs:
-    SourceFolder: Scripts
-    TargetFolder: '$(build.artifactstagingdirectory)/Scripts'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: Scripts'
+      inputs:
+        SourceFolder: Scripts
+        TargetFolder: '$(build.artifactstagingdirectory)/Scripts'
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: CodedUITest'
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)\ContosoUniversity.CodedUITest\bin\$(BuildConfiguration)\netcoreapp2.1'
-    Contents: '**\*'
-    TargetFolder: '$(build.artifactstagingdirectory)/CodedUITest'
+    - task: CopyFiles@2
+      displayName: 'Copy Files to: CodedUITest'
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)\ContosoUniversity.CodedUITest\bin\$(BuildConfiguration)\netcoreapp2.1'
+        Contents: '**\*'
+        TargetFolder: '$(build.artifactstagingdirectory)/CodedUITest'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact WebApp'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/WebApp'
-    ArtifactName: WebApp
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact WebApp'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)/WebApp'
+        ArtifactName: WebApp
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact ArmTemplates'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/ArmTemplates'
-    ArtifactName: ArmTemplates
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact ArmTemplates'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)/ArmTemplates'
+        ArtifactName: ArmTemplates
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact Scripts'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/Scripts'
-    ArtifactName: Scripts
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact Scripts'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)/Scripts'
+        ArtifactName: Scripts
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact CodedUITest'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)/CodedUITest'
-    ArtifactName: CodedUITest
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact CodedUITest'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)/CodedUITest'
+        ArtifactName: CodedUITest
+
+- stage: staging
+  dependsOn: build
+  jobs:
+  - job: deploy_staging
+    steps:
+    - script: echo Staging
+
+- stage: prod
+  dependsOn: staging
+  jobs:
+  - job: deploy_prod
+    steps:
+    - script: echo Prod
