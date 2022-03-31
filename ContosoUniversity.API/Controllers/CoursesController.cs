@@ -87,7 +87,7 @@ namespace ContosoUniversity.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> CancelarMatricula([FromRoute] int id)
+        public IActionResult CancelarMatricula([FromRoute] int id)
         {
             return Ok();
         }

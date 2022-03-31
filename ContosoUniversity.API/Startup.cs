@@ -61,7 +61,10 @@ namespace ContosoUniversity.API
                     };
                 };
             });
+
+            // // Configure the Connection String/Instrumentation key in appsettings.json
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
+
             services.AddAzureClients(builder =>
             {
                 builder.AddBlobServiceClient(Configuration["ConnectionStrings:ContosoUniversityBlobStorage:blob"], preferMsi: true);

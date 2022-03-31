@@ -15,18 +15,16 @@ namespace ContosoUniversity.WebApplication.Pages.Students
 
         public string CurrentFilter { get; set; }
         
-        public IndexModel(IHttpClientFactory client)
+        public IndexModel(IHttpClientFactory client, TelemetryClient telemetry)
         {
             this.client = client;
-            this.telemetry = new TelemetryClient();
+            this.telemetry = telemetry;
         }
 
         public Models.APIViewModels.StudentResult Student { get;set; }
 
         public async Task<IActionResult> OnGetAsync(int? id, string SearchString)
         {
-            //teste 02
-
             if (string.IsNullOrEmpty(SearchString))
             {
                 var response = await client.CreateClient("client").GetStringAsync("api/Students");
@@ -37,6 +35,7 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 // Set up some properties and metrics:
                 var properties = new Dictionary<string, string>
                     {{"action", "StudentSearch"}, {"filter", SearchString}};
+
                 //var metrics = new Dictionary<string, double>
                 //    {{"Score", currentGame.Score}, {"Opponents", currentGame.OpponentCount}};
 
@@ -46,6 +45,7 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 var response = await client.CreateClient("client").GetStringAsync("api/Students/Search?name=" + SearchString);
                 Student = JsonConvert.DeserializeObject<Models.APIViewModels.StudentResult>(response);
             }
+
             return Page();
         }
     }
