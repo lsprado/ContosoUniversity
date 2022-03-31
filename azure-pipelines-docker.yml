@@ -2,7 +2,7 @@ trigger:
 - none
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2019'
 
 variables:
   BuildConfiguration: 'Release'
@@ -66,7 +66,7 @@ steps:
     azureSubscriptionEndpoint: 'MS Internal'
     azureContainerRegistry: leadroregistry.azurecr.io
     dockerFile: ContosoUniversity.WebApplication/DockerfileBuild
-    imageName: 'ContosoUniversity.WebApplication:$(Build.BuildId)'
+    imageName: 'ContosoUniversity.Web:$(Build.BuildId)'
     includeLatestTag: true
 - task: Docker@1
   displayName: 'Push an image - ContosoUniversity.WebApplication'
@@ -74,7 +74,7 @@ steps:
     azureSubscriptionEndpoint: 'MS Internal'
     azureContainerRegistry: leadroregistry.azurecr.io
     command: 'Push an image'
-    imageName: 'ContosoUniversity.WebApplication:$(Build.BuildId)'
+    imageName: 'ContosoUniversity.Web:$(Build.BuildId)'
 - task: CmdLine@1
   displayName: 'Replace Build Number - kubernetes-webapi.yaml'
   inputs:
