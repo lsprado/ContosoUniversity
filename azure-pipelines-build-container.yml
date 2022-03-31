@@ -1,0 +1,61 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-2019'
+
+variables:
+  BuildConfiguration: 'Release'
+  BuildPlatform: 'any cpu'
+
+steps:
+- task: Docker@1
+  displayName: 'Build an image - ContosoUniversity.API'
+  inputs:
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    dockerFile: ContosoUniversity.API/Dockerfile
+    imageName: 'ContosoUniversity.API:$(Build.BuildId)'
+    includeLatestTag: true
+- task: Docker@1
+  displayName: 'Push an image - ContosoUniversity.API'
+  inputs:
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    command: 'Push an image'
+    imageName: 'ContosoUniversity.API:$(Build.BuildId)'
+- task: Docker@1
+  displayName: 'Build an image - ContosoUniversity.WebApplication'
+  inputs:
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    dockerFile: ContosoUniversity.WebApplication/Dockerfile
+    imageName: 'ContosoUniversity.Web:$(Build.BuildId)'
+    includeLatestTag: true
+- task: Docker@1
+  displayName: 'Push an image - ContosoUniversity.WebApplication'
+  inputs:
+    azureSubscriptionEndpoint: 'MS Internal'
+    azureContainerRegistry: leadroregistry.azurecr.io
+    command: 'Push an image'
+    imageName: 'ContosoUniversity.Web:$(Build.BuildId)'
+- task: CmdLine@1
+  displayName: 'Replace Build Number - kubernetes-webapi.yaml'
+  inputs:
+    filename: bash
+    arguments: '-c "sed -i ''s/BuildNumber/$(Build.BuildId)/g''  kubernetes-webapi.yaml'
+- task: CmdLine@1
+  displayName: 'Replace Build Number - kubernetes-webapp'
+  inputs:
+    filename: bash
+    arguments: '-c "sed -i ''s/BuildNumber/$(Build.BuildId)/g''  kubernetes-webapp.yaml'
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact - webapi'
+  inputs:
+    PathtoPublish: 'kubernetes-webapi.yaml'
+    ArtifactName: Api
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact - webapp'
+  inputs:
+    PathtoPublish: 'kubernetes-webapp.yaml'
+    ArtifactName: App
