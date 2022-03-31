@@ -10,7 +10,7 @@ services:
       ACCEPT_EULA: "Y"
 
   contosouniversity.webapplication:
-    image: ${DOCKER_REGISTRY}contosouniversitywebapplication
+    image: ${DOCKER_REGISTRY}contosouniversity-web
     container_name: contosouniversitywebapp
     build:
       context: .
@@ -23,7 +23,7 @@ services:
       URLAPI: http://contosouniversitywebapi:80/
 
   contosouniversity.api:
-    image: ${DOCKER_REGISTRY}contosouniversityapi
+    image: ${DOCKER_REGISTRY}contosouniversity-api
     container_name: contosouniversitywebapi
     build:
       context: .

@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: contosouniversityapp
-          image: "leadroregistry.azurecr.io/contosouniversity.webapplication:BuildNumber"
+          image: "leadroregistry.azurecr.io/contosouniversity.web:BuildNumber"
           ports:
             - name: http
               containerPort: 80
