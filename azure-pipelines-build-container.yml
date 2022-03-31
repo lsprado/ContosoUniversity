@@ -12,11 +12,15 @@ steps:
 - task: Docker@1
   displayName: 'Build an image - ContosoUniversity.API'
   inputs:
+    containerregistrytype: 'Azure Container Registry'
     azureSubscriptionEndpoint: 'MS Internal'
-    azureContainerRegistry: leadroregistry.azurecr.io
-    dockerFile: ContosoUniversity.API/Dockerfile
+    azureContainerRegistry: 'leadroregistry.azurecr.io'
+    command: 'Build an image'
+    dockerFile: 'ContosoUniversity.API/Dockerfile'
     imageName: 'ContosoUniversity.API:$(Build.BuildId)'
     includeLatestTag: true
+    useDefaultContext: false
+    buildContext: '$(Build.SourcesDirectory)'
 - task: Docker@1
   displayName: 'Push an image - ContosoUniversity.API'
   inputs:
@@ -27,11 +31,15 @@ steps:
 - task: Docker@1
   displayName: 'Build an image - ContosoUniversity.WebApplication'
   inputs:
+    containerregistrytype: 'Azure Container Registry'
     azureSubscriptionEndpoint: 'MS Internal'
-    azureContainerRegistry: leadroregistry.azurecr.io
-    dockerFile: ContosoUniversity.WebApplication/Dockerfile
+    azureContainerRegistry: 'leadroregistry.azurecr.io'
+    command: 'Build an image'
+    dockerFile: 'ContosoUniversity.WebApplication/Dockerfile'
     imageName: 'ContosoUniversity.Web:$(Build.BuildId)'
     includeLatestTag: true
+    useDefaultContext: false
+    buildContext: '$(Build.SourcesDirectory)'
 - task: Docker@1
   displayName: 'Push an image - ContosoUniversity.WebApplication'
   inputs:
