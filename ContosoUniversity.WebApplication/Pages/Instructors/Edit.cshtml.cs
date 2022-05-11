@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Instructors
@@ -46,17 +47,12 @@ namespace ContosoUniversity.WebApplication.Pages.Instructors
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PostAsync("api/Instructors/" + id, new StringContent(JsonConvert.SerializeObject(Instructor)));
+            var response = await client.CreateClient("client").PutAsync("api/Instructors/" + id, new StringContent(JsonConvert.SerializeObject(Instructor), Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
-            {
                 return RedirectToPage("./Index");
-            }
-
-            //UpdateInstructorCourses(_context, selectedCourses, instructorToUpdate);
-            //PopulateAssignedCourseData(_context, instructorToUpdate);
-            return Page();
-
+            else
+                return Redirect("/Error");
         }
     }
 }

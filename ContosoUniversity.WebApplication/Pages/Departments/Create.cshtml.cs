@@ -35,12 +35,12 @@ namespace ContosoUniversity.WebApplication.Pages.Departments
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PostAsync("api/Departments", new StringContent(JsonConvert.SerializeObject(Department)));
+            var response = await client.CreateClient("client").PostAsync("api/Departments", new StringContent(JsonConvert.SerializeObject(Department), Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
                 return RedirectToPage("./Index");
             else
-                return Redirect("/Home/Error");
+                return Redirect("/Error");
         }
     }
 }

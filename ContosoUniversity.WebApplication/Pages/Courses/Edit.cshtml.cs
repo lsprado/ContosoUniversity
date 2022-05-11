@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ContosoUniversity.WebApplication.Pages.Courses
@@ -49,7 +50,7 @@ namespace ContosoUniversity.WebApplication.Pages.Courses
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PostAsync("api/Courses/" + id, new StringContent(JsonConvert.SerializeObject(Course)));
+            var response = await client.CreateClient("client").PutAsync("api/Courses/" + id, new StringContent(JsonConvert.SerializeObject(Course), Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
                 return RedirectToPage("./Index");
