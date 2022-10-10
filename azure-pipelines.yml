@@ -99,7 +99,7 @@ stages:
     variables:
       Infos.Ambiente: 'DEV'
       Api.Address: 'https://contosouniversityexampleapi-dev.azurewebsites.net'
-      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
       Infos.Versao: $(Build.BuildNumber)
     environment: 'contosouniversity-dev'
     strategy:
@@ -124,7 +124,7 @@ stages:
             displayName: 'ContosoUniversityExample WebApp'
             inputs:
               azureSubscription: 'MS Internal'
-              WebAppName: ContosoUniversityExample
+              WebAppName: 'ContosoUniversityExampleApp'
               deployToSlotOrASE: true
               ResourceGroupName: 'RG_ContosoUniversity'
               SlotName: dev
@@ -138,7 +138,7 @@ stages:
     variables:
       Infos.Ambiente: 'HML'
       Api.Address: 'https://contosouniversityexampleapi-qa.azurewebsites.net'
-      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
       Infos.Versao: $(Build.BuildNumber)
     environment: 'contosouniversity-qa'
     strategy:
@@ -163,7 +163,7 @@ stages:
             displayName: 'ContosoUniversityExample WebApp'
             inputs:
               azureSubscription: 'MS Internal'
-              WebAppName: ContosoUniversityExample
+              WebAppName: 'ContosoUniversityExampleApp'
               deployToSlotOrASE: true
               ResourceGroupName: 'RG_ContosoUniversity'
               SlotName: qa
@@ -177,7 +177,7 @@ stages:
     variables:
       Infos.Ambiente: 'PRD'
       Api.Address: 'https://contosouniversityexampleapi.azurewebsites.net'
-      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:leadro.database.windows.net,1433;Initial Catalog=ContosoUniversity;Persist Security Info=False;User ID=leadro;Password=P@ssw0rd;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
       Infos.Versao: $(Build.BuildNumber)
     environment: 'contosouniversity-prd'
     strategy:
@@ -203,6 +203,6 @@ stages:
               ConnectionType: 'AzureRM'
               azureSubscription: 'MS Internal'
               appType: 'webApp'
-              WebAppName: 'ContosoUniversityExample'
+              WebAppName: 'ContosoUniversityExampleApp'
               packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.WebApplication.zip'
               JSONFiles: '**/appsettings.json'
