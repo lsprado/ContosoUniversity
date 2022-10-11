@@ -1,0 +1,52 @@
+trigger:
+- none
+
+pool:
+  vmImage: 'windows-2019'
+
+variables:
+  BuildConfiguration: 'Release'
+  BuildPlatform: 'any cpu'
+
+stages:
+- stage: build
+  jobs:
+  - job: run_build
+    displayName: run build
+    steps:
+    
+- stage: deploy_dev
+  jobs:
+  - deployment: DeployDev
+    displayName: deploy to dev
+    environment: 'contosouniversity-dev'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploy to PROD
+            displayName: 'Run script'
+          
+- stage: deploy_hml
+  jobs:
+  - deployment: DeployDev
+    displayName: deploy to hml
+    environment: 'contosouniversity-qa'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploy to PROD
+            displayName: 'Run script'
+          
+- stage: deploy_prd
+  jobs:
+  - deployment: DeployPrd
+    displayName: deploy to prd
+    environment: 'contosouniversity-prd'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo Deploy to PROD
+            displayName: 'Run script'
