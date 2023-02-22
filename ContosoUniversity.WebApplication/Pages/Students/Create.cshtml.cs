@@ -42,7 +42,7 @@ namespace ContosoUniversity.WebApplication.Pages.Students
             if (response.IsSuccessStatusCode)
                 return RedirectToPage("./Index");
             else
-                return Redirect("/Home/Error");
+                return RedirectToPage("/Error");
         }
     }
 }

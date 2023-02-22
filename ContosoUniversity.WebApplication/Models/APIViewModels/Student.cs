@@ -11,14 +11,16 @@ namespace ContosoUniversity.WebApplication.Models.APIViewModels
     {
         public int Id { get; set; }
 
+        [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Required]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Display(Name = "Enrollment Date")]
-        public DateTime EnrollmentDate { get; set; }
+        public DateTime? EnrollmentDate { get; set; }
 
         public List<Course> Courses { get; set; }
 
