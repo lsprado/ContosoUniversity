@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
 using System.Collections.Generic;
@@ -9,8 +10,17 @@ namespace ContosoUniversity.API.Data
 {
     public class AzureBlobStorage
     {
-        public static async Task<string> UploadFileAsBlob(byte[] img, string filename, string containerName)
+        private readonly IConfiguration _configuration;
+
+        public AzureBlobStorage(IConfiguration configuration)
         {
+            _configuration = configuration;
+        }
+
+        public async Task<string> UploadFileAsBlob(byte[] img, string filename, string containerName)
+        {
+            _configuration.GetValue<string>("ApplicationInsights:ConnectionString");
+
             //https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1#sas-examples
 
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=contosouniversitystorage;AccountKey=9eU9h+iWQ9oHqR8dwAeYd6l+jLTTZ8/g4F5nAjsUD7LWU4fAhulEP58lRoUmsVCxGWBou+cUvuMDS1jwubpfdQ==;EndpointSuffix=core.windows.net");
