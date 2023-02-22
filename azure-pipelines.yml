@@ -9,7 +9,31 @@ variables:
   BuildPlatform: 'any cpu'
 
 stages:
+- stage: infra
+  jobs:
+  - job: run_infra
+    displayName: create infra
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '**/*.csproj'
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'MS Internal'
+        subscriptionId: '3323e547-1651-47e7-a768-6931436e3314'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'RG_ContosoUniversity'
+        location: 'East US'
+        templateLocation: 'Linked artifact'
+        csmFile: 'ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.json'
+        csmParametersFile: 'ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.parameters.json'
+        deploymentMode: 'Incremental'
+
 - stage: build
+  dependsOn: infra
   jobs:
   - job: run_build
     displayName: run build
@@ -93,6 +117,7 @@ stages:
         ArtifactName: CodedUITest
 
 - stage: deploy_dev
+  dependsOn: build
   jobs:
   - deployment: DeployDev
     displayName: deploy to dev
@@ -132,6 +157,7 @@ stages:
               JSONFiles: '**/appsettings.json'
 
 - stage: deploy_hml
+  dependsOn: deploy_dev
   jobs:
   - deployment: DeployDev
     displayName: deploy to hml
@@ -171,6 +197,7 @@ stages:
               JSONFiles: '**/appsettings.json'
 
 - stage: deploy_prd
+  dependsOn: deploy_hml
   jobs:
   - deployment: DeployPrd
     displayName: deploy to prd
