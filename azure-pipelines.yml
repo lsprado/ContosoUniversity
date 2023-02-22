@@ -193,8 +193,50 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.WebApplication.zip'
               JSONFiles: '**/appsettings.json'
 
+- stage: deploy_uat
+  dependsOn: deploy_dev
+  jobs:
+  - deployment: DeployDev
+    displayName: deploy to uat
+    variables:
+      Infos.Ambiente: 'HML'
+      Api.Address: 'https://$(WebApiName)-uat.azurewebsites.net'
+      ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
+      Infos.Versao: $(Build.BuildNumber)
+    environment: 'contosouniversity-uat'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: WebApp
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'ContosoUniversityExample Api'
+            inputs:
+              azureSubscription: 'MS Internal'
+              WebAppName: $(WebApiName)
+              deployToSlotOrASE: true
+              ResourceGroupName: 'RG_ContosoUniversity'
+              SlotName: uat
+              packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.API.zip'
+              JSONFiles: '**/appsettings.json'
+
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'ContosoUniversityExample WebApp'
+            inputs:
+              azureSubscription: 'MS Internal'
+              WebAppName: $(WebAppName)
+              deployToSlotOrASE: true
+              ResourceGroupName: 'RG_ContosoUniversity'
+              SlotName: uat
+              packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.WebApplication.zip'
+              JSONFiles: '**/appsettings.json'
+
 - stage: deploy_prd
-  dependsOn: deploy_hml
+  dependsOn: 
+   - deploy_hml
+   - deploy_uat
   jobs:
   - deployment: DeployPrd
     displayName: deploy to prd
