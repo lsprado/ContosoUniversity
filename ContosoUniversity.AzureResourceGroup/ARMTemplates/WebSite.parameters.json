@@ -32,6 +32,19 @@
     },
     "appConfigurationName": {
       "value": "config-ContosoUniversity"
+    },
+    "sqlServerName": {
+      "value": "contosouniversityexampleserver"
+    },
+    "sqlServerAdminLogin": {
+      "value": "leandro"
+    },
+    "sqlServerAdminLoginPassword": {
+      "value": "#P@ssw0rd2022#"
+    },
+    "sqlDatabaseName": {
+      "value": "contosouniversity"
+
     }
   }
 }
