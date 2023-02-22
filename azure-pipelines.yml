@@ -7,6 +7,8 @@ pool:
 variables:
   BuildConfiguration: 'Release'
   BuildPlatform: 'any cpu'
+  WebAppName: 'ase-ContosoUniversityAPP'
+  WebApiName: 'ase-ContosoUniversityAPI'
 
 stages:
 - stage: infra
@@ -118,7 +120,7 @@ stages:
     displayName: deploy to dev
     variables:
       Infos.Ambiente: 'DEV'
-      Api.Address: 'https://ase-ContosoUniversityAPI-dev.azurewebsites.net'
+      Api.Address: 'https://$(WebApiName)-dev.azurewebsites.net'
       ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
       Infos.Versao: $(Build.BuildNumber)
     environment: 'contosouniversity-dev'
@@ -133,7 +135,7 @@ stages:
             displayName: 'ContosoUniversityExample Api'
             inputs:
               azureSubscription: 'MS Internal'
-              WebAppName: ase-ContosoUniversityAPI
+              WebAppName: $(WebApiName)
               deployToSlotOrASE: true
               ResourceGroupName: 'RG_ContosoUniversity'
               SlotName: dev
@@ -144,7 +146,7 @@ stages:
             displayName: 'ContosoUniversityExample WebApp'
             inputs:
               azureSubscription: 'MS Internal'
-              WebAppName: 'ase-ContosoUniversityAPP'
+              WebAppName: $(WebAppName)
               deployToSlotOrASE: true
               ResourceGroupName: 'RG_ContosoUniversity'
               SlotName: dev
@@ -158,7 +160,7 @@ stages:
     displayName: deploy to hml
     variables:
       Infos.Ambiente: 'HML'
-      Api.Address: 'https://ase-ContosoUniversityAPI-qa.azurewebsites.net'
+      Api.Address: 'https://$(WebApiName)-qa.azurewebsites.net'
       ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
       Infos.Versao: $(Build.BuildNumber)
     environment: 'contosouniversity-qa'
@@ -173,7 +175,7 @@ stages:
             displayName: 'ContosoUniversityExample Api'
             inputs:
               azureSubscription: 'MS Internal'
-              WebAppName: ase-ContosoUniversityAPI
+              WebAppName: $(WebApiName)
               deployToSlotOrASE: true
               ResourceGroupName: 'RG_ContosoUniversity'
               SlotName: qa
@@ -184,7 +186,7 @@ stages:
             displayName: 'ContosoUniversityExample WebApp'
             inputs:
               azureSubscription: 'MS Internal'
-              WebAppName: 'ase-ContosoUniversityAPP'
+              WebAppName: $(WebAppName)
               deployToSlotOrASE: true
               ResourceGroupName: 'RG_ContosoUniversity'
               SlotName: qa
@@ -198,7 +200,7 @@ stages:
     displayName: deploy to prd
     variables:
       Infos.Ambiente: 'PRD'
-      Api.Address: 'https://ase-ContosoUniversityAPI.azurewebsites.net'
+      Api.Address: 'https://$(WebApiName).azurewebsites.net'
       ConnectionStrings.ContosoUniversityAPIContext: 'Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;'
       Infos.Versao: $(Build.BuildNumber)
     environment: 'contosouniversity-prd'
@@ -215,7 +217,7 @@ stages:
               ConnectionType: 'AzureRM'
               azureSubscription: 'MS Internal'
               appType: 'webApp'
-              WebAppName: 'ase-ContosoUniversityAPI'
+              WebAppName: $(WebApiName)
               packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.API.zip'
               JSONFiles: '**/appsettings.json'
           
@@ -225,6 +227,6 @@ stages:
               ConnectionType: 'AzureRM'
               azureSubscription: 'MS Internal'
               appType: 'webApp'
-              WebAppName: 'ase-ContosoUniversityAPP'
+              WebAppName: $(WebAppName)
               packageForLinux: '$(Pipeline.Workspace)/WebApp/ContosoUniversity.WebApplication.zip'
               JSONFiles: '**/appsettings.json'
