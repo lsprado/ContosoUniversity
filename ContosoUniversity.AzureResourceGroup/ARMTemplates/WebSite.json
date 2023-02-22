@@ -384,54 +384,54 @@
       "location": "[resourceGroup().location]",
       "sku": {
         "name": "standard"
-      },
-      {
-        "name": "[parameters('sqlServerName')]",
-        "type": "Microsoft.Sql/servers",
-        "location": "[resourceGroup().location]",
-        "apiVersion": "2020-11-01-preview",
-        "tags": {
-          "displayName": "SQL Server"
-        },
-        "properties": {
-          "administratorLogin": "[parameters('sqlServerAdminLogin')]",
-          "administratorLoginPassword": "[parameters('sqlServerAdminLoginPassword')]",
-          "version": "12.0"
-        },
-        "resources": [
-          {
-            "name": "AllowAllWindowsAzureIps",
-            "type": "firewallrules",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2020-11-01-preview",
-            "dependsOn": [
-              "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
-            ],
-            "properties": {
-              "startIpAddress": "0.0.0.0",
-              "endIpAddress": "0.0.0.0"
-            }
-          },
-          {
-            "name": "[parameters('sqlDatabaseName')]",
-            "type": "databases",
-            "location": "[resourceGroup().location]",
-            "apiVersion": "2020-11-01-preview",
-            "dependsOn": [
-              "[parameters('sqlServerName')]"
-            ],
-            "tags": {
-              "displayName": "SQL Database"
-            },
-            "properties": {
-              "collation": "SQL_Latin1_General_CP1_CI_AS",
-              "edition": "Basic",
-              "maxSizeBytes": "1073741824",
-              "requestedServiceObjectiveName": "Basic"
-            }
-          }
-        ]
       }
+    },
+    {
+      "name": "[parameters('sqlServerName')]",
+      "type": "Microsoft.Sql/servers",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2020-11-01-preview",
+      "tags": {
+        "displayName": "SQL Server"
+      },
+      "properties": {
+        "administratorLogin": "[parameters('sqlServerAdminLogin')]",
+        "administratorLoginPassword": "[parameters('sqlServerAdminLoginPassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+          "name": "AllowAllWindowsAzureIps",
+          "type": "firewallrules",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2020-11-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
+          ],
+          "properties": {
+            "startIpAddress": "0.0.0.0",
+            "endIpAddress": "0.0.0.0"
+          }
+        },
+        {
+          "name": "[parameters('sqlDatabaseName')]",
+          "type": "databases",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2020-11-01-preview",
+          "dependsOn": [
+            "[parameters('sqlServerName')]"
+          ],
+          "tags": {
+            "displayName": "SQL Database"
+          },
+          "properties": {
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "edition": "Basic",
+            "maxSizeBytes": "1073741824",
+            "requestedServiceObjectiveName": "Basic"
+          }
+        }
+      ]
     }
   ],
   "outputs": {
