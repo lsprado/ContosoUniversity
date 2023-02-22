@@ -37,7 +37,7 @@ namespace ContosoUniversity.WebApplication.Pages.Students
                 return Page();
             }
 
-            var response = await client.CreateClient("client").PostAsync("api/Students", new StringContent(JsonConvert.SerializeObject(Student)));
+            var response = await client.CreateClient("client").PostAsync("api/Students", new StringContent(JsonConvert.SerializeObject(Student), System.Text.Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
                 return RedirectToPage("./Index");

@@ -22,6 +22,6 @@ namespace ContosoUniversity.WebApplication.Models.APIViewModels
 
         public List<Course> Courses { get; set; }
 
-        public IFormFile Photo { get; set; }
+        //public IFormFile Photo { get; set; }
     }
 }

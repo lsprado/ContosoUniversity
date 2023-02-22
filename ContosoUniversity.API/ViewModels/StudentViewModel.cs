@@ -9,7 +9,7 @@ namespace ContosoUniversity.API.ViewModels
     public class StudentViewModel
     {
 
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         [Required]
         public string LastName { get; set; }
@@ -21,6 +21,6 @@ namespace ContosoUniversity.API.ViewModels
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EnrollmentDate { get; set; }
 
-        public byte[] Photo { get; set; }
+        //public byte[] Photo { get; set; }
     }
 }

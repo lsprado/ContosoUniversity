@@ -175,23 +175,23 @@ namespace ContosoUniversity.API.Controllers
                 }
 
                 // salva a imagem no Blob Azure
-                string imageName = Guid.NewGuid().ToString() + ".jpg";
-                string imgURL = await AzureBlobStorage.UploadFileAsBlob(student.Photo, imageName, "student-images");
-                string token = AzureBlobStorage.GetContainerSasUri("student-images");
-                string publicUrl = imgURL + token;
+                //string imageName = Guid.NewGuid().ToString() + ".jpg";
+                //string imgURL = await AzureBlobStorage.UploadFileAsBlob(student.Photo, imageName, "student-images");
+                //string token = AzureBlobStorage.GetContainerSasUri("student-images");
+                //string publicUrl = imgURL + token;
 
                 //criar o novo student
                 Models.Student newStudente = new Student() {
                     FirstName = student.FirstName,
                     LastName = student.LastName,
                     EnrollmentDate = student.EnrollmentDate,
-                    PhotoName = imgURL
+                    //PhotoName = imgURL
                 };
                 
                 _context.Student.Add(newStudente);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetStudent", new { id = student.ID }, student);
+                return CreatedAtAction("GetStudent", new { id = student.Id }, student);
             }
             catch (Exception ex)
             {
