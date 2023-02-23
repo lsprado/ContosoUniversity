@@ -8,13 +8,13 @@
 <h2 id="title">@ViewData["Title"]</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a id="link-create" asp-page="Create">Create New</a>
 </p>
 
 
 @if (Model.Course.Count > 0)
 {
-    <table class="table">
+    <table id="table-list" class="table">
         <thead>
             <tr>
                 <th>
