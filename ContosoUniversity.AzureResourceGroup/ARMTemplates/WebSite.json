@@ -427,8 +427,13 @@
           "properties": {
             "collation": "SQL_Latin1_General_CP1_CI_AS",
             "edition": "Basic",
-            "maxSizeBytes": "1073741824",
-            "requestedServiceObjectiveName": "Basic"
+            "maxSizeBytes": "2147483648",
+            "requestedServiceObjectiveName": "Basic",
+            "zoneRedundant": "false"
+          },
+          "sku": {
+            "name": "Basic",
+            "tier": "Basic"
           }
         }
       ]
