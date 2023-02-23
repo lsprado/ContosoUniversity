@@ -91,7 +91,7 @@ namespace ContosoUniversity.CodedUITest
         [TestMethod]
         [TestCategory("CodedUI")]
         [Priority(1)]
-        public void DepartamentDetails()
+        public void StudentDetails()
         {
             try
             {
@@ -133,7 +133,7 @@ namespace ContosoUniversity.CodedUITest
         [TestMethod]
         [TestCategory("CodedUI")]
         [Priority(1)]
-        public void DepartamentCreate()
+        public void StudentCreate()
         {
             try
             {
@@ -154,7 +154,7 @@ namespace ContosoUniversity.CodedUITest
 
                 // input das informações
                 driver.FindElement(By.Name("Student.LastName")).SendKeys("Last");
-                driver.FindElement(By.Name("Student.FirstName")).SendKeys("5000");
+                driver.FindElement(By.Name("Student.FirstName")).SendKeys("First");
                 driver.FindElement(By.Name("Student.EnrollmentDate")).SendKeys("23/02/2023 11:45 AM");
 
                 // clica no botão create
