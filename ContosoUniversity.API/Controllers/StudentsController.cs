@@ -37,6 +37,7 @@ namespace ContosoUniversity.API.Controllers
                     ID = s.ID,
                     FirstName = s.FirstName,
                     LastName = s.LastName,
+                    EnrollmentDate = s.EnrollmentDate.Value,
                     Courses = s.StudentCourse.Select(c => new DTO.Course()
                     {
                         ID = c.Course.ID,

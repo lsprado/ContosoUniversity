@@ -37,6 +37,7 @@
         <tbody>
             @foreach (var item in Model.Student.Students)
             {
+                string dt = item.EnrollmentDate.Value.ToString("dd/MM/yyyy");
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.LastName)
@@ -45,7 +46,7 @@
                         @Html.DisplayFor(modelItem => item.FirstName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                        @dt
                     </td>
                     <td>
                         <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
