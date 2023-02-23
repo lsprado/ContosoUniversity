@@ -14,6 +14,9 @@
     <h4>Student</h4>
     <hr />
     <dl class="dl-horizontal">
+        @{
+            string dt = Model.Student.EnrollmentDate.Value.ToString("dd/MM/yyyy");
+        }
         <dt>
             @Html.DisplayNameFor(model => model.Student.LastName)
         </dt>
@@ -30,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Student.EnrollmentDate)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Student.EnrollmentDate)
+            @dt
         </dd>
     </dl>
 
