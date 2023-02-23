@@ -154,8 +154,12 @@ namespace ContosoUniversity.CodedUITest
                 driver.FindElementById("link-create").Click();
 
                 // input das informações
-                driver.FindElement(By.Name("Student.LastName")).SendKeys("Last");
-                driver.FindElement(By.Name("Student.FirstName")).SendKeys("First");
+                driver.FindElement(By.Name("Student.LastName")).SendKeys("Prado");
+                driver.FindElement(By.Name("Student.FirstName")).SendKeys("Leandro");
+
+                // change input type
+                IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+                string txt = (string)js.ExecuteScript("document.getElementsByName('Student.EnrollmentDate')[0].type=\"text\"");
                 driver.FindElement(By.Name("Student.EnrollmentDate")).SendKeys("23/02/2023");
 
                 // clica no botão create
@@ -170,9 +174,13 @@ namespace ContosoUniversity.CodedUITest
                 // localiza a tablea e recupera o body
                 IWebElement body = driver.FindElementById("table-list").FindElement(By.TagName("tbody"));
 
-                // Pega a primeira linha da tabela e clica no link
+                // Pega a todas as linhas da tabela
                 ReadOnlyCollection<IWebElement> trElement = body.FindElements(By.TagName("tr"));
 
+                // Pega a última linha da tabela
+                ReadOnlyCollection<IWebElement> tdElement = trElement[trElement.Count - 1].FindElements(By.TagName("td"));
+                string ultimoLastName = tdElement[0].Text;
+                Assert.AreEqual("Prado", ultimoLastName);
 
             }
             catch (Exception ex)
