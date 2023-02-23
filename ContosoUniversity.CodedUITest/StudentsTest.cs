@@ -5,6 +5,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
 using System;
+using System.Collections.ObjectModel;
 
 namespace ContosoUniversity.CodedUITest
 {
@@ -155,11 +156,24 @@ namespace ContosoUniversity.CodedUITest
                 // input das informações
                 driver.FindElement(By.Name("Student.LastName")).SendKeys("Last");
                 driver.FindElement(By.Name("Student.FirstName")).SendKeys("First");
-                driver.FindElement(By.Name("Student.EnrollmentDate")).SendKeys("23/02/2023 11:45 AM");
+                driver.FindElement(By.Name("Student.EnrollmentDate")).SendKeys("23/02/2023");
 
                 // clica no botão create
                 driver.FindElement(By.Id("btn-create")).Click();
-               
+
+                // waiting 15 sec
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
+
+                string resStu = driver.FindElementById("title").Text;
+                Assert.AreEqual("Students", resStu);
+
+                // localiza a tablea e recupera o body
+                IWebElement body = driver.FindElementById("table-list").FindElement(By.TagName("tbody"));
+
+                // Pega a primeira linha da tabela e clica no link
+                ReadOnlyCollection<IWebElement> trElement = body.FindElements(By.TagName("tr"));
+
+
             }
             catch (Exception ex)
             {
