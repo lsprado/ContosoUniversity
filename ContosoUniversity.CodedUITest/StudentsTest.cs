@@ -157,16 +157,13 @@ namespace ContosoUniversity.CodedUITest
                 driver.FindElement(By.Name("Student.LastName")).SendKeys("Prado");
                 driver.FindElement(By.Name("Student.FirstName")).SendKeys("Leandro");
 
-                // change input type
+                // muda o tipo do campo para text para poder inserir o valor
                 IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
                 string txt = (string)js.ExecuteScript("document.getElementsByName('Student.EnrollmentDate')[0].type=\"text\"");
                 driver.FindElement(By.Name("Student.EnrollmentDate")).SendKeys("23/02/2023");
 
                 // clica no botão create
                 driver.FindElement(By.Id("btn-create")).Click();
-
-                // waiting 15 sec
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(15);
 
                 string resStu = driver.FindElementById("title").Text;
                 Assert.AreEqual("Students", resStu);
@@ -179,7 +176,11 @@ namespace ContosoUniversity.CodedUITest
 
                 // Pega a última linha da tabela
                 ReadOnlyCollection<IWebElement> tdElement = trElement[trElement.Count - 1].FindElements(By.TagName("td"));
+
+                // pega a primeira coluna da última linha, que é o LastName
                 string ultimoLastName = tdElement[0].Text;
+
+                // Compara os valores
                 Assert.AreEqual("Prado", ultimoLastName);
 
             }
