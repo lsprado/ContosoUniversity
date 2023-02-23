@@ -11,7 +11,7 @@ namespace ContosoUniversity.CodedUITest
     [TestClass]
     public class DepartmentsTest
     {
-        private string baseURL = "https://contosouniversityexample.azurewebsites.net/";
+        private string baseURL = "https://ase-contosouniversityapp-uat.azurewebsites.net/";
         private RemoteWebDriver driver;
         private string browser = string.Empty;
 
@@ -30,7 +30,7 @@ namespace ContosoUniversity.CodedUITest
                 driver.Navigate().GoToUrl(this.baseURL);
 
                 //disable cookie alert
-                driver.FindElement(By.Id("btn-cookie")).Click();
+                //driver.FindElement(By.Id("btn-cookie")).Click();
 
                 driver.FindElementById("link-departments").Click();
                 string resDep = driver.FindElementById("title").Text;
@@ -60,7 +60,7 @@ namespace ContosoUniversity.CodedUITest
                 driver.Navigate().GoToUrl(this.baseURL);
 
                 //disable cookie alert
-                driver.FindElement(By.Id("btn-cookie")).Click();
+                //driver.FindElement(By.Id("btn-cookie")).Click();
 
                 driver.FindElementById("link-departments").Click();
                 string resDep = driver.FindElementById("title").Text;
@@ -101,7 +101,7 @@ namespace ContosoUniversity.CodedUITest
                 driver.Navigate().GoToUrl(this.baseURL);
 
                 //disable cookie alert
-                driver.FindElement(By.Id("btn-cookie")).Click();
+                //driver.FindElement(By.Id("btn-cookie")).Click();
 
                 driver.FindElementById("link-departments").Click();
                 string resDep = driver.FindElementById("title").Text;
@@ -143,7 +143,7 @@ namespace ContosoUniversity.CodedUITest
                 driver.Navigate().GoToUrl(this.baseURL);
 
                 //disable cookie alert
-                driver.FindElement(By.Id("btn-cookie")).Click();
+                //driver.FindElement(By.Id("btn-cookie")).Click();
 
                 driver.FindElementById("link-departments").Click();
                 string resDep = driver.FindElementById("title").Text;

@@ -11,7 +11,7 @@ namespace ContosoUniversity.CodedUITest
     [TestClass]
     public class NavigationMenuTest
     {
-        private string baseURL = "https://contosouniversityexample.azurewebsites.net/";
+        private string baseURL = "https://ase-contosouniversityapp-uat.azurewebsites.net/";
         private RemoteWebDriver driver;
         private string browser = string.Empty;
 
@@ -31,11 +31,11 @@ namespace ContosoUniversity.CodedUITest
                 driver.Navigate().GoToUrl(this.baseURL);
 
                 //disable cookie alert
-                driver.FindElement(By.Id("btn-cookie")).Click();
+                //driver.FindElement(By.Id("btn-cookie")).Click();
 
                 driver.FindElement(By.Id("link-home")).Click();
                 string resHome = driver.FindElementById("text-welcome").Text;
-                Assert.AreEqual("Welcome to Contoso University", resHome);
+                Assert.AreEqual("Contoso University", resHome);
 
                 driver.FindElementById("link-about").Click();
                 string resAbout = driver.FindElementById("title").Text;
