@@ -24,7 +24,8 @@ namespace ContosoUniversity.CodedUITest
         {
             try
             {
-                driver = new ChromeDriver(Environment.GetEnvironmentVariable("ChromeWebDriver"));
+                string driverPath = GetDriverPath();
+                driver = new ChromeDriver(driverPath);
                 driver.Manage().Window.Maximize();
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
                 driver.Navigate().GoToUrl(this.baseURL);
@@ -54,8 +55,8 @@ namespace ContosoUniversity.CodedUITest
         {
             try
             {
-                driver = new ChromeDriver(Environment.GetEnvironmentVariable("ChromeWebDriver"));
-
+                string driverPath = GetDriverPath();
+                driver = new ChromeDriver(driverPath);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
                 driver.Navigate().GoToUrl(this.baseURL);
 
@@ -95,8 +96,8 @@ namespace ContosoUniversity.CodedUITest
         {
             try
             {
-                driver = new ChromeDriver(Environment.GetEnvironmentVariable("ChromeWebDriver"));
-
+                string driverPath = GetDriverPath();
+                driver = new ChromeDriver(driverPath);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
                 driver.Navigate().GoToUrl(this.baseURL);
 
@@ -137,8 +138,8 @@ namespace ContosoUniversity.CodedUITest
         {
             try
             {
-                driver = new ChromeDriver(Environment.GetEnvironmentVariable("ChromeWebDriver"));
-
+                string driverPath = GetDriverPath();
+                driver = new ChromeDriver(driverPath);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
                 driver.Navigate().GoToUrl(this.baseURL);
 
@@ -195,6 +196,19 @@ namespace ContosoUniversity.CodedUITest
             }
             catch (Exception)
             {
+            }
+        }
+
+        private string GetDriverPath()
+        {
+            try
+            {
+                string res = Environment.GetEnvironmentVariable("ChromeWebDriver");
+                return res;
+            }
+            catch
+            {
+                throw new Exception("Variável de ambiente ChromeWebDriver não encontrado");
             }
         }
 
