@@ -43,8 +43,11 @@ namespace ContosoUniversity.CodedUITest
             }
             finally
             {
-                driver.Quit();
-                driver.Dispose();
+                if (driver != null)
+                {
+                    driver.Quit();
+                    driver.Dispose();
+                }
             }
         }
 
@@ -84,8 +87,11 @@ namespace ContosoUniversity.CodedUITest
             }
             finally
             {
-                driver.Quit();
-                driver.Dispose();
+                if (driver != null)
+                {
+                    driver.Quit();
+                    driver.Dispose();
+                }
             }
         }
 
@@ -125,8 +131,11 @@ namespace ContosoUniversity.CodedUITest
             }
             finally
             {
-                driver.Quit();
-                driver.Dispose();
+                if (driver != null)
+                {
+                    driver.Quit();
+                    driver.Dispose();
+                }
             }
         }
 
@@ -171,8 +180,11 @@ namespace ContosoUniversity.CodedUITest
             }
             finally
             {
-                driver.Quit();
-                driver.Dispose();
+                if (driver != null)
+                {
+                    driver.Quit();
+                    driver.Dispose();
+                }
             }
         }
 
@@ -190,8 +202,11 @@ namespace ContosoUniversity.CodedUITest
         {
             try
             {
-                driver.Quit();
-                driver.Dispose();
+                if (driver != null)
+                {
+                    driver.Quit();
+                    driver.Dispose();
+                }
 
             }
             catch (Exception)

@@ -68,8 +68,11 @@ namespace ContosoUniversity.CodedUITest
             }
             finally
             {
-                driver.Quit();
-                driver.Dispose();
+                if (driver != null)
+                {
+                    driver.Quit();
+                    driver.Dispose();
+                }
             }
         }
 
