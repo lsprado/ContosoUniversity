@@ -12,6 +12,7 @@ namespace ContosoUniversity.CodedUITest
     [TestClass]
     public class StudentsTest
     {
+        // https://techcommunity.microsoft.com/t5/testingspot-blog/continuous-testing-with-selenium-and-azure-devops/ba-p/3143366
         private string baseURL = "https://ase-contosouniversityapp-uat.azurewebsites.net/";
         private RemoteWebDriver driver;
         private string browser = string.Empty;
