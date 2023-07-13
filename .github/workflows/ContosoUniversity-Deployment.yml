@@ -172,7 +172,6 @@ jobs:
         slot-name: qa
   
   deploy_uat:
-    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
     name: deploy to uat
     runs-on: windows-latest
     needs:
@@ -210,7 +209,6 @@ jobs:
         slot-name: uat
   
   deploy_prd:
-    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
     name: deploy to prd
     runs-on: windows-latest
     needs:
