@@ -72,15 +72,6 @@ jobs:
     
     - name: Publish APP
       run: dotnet publish ContosoUniversity.WebApplication/ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApp
-
-    #- name: 'Copy Files to: ArmTemplates'
-    #  run: Copy 'ContosoUniversity.AzureResourceGroup/**\*.json' '${{ github.workspace }}/ArmTemplates'
-    
-    #- name: 'Copy Files to: Scripts'
-    #  run: Copy 'Scripts/' '${{ github.workspace }}/Scripts'
-    
-    #- name: 'Copy Files to: CodedUITest'
-    #  run: Copy 'ContosoUniversity.CodedUITest\bin\${{ env.BuildConfiguration }}\netcoreapp3.1\**\*' '${{ github.workspace }}/CodedUITest'
     
     - name: Publish Artifact - WebApp
       uses: actions/upload-artifact@v2
@@ -122,23 +113,28 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: WebApp
+        path: app-package
     
-    - name: ContosoUniversityExample Api
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApi
+        path: api-package
+    
+    - name: Deploy WebApi
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebApiName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+        package: api-package
         slot-name: dev
     
-    - name: ContosoUniversityExample WebApp
+    - name: Deploy WebApp
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebAppName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
+        package: app-package
         slot-name: dev
   
   deploy_hml:
-    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
     name: deploy to hml
     runs-on: windows-latest
     needs:
