@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Azure Login
       uses: azure/login@v1
@@ -35,7 +35,7 @@ jobs:
             echo "Resource group already exists"
         fi
         
-    - uses: Azure/cli@v1.0.0
+    - uses: Azure/cli@v1
       with:
         inlineScript: az deployment group create --resource-group ${{ env.AZ_RG_NAME }} --template-file ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.json --parameters  ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.parameters.json
   
@@ -46,7 +46,7 @@ jobs:
       - run_infra
     steps:
     
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - uses: microsoft/setup-msbuild@v1.0.2
     
