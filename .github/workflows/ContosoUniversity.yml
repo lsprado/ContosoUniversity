@@ -51,16 +51,16 @@ jobs:
     - uses: microsoft/setup-msbuild@v1.0.2
     
     - name: Restore
-      run: dotnet restore **/*.csproj
+      run: dotnet restore
     
     - name: Build
-      run: dotnet **/*.csproj --configuration ${{ env.BuildConfiguration }}
+      run: dotnet build --configuration ${{ env.BuildConfiguration }}
     
     - name: Build ContosoUniversity.CodedUITest
       run: msbuild 'ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj' /p:configuration='${{ env.BuildConfiguration }}' /p:platform='${{ env.BuildPlatform }}'
     
     - name: Test
-      run: dotnet test **/*ContosoUniversity.Test/*.csproj --configuration ${{ env.BuildConfiguration }}
+      run: dotnet test ContosoUniversity.Test\ContosoUniversity.Test.csproj --configuration ${{ env.BuildConfiguration }}
     
     - name: Publish
       run: dotnet publish --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApp
