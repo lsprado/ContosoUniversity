@@ -59,7 +59,7 @@ jobs:
       run: dotnet restore
     
     - name: Build
-      run: dotnet build --configuration ${{ env.BuildConfiguration }}
+      run: dotnet build --no-restore --configuration ${{ env.BuildConfiguration }}
     
     - name: Build ContosoUniversity.CodedUITest
       run: msbuild 'ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj' /p:configuration='${{ env.BuildConfiguration }}' /p:platform='${{ env.BuildPlatform }}'
@@ -73,11 +73,11 @@ jobs:
     - name: Publish APP
       run: dotnet publish ContosoUniversity.WebApplication\ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApp
 
-    - name: 'Copy Files to: ArmTemplates'
-      run: Copy 'ContosoUniversity.AzureResourceGroup/**\*.json' '${{ github.workspace }}/ArmTemplates'
+    #- name: 'Copy Files to: ArmTemplates'
+    #  run: Copy 'ContosoUniversity.AzureResourceGroup/**\*.json' '${{ github.workspace }}/ArmTemplates'
     
-    - name: 'Copy Files to: Scripts'
-      run: Copy 'Scripts/' '${{ github.workspace }}/Scripts'
+    #- name: 'Copy Files to: Scripts'
+    #  run: Copy 'Scripts/' '${{ github.workspace }}/Scripts'
     
     #- name: 'Copy Files to: CodedUITest'
     #  run: Copy '${{ github.workspace }}\ContosoUniversity.CodedUITest\bin\${{ env.BuildConfiguration }}etcoreapp3.1/**\*' '${{ github.workspace }}/CodedUITest'
@@ -88,11 +88,17 @@ jobs:
         path: ${{ github.workspace }}/WebApp
         name: WebApp
     
-    - name: Publish Artifact ArmTemplates
+    - name: Publish Artifact WebApi
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ github.workspace }}/ArmTemplates
-        name: ArmTemplates
+        path: ${{ github.workspace }}/WebApi
+        name: WebApi
+
+    #- name: Publish Artifact ArmTemplates
+    #  uses: actions/upload-artifact@v2
+    #  with:
+    #    path: ${{ github.workspace }}/ArmTemplates
+    #    name: ArmTemplates
     
     - name: Publish Artifact Scripts
       uses: actions/upload-artifact@v2
