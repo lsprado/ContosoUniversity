@@ -68,10 +68,10 @@ jobs:
       run: dotnet test ContosoUniversity.Test\ContosoUniversity.Test.csproj --configuration ${{ env.BuildConfiguration }}
     
     - name: Publish API
-      run: dotnet publish ContosoUniversity.API\ContosoUniversity.API.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApi
+      run: dotnet publish ContosoUniversity.API\ContosoUniversity.API.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApi
     
     - name: Publish APP
-      run: dotnet publish ContosoUniversity.WebApplication\ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApp
+      run: dotnet publish ContosoUniversity.WebApplication\ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApp
 
     #- name: 'Copy Files to: ArmTemplates'
     #  run: Copy 'ContosoUniversity.AzureResourceGroup/**\*.json' '${{ github.workspace }}/ArmTemplates'
@@ -85,13 +85,13 @@ jobs:
     - name: Publish Artifact WebApp
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ github.workspace }}/WebApp
+        path: PublishApp
         name: WebApp
     
     - name: Publish Artifact WebApi
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ github.workspace }}/WebApi
+        path: PublishApi
         name: WebApi
 
     #- name: Publish Artifact ArmTemplates
