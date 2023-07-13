@@ -67,9 +67,12 @@ jobs:
     - name: Test
       run: dotnet test ContosoUniversity.Test\ContosoUniversity.Test.csproj --configuration ${{ env.BuildConfiguration }}
     
-    - name: Publish
-      run: dotnet publish --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApp
+    - name: Publish API
+      run: dotnet publish ContosoUniversity.API\ContosoUniversity.API.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApi
     
+    - name: Publish APP
+      run: dotnet publish ContosoUniversity.WebApplication\ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApp
+
     - name: 'Copy Files to: ArmTemplates'
       run: Copy 'ContosoUniversity.AzureResourceGroup/**\*.json' '${{ github.workspace }}/ArmTemplates'
     
