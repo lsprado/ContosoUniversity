@@ -98,7 +98,7 @@ jobs:
       name: contosouniversity-dev
     env:
       Infos.Ambiente: DEV
-      Api.Address: https://${{ env.WebApiName }}-dev.azurewebsites.net
+      Api.Address: https://$WebApiName-dev.azurewebsites.net
       ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
       Infos.Versao: ${{ github.run_number }}
       ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
@@ -136,7 +136,7 @@ jobs:
       name: contosouniversity-qa
     env:
       Infos.Ambiente: HML
-      Api.Address: https://${{ env.WebApiName }}-qa.azurewebsites.net
+      Api.Address: https://$WebApiName-qa.azurewebsites.net
       ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
       Infos.Versao: ${{ github.run_number }}
       ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
@@ -174,7 +174,7 @@ jobs:
       name: contosouniversity-uat
     env:
       Infos.Ambiente: HML
-      Api.Address: https://${{ env.WebApiName }}-uat.azurewebsites.net
+      Api.Address: https://$WebApiName-uat.azurewebsites.net
       ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
       Infos.Versao: ${{ github.run_number }}
       ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
@@ -213,7 +213,7 @@ jobs:
       name: contosouniversity-prd
     env:
       Infos.Ambiente: PRD
-      Api.Address: https://${{ env.WebApiName }}.azurewebsites.net
+      Api.Address: https://$WebApiName.azurewebsites.net
       ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
       Infos.Versao: ${{ github.run_number }}
       ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
