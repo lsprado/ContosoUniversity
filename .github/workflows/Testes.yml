@@ -1,4 +1,4 @@
-name: AzureCLISample
+name: Testes
 
 on:
     workflow_dispatch:
