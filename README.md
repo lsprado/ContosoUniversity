@@ -21,8 +21,12 @@ docker-compose up
 # Git Help - Multiple Remotes
 
 ```
+# Adicionando um novo repo como remote
 git remote add bkp https://github.com/lsprado/ContosoUniversity.git
 git remote -v
 git push bkp master
+
+# Criando um ALIAS para dar push em todos os remotes
+
 ```
 
