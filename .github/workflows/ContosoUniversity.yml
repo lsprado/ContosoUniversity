@@ -10,6 +10,8 @@ env:
   BuildPlatform: any cpu
   WebAppName: ase-ContosoUniversityAPP
   WebApiName: ase-ContosoUniversityAPI
+  AZ_RG_NAME: RG_ContosoUniversity
+  AZ_RG_LOCATION: eastus
 
 jobs:
   
@@ -25,9 +27,17 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_SP }}
     
+    - name: Create Resource Group
+      run: |
+        if [ $(az group exists --name ${{ env.AZ_RG_NAME }}) = false ]; then
+          az group create --name ${{ env.AZ_RG_NAME }} --location ${{ env.AZ_RG_LOCATION }}
+        else
+            echo "Resource group already exists"
+        fi
+        
     - uses: Azure/cli@v1.0.0
       with:
-        inlineScript: az deployment group create --resource-group RG_ContosoUniversity --template-file ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.json --parameters  ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.parameters.json
+        inlineScript: az deployment group create --resource-group ${{ env.AZ_RG_NAME }} --template-file ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.json --parameters  ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.parameters.json
   
   run_build:
     name: run build
