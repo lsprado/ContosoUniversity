@@ -65,13 +65,13 @@ jobs:
       run: msbuild 'ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj' /p:configuration='${{ env.BuildConfiguration }}' /p:platform='${{ env.BuildPlatform }}'
     
     - name: Test
-      run: dotnet test ContosoUniversity.Test\ContosoUniversity.Test.csproj --configuration ${{ env.BuildConfiguration }}
+      run: dotnet test ContosoUniversity.Test/ContosoUniversity.Test.csproj --configuration ${{ env.BuildConfiguration }}
     
     - name: Publish API
-      run: dotnet publish ContosoUniversity.API\ContosoUniversity.API.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApi
+      run: dotnet publish ContosoUniversity.API/ContosoUniversity.API.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApi
     
     - name: Publish APP
-      run: dotnet publish ContosoUniversity.WebApplication\ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApp
+      run: dotnet publish ContosoUniversity.WebApplication/ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApp
 
     #- name: 'Copy Files to: ArmTemplates'
     #  run: Copy 'ContosoUniversity.AzureResourceGroup/**\*.json' '${{ github.workspace }}/ArmTemplates'
@@ -79,8 +79,8 @@ jobs:
     #- name: 'Copy Files to: Scripts'
     #  run: Copy 'Scripts/' '${{ github.workspace }}/Scripts'
     
-    - name: 'Copy Files to: CodedUITest'
-      run: Copy 'ContosoUniversity.CodedUITest\bin\${{ env.BuildConfiguration }}\netcoreapp3.1\**\*' '${{ github.workspace }}/CodedUITest'
+    #- name: 'Copy Files to: CodedUITest'
+    #  run: Copy 'ContosoUniversity.CodedUITest\bin\${{ env.BuildConfiguration }}\netcoreapp3.1\**\*' '${{ github.workspace }}/CodedUITest'
     
     - name: Publish Artifact - WebApp
       uses: actions/upload-artifact@v2
@@ -103,7 +103,7 @@ jobs:
     - name: Publish Artifact - CodedUITest
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ github.workspace }}/CodedUITest
+        path: 'ContosoUniversity.CodedUITest/bin/${{ env.BuildConfiguration }}/netcoreapp3.1/**/*'
         name: CodedUITest
   
   deploy_dev:
