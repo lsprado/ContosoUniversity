@@ -2,6 +2,7 @@
 Aplicação de teste usando Docker e Kubernetes
 Teste DevOps 4 Women
 Teste DevOps 4 Women denovo
+
 # Docker Help
 
 Criar a imagem docker
@@ -16,3 +17,12 @@ Executar o Docker Compose
 ```
 docker-compose up
 ```
+
+# Git Help - Multiple Remotes
+
+```
+git remote add bkp https://github.com/lsprado/ContosoUniversity.git
+git remote -v
+git push bkp master
+```
+
