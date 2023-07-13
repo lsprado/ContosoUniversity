@@ -150,19 +150,25 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: WebApp
+        path: app-package
     
-    - name: ContosoUniversityExample Api
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApi
+        path: api-package
+    
+    - name: Deploy WebApi
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebApiName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+        package: api-package
         slot-name: qa
     
-    - name: ContosoUniversityExample WebApp
+    - name: Deploy WebApp
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebAppName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
+        package: app-package
         slot-name: qa
   
   deploy_uat:
@@ -182,19 +188,25 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: WebApp
+        path: app-package
     
-    - name: ContosoUniversityExample Api
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApi
+        path: api-package
+    
+    - name: Deploy WebApi
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebApiName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+        package: api-package
         slot-name: uat
     
-    - name: ContosoUniversityExample WebApp
+    - name: Deploy WebApp
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebAppName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
+        package: app-package
         slot-name: uat
   
   deploy_prd:
@@ -215,15 +227,21 @@ jobs:
     - uses: actions/download-artifact@v2
       with:
         name: WebApp
+        path: app-package
     
-    - name: ContosoUniversityExample Api
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApi
+        path: api-package
+    
+    - name: Deploy WebApi
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebApiName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+        package: api-package
     
-    - name: ContosoUniversityExample WebApp
+    - name: Deploy WebApp
       uses: Azure/webapps-deploy@v2
       with:
         app-name: ${{ env.WebAppName }}
-        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
+        package: app-package
