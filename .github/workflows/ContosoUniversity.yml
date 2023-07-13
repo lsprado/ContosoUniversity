@@ -89,7 +89,6 @@ jobs:
         name: CodedUITest
   
   deploy_dev:
-    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
     name: deploy to dev
     runs-on: windows-latest
     needs:
