@@ -2,29 +2,239 @@ name: ContosoUniversity
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+    - none
+
+env:
+  BuildConfiguration: Release
+  BuildPlatform: any cpu
+  WebAppName: ase-ContosoUniversityAPP
+  WebApiName: ase-ContosoUniversityAPI
 
 jobs:
-  build:
-
+  
+  run_infra:
+    name: create infra
     runs-on: windows-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
     
-    - name: Setup .NET version
-      uses: actions/setup-dotnet@v3
+    - uses: actions/checkout@v2
+    
+    - name: Azure Login
+      uses: azure/login@v1
       with:
-        dotnet-version: 3.1.x
+        creds: ${{ secrets.AZURE_SP }}
     
-    - name: Restore dependencies
-      run: dotnet restore
+    - uses: Azure/cli@v1.0.0
+      with:
+        inlineScript: az deployment group create --resource-group RG_ContosoUniversity --template-file ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.json --parameters  ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.parameters.json
+  
+  run_build:
+    name: run build
+    runs-on: windows-latest
+    needs:
+      - run_infra
+    steps:
+    
+    - uses: actions/checkout@v2
+    
+    - uses: microsoft/setup-msbuild@v1.0.2
+    
+    - name: Restore
+      run: dotnet restore **/*.csproj
     
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet **/*.csproj --configuration ${{ env.BuildConfiguration }}
+    
+    - name: Build ContosoUniversity.CodedUITest
+      run: msbuild 'ContosoUniversity.CodedUITest/ContosoUniversity.CodedUITest.csproj' /p:configuration='${{ env.BuildConfiguration }}' /p:platform='${{ env.BuildPlatform }}'
     
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test **/*ContosoUniversity.Test/*.csproj --configuration ${{ env.BuildConfiguration }}
+    
+    - name: Publish
+      run: dotnet publish --configuration ${{ env.BuildConfiguration }} --output ${{ github.workspace }}/WebApp
+    
+    - name: 'Copy Files to: ArmTemplates'
+      run: Copy 'ContosoUniversity.AzureResourceGroup/**\*.json' '${{ github.workspace }}/ArmTemplates'
+    
+    - name: 'Copy Files to: Scripts'
+      run: Copy 'Scripts/' '${{ github.workspace }}/Scripts'
+    
+    #- name: 'Copy Files to: CodedUITest'
+    #  run: Copy '${{ github.workspace }}\ContosoUniversity.CodedUITest\bin\${{ env.BuildConfiguration }}etcoreapp3.1/**\*' '${{ github.workspace }}/CodedUITest'
+    
+    - name: Publish Artifact WebApp
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ github.workspace }}/WebApp
+        name: WebApp
+    
+    - name: Publish Artifact ArmTemplates
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ github.workspace }}/ArmTemplates
+        name: ArmTemplates
+    
+    - name: Publish Artifact Scripts
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ github.workspace }}/Scripts
+        name: Scripts
+    
+    - name: Publish Artifact CodedUITest
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ github.workspace }}/CodedUITest
+        name: CodedUITest
+  
+  deploy_dev:
+    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    name: deploy to dev
+    runs-on: windows-latest
+    needs:
+      - run_build
+    environment:
+      name: contosouniversity-dev
+    env:
+      Infos.Ambiente: DEV
+      Api.Address: https://${{ env.WebApiName }}-dev.azurewebsites.net
+      ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+      Infos.Versao: ${{ github.run_number }}
+      ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_SP }}
+    
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApp
+    
+    - name: ContosoUniversityExample Api
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebApiName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+        slot-name: dev
+    
+    - name: ContosoUniversityExample WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebAppName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
+        slot-name: dev
+  
+  deploy_hml:
+    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    name: deploy to hml
+    runs-on: windows-latest
+    needs:
+      - deploy_dev
+    environment:
+      name: contosouniversity-qa
+    env:
+      Infos.Ambiente: HML
+      Api.Address: https://${{ env.WebApiName }}-qa.azurewebsites.net
+      ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+      Infos.Versao: ${{ github.run_number }}
+      ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_SP }}
+    
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApp
+    
+    - name: ContosoUniversityExample Api
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebApiName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+        slot-name: qa
+    
+    - name: ContosoUniversityExample WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebAppName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
+        slot-name: qa
+  
+  deploy_uat:
+    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    name: deploy to uat
+    runs-on: windows-latest
+    needs:
+      - deploy_dev
+    environment:
+      name: contosouniversity-uat
+    env:
+      Infos.Ambiente: HML
+      Api.Address: https://${{ env.WebApiName }}-uat.azurewebsites.net
+      ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+      Infos.Versao: ${{ github.run_number }}
+      ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_SP }}
+    
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApp
+    
+    - name: ContosoUniversityExample Api
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebApiName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+        slot-name: uat
+    
+    - name: ContosoUniversityExample WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebAppName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
+        slot-name: uat
+  
+  deploy_prd:
+    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    name: deploy to prd
+    runs-on: windows-latest
+    needs:
+      - deploy_hml
+      - deploy_uat
+    environment:
+      name: contosouniversity-prd
+    env:
+      Infos.Ambiente: PRD
+      Api.Address: https://${{ env.WebApiName }}.azurewebsites.net
+      ConnectionStrings.ContosoUniversityAPIContext: Server=tcp:contosouniversityexampleserver.database.windows.net,1433;Initial Catalog=contosouniversity;Persist Security Info=False;User ID=leandro;Password=#P@ssw0rd2022#;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+      Infos.Versao: ${{ github.run_number }}
+      ApplicationInsights.ConnectionString: InstrumentationKey=9351234c-c3fa-4ecc-b27b-1eb13cbd6089;IngestionEndpoint=https://eastus-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/
+    steps:
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_SP }}
+    
+    - uses: actions/download-artifact@v2
+      with:
+        name: WebApp
+    
+    - name: ContosoUniversityExample Api
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebApiName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.API.zip
+    
+    - name: ContosoUniversityExample WebApp
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.WebAppName }}
+        package: ${{ env.Pipeline.Workspace }}/WebApp/ContosoUniversity.WebApplication.zip
