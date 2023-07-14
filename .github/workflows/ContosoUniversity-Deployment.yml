@@ -107,7 +107,7 @@ jobs:
       name: contosouniversity-dev
     steps:
     - name: Display APP_SETTINGS
-      run: echo 'App Settings ${{ env.APP_SETTINGS }}'
+      run: echo 'App Settings ${{ vars.APP_SETTINGS }}'
     
     - name: Azure Login
       uses: azure/login@v1
