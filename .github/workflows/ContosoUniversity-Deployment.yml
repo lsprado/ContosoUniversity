@@ -135,7 +135,7 @@ jobs:
       with:
         app-name: ${{ env.WebApiName }}
         slot-name: dev
-        connection-strings-json: '${{ secrets.CONNECTION_STRINGS }}'
+        app-settings-json: '${{ vars.APP_SETTINGS }}'
 
     - name: Deploy WebApp
       uses: Azure/webapps-deploy@v2
