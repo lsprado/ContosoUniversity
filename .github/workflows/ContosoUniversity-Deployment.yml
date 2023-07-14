@@ -106,9 +106,6 @@ jobs:
     environment:
       name: contosouniversity-dev
     steps:
-    - name: Display APP_SETTINGS
-      run: echo 'App Settings ${{ vars.APP_SETTINGS }}'
-    
     - name: Azure Login
       uses: azure/login@v1
       with:
@@ -139,6 +136,13 @@ jobs:
         app-name: ${{ env.WebAppName }}
         package: app-package
         slot-name: dev
+    
+    - name: Configure App Settings
+      uses: azure/appservice-settings@v1
+      with:
+        app-name: ${{ env.WebAppName }}
+        slot-name: dev
+        app-settings-json: '${{ vars.APP_SETTINGS }}'
   
   deploy_hml:
     name: deploy to hml
