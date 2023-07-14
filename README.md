@@ -39,3 +39,4 @@ git config --global alias.pushall '!f(){ for var in $(git remote show); do echo 
 git pushall
 ```
 test
+test
