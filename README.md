@@ -38,5 +38,3 @@ git config --global --list
 git config --global alias.pushall '!f(){ for var in $(git remote show); do echo "pushing to $var"; git push $var; done; }; f'
 git pushall
 ```
-test
-test
