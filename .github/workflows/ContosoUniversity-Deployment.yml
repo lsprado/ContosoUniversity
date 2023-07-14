@@ -3,7 +3,9 @@ name: ContosoUniversity-Deployment
 on:
   push:
     branches:
-    - master
+      - master
+    paths-ignore:
+      - '**.yml'
 
 env:
   BuildConfiguration: Release
