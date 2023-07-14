@@ -35,7 +35,8 @@ jobs:
             echo "Resource group already exists"
         fi
         
-    - uses: Azure/cli@v1
+    - name: Azure ARM Deployment
+      uses: Azure/cli@v1
       with:
         inlineScript: az deployment group create --resource-group ${{ env.AZ_RG_NAME }} --template-file ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.json --parameters  ContosoUniversity.AzureResourceGroup/ARMTemplates/WebSite.parameters.json
   
@@ -48,10 +49,10 @@ jobs:
     
     - uses: actions/checkout@v3
     
-    - uses: microsoft/setup-msbuild@v1.0.2
+    - uses: microsoft/setup-msbuild@v1
     
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '3.1.x'
 
@@ -74,25 +75,25 @@ jobs:
       run: dotnet publish ContosoUniversity.WebApplication/ContosoUniversity.WebApplication.csproj --no-restore --no-build --configuration ${{ env.BuildConfiguration }} --output PublishApp
     
     - name: Publish Artifact - WebApp
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         path: PublishApp
         name: WebApp
     
     - name: Publish Artifact - WebApi
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         path: PublishApi
         name: WebApi
     
     - name: Publish Artifact - Scripts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         path: ${{ github.workspace }}/Scripts
         name: Scripts
     
     - name: Publish Artifact - CodedUITest
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         path: 'ContosoUniversity.CodedUITest/bin/${{ env.BuildConfiguration }}/netcoreapp3.1/**/*'
         name: CodedUITest
@@ -110,12 +111,14 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_SP }}
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApp artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApp
         path: app-package
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApi artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApi
         path: api-package
@@ -147,12 +150,14 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_SP }}
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApp artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApp
         path: app-package
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApi artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApi
         path: api-package
@@ -184,12 +189,14 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_SP }}
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApp artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApp
         path: app-package
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApi artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApi
         path: api-package
@@ -222,12 +229,14 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_SP }}
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApp artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApp
         path: app-package
     
-    - uses: actions/download-artifact@v2
+    - name: Download WebApi artifact
+      uses: actions/download-artifact@v3
       with:
         name: WebApi
         path: api-package
