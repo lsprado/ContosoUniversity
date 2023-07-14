@@ -137,7 +137,7 @@ jobs:
         package: app-package
         slot-name: dev
     
-    - name: Configure App Settings
+    - name: Configure App Settings WebApp
       uses: azure/appservice-settings@v1
       with:
         app-name: ${{ env.WebAppName }}
